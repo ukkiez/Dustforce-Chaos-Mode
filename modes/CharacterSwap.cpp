@@ -12,15 +12,37 @@ class CharacterSwap : Mode, Random {
   scene@ g;
   dustman@ player;
 
-  bool boss_character = false;
-
   bool initialized = false;
 
   uint iteration;
 
+  bool roulette = false;
+
+  uint duration = 0;
+  uint interval = 6;
+  uint index = 0;
+
   CharacterSwap() {}
 
-  void step( int entities ) {}
+  void step( int entities ) {
+    if ( roulette ) {
+      // swap between janitors every interval
+      if ( ( duration % interval ) == 0 ) {
+        string character = JANITORS[ index ];
+        player.character( character );
+
+        duration = 0;
+        index++;
+
+        if ( index >= JANITORS.length ) {
+          index = 0;
+        }
+      }
+
+      duration++;
+    }
+  }
+
   void draw( float sub_frame ) {}
 
   void initialize() {
@@ -34,14 +56,25 @@ class CharacterSwap : Mode, Random {
     @g = get_scene();
     @player = controller_controllable( 0 ).as_dustman();
 
-    string character = CHARACTERS[ srand_range( 0, CHARACTERS.length-1 ) ];
-    if ( ( array<string> = { "dustwraith", "leafsprite", "trashking", "slimeboss" } ).find( character ) >= 0 ) {
-      boss_character = true;
-    }
-    else {
-      boss_character = false;
+    if ( srandom() % 2 == 0 ) {
+      // start the roulette, which constantly changes your character every X
+      // interval in step()
+      roulette = true;
+      initialized = true;
+      return;
     }
 
+    // make sure not to swap to the same character the player already is
+    array<string> swappable_characters = {};
+    for ( uint i = 0; i <= ALL_CHARACTERS.length-1; i++ ) {
+      if ( player.character() == ALL_CHARACTERS[ i ] ) {
+        continue;
+      }
+
+      swappable_characters.insertLast( ALL_CHARACTERS[ i ] );
+    }
+
+    string character = swappable_characters[ srand_range( 0, swappable_characters.length-1 ) ];
     player.character( character );
 
     initialized = true;
@@ -52,20 +85,18 @@ class CharacterSwap : Mode, Random {
       return;
     }
 
-    if ( iteration == script.iteration ) {
-      // we likely loaded a checkpoint, hence why the script is attempting to
-      // deactive and reinitialize the script, however in this case we don't
-      // want to initialize as that would swap the character again
-      return;
+    if ( roulette ) {
+      duration = 0;
+      index = 0;
+      roulette = false;
     }
 
-    if ( boss_character ) {
+    if ( BOSSES.find( player.character() ) >= 0 || V_BOSSES.find( player.character() ) >= 0 ) {
       // return the player to their original character, as we can't keep them a
       // boss character if they want to actually SS the level (all assuming they
       // didn't start as a boss character)
       player.character( "default" );
     }
-    boss_character = false;
 
     initialized = false;
   }

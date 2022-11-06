@@ -1,8 +1,7 @@
 #include "../../lib/Random.cpp";
+#include "../../lib/util/tiles.cpp";
 
 #include "../Mode.cpp";
-
-#include "./data.cpp";
 
 class SpawnBlock : Mode, Random {
   ModeConfig get_mode_config() {
@@ -87,9 +86,5 @@ class SpawnBlock : Mode, Random {
         1 // palette
       );
     }
-  }
-
-  int tile_coord( float v ) {
-	  return int( floor( v * ( 1.0 / 48 ) ) );
   }
 }

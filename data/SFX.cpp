@@ -212,14 +212,3 @@ const array<string> character_sfx = {
   "_sweep_2",
   "_sweep_3",
 };
-
-const dictionary character_acronyms = {
-  { "dustman", "dm" },
-  { "dustgirl", "dg" },
-  { "dustkid", "dk" },
-  { "dustworth", "do" },
-  { "dustwraith", "dw" },
-  { "leafsprite", "ls" },
-  { "trashking", "tk" },
-  { "slimeboss", "sb" }
-};

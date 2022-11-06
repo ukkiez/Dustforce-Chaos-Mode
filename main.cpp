@@ -2,27 +2,36 @@
 
 #include "./modes/Mode.cpp";
 
+#include "./modes/Audioizer.cpp";
 #include "./modes/Big.cpp";
 #include "./modes/CharacterSwap.cpp";
 #include "./modes/DisableAttack.cpp";
 #include "./modes/DisableDash.cpp";
 #include "./modes/DisableJump.cpp";
 #include "./modes/Disco.cpp";
+
 #include "./modes/Enemizer/EnemyBarrelizer.cpp";
 #include "./modes/Enemizer/EnemyScaler.cpp";
 #include "./modes/Enemizer/EnemyTimeWarp.cpp";
+
 #include "./modes/InfiniteAircharges.cpp";
 #include "./modes/Letterbox.cpp";
 #include "./modes/MaxSuper.cpp";
 #include "./modes/NoFriction.cpp";
 #include "./modes/PropSwap/index.cpp";
-#include "./modes/SFX.cpp";
 #include "./modes/SpawnApples.cpp";
 #include "./modes/SussyPorcupine.cpp";
+
 #include "./modes/Tilerizer/SpawnBlock.cpp";
 #include "./modes/Tilerizer/SpawnZip.cpp";
+#include "./modes/Tilerizer/SwapSprites.cpp";
+
+#include "./modes/TauntOrDie.cpp";
 #include "./modes/TimeWarp.cpp";
 #include "./modes/Tiny.cpp";
+
+#include "./modes/Unplayable/Rotator.cpp";
+#include "./modes/Unplayable/Tilted.cpp";
 
 // do not embed files upfront, this causes massive lag when using the script as
 // a plugin; instead, we'll load it in the script() constructor below, which
@@ -58,42 +67,58 @@ class script : script_base, Random {
   array<uint> active_mode_indexes;
   array<ActiveMode@> active_modes;
 
+  array<ModeConfig> mode_configs = {};
   array<textfield@> mode_textfields;
   array<textfield@> mode_subtextfields;
 
-  array<ModeConfig> mode_configs = {};
-
   array<Mode@> @modes = {
+    Audioizer(),
     Big(),
     CharacterSwap(),
     DisableAttack(),
     DisableDash(),
     DisableJump(),
     Disco(),
-    EnemyBarrelizer(),
+
+    // Enemizer
+    // EnemyBarrelizer(),
     EnemyScaler(),
     EnemyTimeWarp(),
+
     InfiniteAircharges(),
     Letterbox(),
     MaxSuper(),
     NoFriction(),
     PropSwap(),
-    SFX(),
     SpawnApples(),
+    SussyPorcupine(),
+
+    // Tilerizer
     SpawnBlock(),
     SpawnZip(),
-    SussyPorcupine(),
+    SwapSprites(),
+
+    TauntOrDie(),
     TimeWarp(),
     Tiny(),
+
+    // Unplayable
+    Rotator(),
+    Tilted(),
   };
+
+  array<Mode@> CHECKPOINT_modes;
+  array<uint> CHECKPOINT_active_mode_indexes;
+  uint CHECKPOINT_current_num_active_modes;
+  uint CHECKPOINT_iteration;
 
   // is automatically set to true if any modes are added to the below
   // DEBUG_modes_override array
   bool DEBUG_MODE = false;
   // putting modes in here will automatically give them a 100 weight,
-  // guaranteeing to be available to be picked every round (though still not
-  // twice in a row, and retaining the existing limit of concurrent number of
-  // modes)
+  // guaranteeing them to be available to be picked every round (though still
+  // not twice in a row, and retaining the existing limit of concurrent number
+  // of modes)
   array<Mode@> DEBUG_modes_override = {
   };
 
@@ -160,6 +185,18 @@ class script : script_base, Random {
     interval = srand_range( 3, 12 );
   }
 
+  void checkpoint_save() {
+    // keep track of script state across checkpoints, so we can go back to it
+    // when a checkpoint gets loaded to be in line with the game state at that
+    // point; to prevent e.g. saving a checkpoint while attack is disabled, and
+    // a minute later the checkpoint loads and the mode will no longer be active
+    // and able to be deactivated
+    CHECKPOINT_modes = modes;
+    CHECKPOINT_active_mode_indexes = active_mode_indexes;
+    CHECKPOINT_current_num_active_modes = current_num_active_modes;
+    CHECKPOINT_iteration = iteration;
+  }
+
   void checkpoint_load() {
     controllable@ c = controller_controllable( 0 );
     if ( @c == null ) {
@@ -167,12 +204,6 @@ class script : script_base, Random {
     }
 
     @player = c.as_dustman();
-
-    string character = player.character();
-    if ( ( array<string> = { "dustwraith", "leafsprite", "trashking", "slimeboss" } ).find( character ) >= 0 ) {
-      // make sure a player can never be stuck as a boss character
-      player.character( "dustgirl" );
-    }
 
     checkpoint_loaded = true;
   }
@@ -188,6 +219,11 @@ class script : script_base, Random {
       if ( @player == null ) {
         return;
       }
+    }
+
+    if ( player.dead() ) {
+      // try to prevent issues with gathering the player controllable
+      return;
     }
 
     if ( ( time % 60 ) == 0 ) {
@@ -255,6 +291,17 @@ class script : script_base, Random {
       }
     }
 
+    if ( checkpoint_loaded && ( CHECKPOINT_iteration != iteration ) ) {
+      // reinitialize and deactivate all modes that were active at the last
+      // saved checkpoint, if we're past the iteration from that time;
+      // reinitialization is necessary since script variables may have been
+      // reset/lost
+      for ( uint i = 0; i < CHECKPOINT_current_num_active_modes; i++ ) {
+        CHECKPOINT_modes[ CHECKPOINT_active_mode_indexes[ i ] ].initialize();
+        CHECKPOINT_modes[ CHECKPOINT_active_mode_indexes[ i ] ].deactivate();
+      }
+    }
+
     if ( chaos_active ) {
       for ( uint i = 0; i < current_num_active_modes; i++ ) {
         if ( checkpoint_loaded ) {
@@ -267,9 +314,10 @@ class script : script_base, Random {
         modes[ active_mode_indexes[ i ] ].step( entities );
       }
 
-      if ( checkpoint_loaded ) {
-        checkpoint_loaded = false;
-      }
+    }
+
+    if ( checkpoint_loaded ) {
+      checkpoint_loaded = false;
     }
 
     // always increment the duration, even if no Mode is active, because that

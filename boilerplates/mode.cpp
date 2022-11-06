@@ -1,6 +1,10 @@
 #include "./Mode.cpp";
 
 class Example : Mode {
+  ModeConfig get_mode_config() {
+    return ModeConfig( 50, "Mode Name" );
+  }
+
   scene@ g;
   dustman@ player;
 

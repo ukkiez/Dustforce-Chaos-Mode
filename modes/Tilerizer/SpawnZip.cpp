@@ -1,8 +1,7 @@
 #include "../../lib/Random.cpp";
+#include "../../lib/util/tiles.cpp";
 
 #include "../Mode.cpp";
-
-#include "./data.cpp";
 
 class SpawnZip : Mode, Random {
   ModeConfig get_mode_config() {
@@ -60,7 +59,7 @@ class SpawnZip : Mode, Random {
       int y = tile( i - 6 );
 
       g.set_tile(
-        tile_coord( player.x() + x ), // x
+        tile_coord( player.x() + x ),
         tile_coord( player.y() - y ), // y
         19, // layer
         true, // Solid
@@ -81,9 +80,5 @@ class SpawnZip : Mode, Random {
         true // overwrite
       );
     }
-  }
-
-  int tile_coord( float v ) {
-	  return int( floor( v * ( 1.0 / 48 ) ) );
   }
 }

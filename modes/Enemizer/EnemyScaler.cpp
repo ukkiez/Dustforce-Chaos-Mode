@@ -52,7 +52,14 @@ class EnemyScaler : Mode, Random {
     }
 
     @g = get_scene();
-    @player = controller_controllable( 0 ).as_dustman();
+    controllable@ c = controller_controllable( 0 );
+    if ( @c != null ) {
+      @player = c.as_dustman();
+    }
+
+    if ( @player == null ) {
+      return;
+    }
 
     initialized = true;
   }

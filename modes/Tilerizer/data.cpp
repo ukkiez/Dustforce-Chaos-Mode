@@ -19,7 +19,3 @@ class Layout {
 }
 
 const array<Layout@> layouts = {};
-
-int tile( int n ) {
-  return n * 48;
-}

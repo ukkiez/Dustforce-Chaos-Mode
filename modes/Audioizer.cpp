@@ -3,8 +3,9 @@
 #include "./Mode.cpp";
 
 #include "../data/SFX.cpp";
+#include "../data/characters.cpp";
 
-class SFX : Mode, Random {
+class Audioizer : Mode, Random {
   ModeConfig get_mode_config() {
     return ModeConfig( 100, "Audioizer", "Random SFX" );
   }
@@ -17,7 +18,7 @@ class SFX : Mode, Random {
 
   bool initialized = false;
 
-  SFX() {
+  Audioizer() {
     @g = get_scene();
   }
 
@@ -32,7 +33,7 @@ class SFX : Mode, Random {
     controllable@ c = controller_controllable( 0 );
     @player = c.as_dustman();
 
-    string acronym = string( character_acronyms[ player.character() ] );
+    string acronym = string( CHARACTER_ACRONYMS[ player.character() ] );
     string prefix = "sfx_" + acronym;
 
     // add the character-specific SFX to the pools
