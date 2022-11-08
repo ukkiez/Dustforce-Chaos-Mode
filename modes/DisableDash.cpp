@@ -2,7 +2,7 @@
 
 class DisableDash : Mode {
   ModeConfig get_mode_config() {
-    return ModeConfig( 10, "Dash Disabled" );
+    return ModeConfig( 8, "Dash Disabled" );
   }
 
   scene@ g;

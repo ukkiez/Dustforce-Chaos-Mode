@@ -17,7 +17,7 @@ class Rotator : Mode {
   void step( int entities ) {
     player.rotation( 90 );
 
-    if ( time % 10 == 0 ) {
+    if ( time % 15 == 0 ) {
       player.face( -player.face() );
       player.attack_face( -player.attack_face() );
     }

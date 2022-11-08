@@ -2,7 +2,7 @@
 
 class DisableAttack : Mode {
   ModeConfig get_mode_config() {
-    return ModeConfig( 10, "Attack Disabled" );
+    return ModeConfig( 8, "Attack Disabled" );
   }
 
   scene@ g;

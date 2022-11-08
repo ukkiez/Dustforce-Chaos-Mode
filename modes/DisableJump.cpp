@@ -2,7 +2,7 @@
 
 class DisableJump : Mode {
   ModeConfig get_mode_config() {
-    return ModeConfig( 10, "Jump Disabled" );
+    return ModeConfig( 8, "Jump Disabled" );
   }
 
   scene@ g;

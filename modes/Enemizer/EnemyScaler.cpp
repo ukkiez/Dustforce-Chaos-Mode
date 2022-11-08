@@ -3,7 +3,7 @@
 
 class EnemyScaler : Mode, Random {
   ModeConfig get_mode_config() {
-    return ModeConfig( 50, "Enemizer", "Barrelizer" );
+    return ModeConfig( 50, "Enemizer", "Sizerizer" );
   }
 
   scene@ g;

@@ -5,7 +5,7 @@
 
 class SpawnZip : Mode, Random {
   ModeConfig get_mode_config() {
-    return ModeConfig( 60, "Exec Func Ruin Level", "Surprise Zip" );
+    return ModeConfig( 50, "Exec Func Ruin Level", "Surprise Zip" );
   }
 
   scene@ g;

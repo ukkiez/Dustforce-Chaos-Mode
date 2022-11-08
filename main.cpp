@@ -17,8 +17,10 @@
 #include "./modes/InfiniteAircharges.cpp";
 #include "./modes/Letterbox.cpp";
 #include "./modes/MaxSuper.cpp";
+#include "./modes/MinecraftMode.cpp";
 #include "./modes/NoFriction.cpp";
 #include "./modes/PropSwap/index.cpp";
+#include "./modes/PolishDriver.cpp";
 #include "./modes/SpawnApples.cpp";
 #include "./modes/SussyPorcupine.cpp";
 
@@ -26,27 +28,35 @@
 #include "./modes/Tilerizer/SpawnZip.cpp";
 #include "./modes/Tilerizer/SwapSprites.cpp";
 
-#include "./modes/TauntOrDie.cpp";
+#include "./modes/TauntAndDie.cpp";
 #include "./modes/TimeWarp.cpp";
 #include "./modes/Tiny.cpp";
 
+#include "./modes/Unplayable/DashMacro.cpp";
 #include "./modes/Unplayable/Rotator.cpp";
-#include "./modes/Unplayable/Tilted.cpp";
 
-// do not embed files upfront, this causes massive lag when using the script as
-// a plugin; instead, we'll load it in the script() constructor below, which
-// seems to not be cause issues
+// Disco
 const string EMBED_funkin = "./chaos/audio/ibumsfunkin.ogg";
+
+// SussyPorcupine
 const string EMBED_sussy = "./chaos/audio/amongus.ogg";
 
-class ActiveMode {
-  uint index;
-  uint duration;
-  ActiveMode( uint index, uint duration ) {
-    this.index = index;
-    this.duration = duration;
-  }
-}
+// PolishDriver
+const string EMBED_carPassingRtoL = "./chaos/audio/car-passing-R-to-L.ogg";
+const string EMBED_carPassingLtoR = "./chaos/audio/car-passing-L-to-R.ogg";
+const string EMBED_carCrashRtoL = "./chaos/audio/car-crash-R-to-L.ogg";
+const string EMBED_carCrashLtoR = "./chaos/audio/car-crash-L-to-R.ogg";
+const string EMBED_carhornleft = "./chaos/audio/car-horn-left.ogg";
+const string EMBED_carhornright = "./chaos/audio/car-horn-right.ogg";
+
+// class ActiveMode {
+//   uint index;
+//   uint duration;
+//   ActiveMode( uint index, uint duration ) {
+//     this.index = index;
+//     this.duration = duration;
+//   }
+// }
 
 class script : script_base, Random {
   scene@ g;
@@ -65,7 +75,7 @@ class script : script_base, Random {
   bool checkpoint_loaded = false;
 
   array<uint> active_mode_indexes;
-  array<ActiveMode@> active_modes;
+  // array<ActiveMode@> active_modes;
 
   array<ModeConfig> mode_configs = {};
   array<textfield@> mode_textfields;
@@ -88,7 +98,9 @@ class script : script_base, Random {
     InfiniteAircharges(),
     Letterbox(),
     MaxSuper(),
+    MinecraftMode(),
     NoFriction(),
+    PolishDriver(),
     PropSwap(),
     SpawnApples(),
     SussyPorcupine(),
@@ -98,13 +110,13 @@ class script : script_base, Random {
     SpawnZip(),
     SwapSprites(),
 
-    TauntOrDie(),
+    TauntAndDie(),
     TimeWarp(),
     Tiny(),
 
     // Unplayable
+    DashMacro(),
     Rotator(),
-    Tilted(),
   };
 
   array<Mode@> CHECKPOINT_modes;
@@ -120,6 +132,7 @@ class script : script_base, Random {
   // not twice in a row, and retaining the existing limit of concurrent number
   // of modes)
   array<Mode@> DEBUG_modes_override = {
+    MinecraftMode(),
   };
 
   array<uint> position_history( 5 );
@@ -130,11 +143,6 @@ class script : script_base, Random {
 
   script() {
     @g = get_scene();
-
-    // // see: embeds at the top of the file; note that load_embed() searches at
-    // // "/contents/plugins/embeds/"
-    // load_embed( "funkin", "ibumsfunkin.ogg" );`
-    // load_embed( "sussy", "amongus.ogg" );
 
     if ( DEBUG_modes_override.length > 0 ) {
       // only pick DEBUG modes when provided
@@ -157,7 +165,15 @@ class script : script_base, Random {
 
   void build_sounds( message @msg ) {
     msg.set_string( "funkin", "funkin" );
+
     msg.set_string( "sussy", "sussy" );
+
+    msg.set_string( "car_passing_r_to_l", "carPassingRtoL" );
+    msg.set_string( "car_passing_l_to_r", "carPassingLtoR" );
+    msg.set_string( "car_crash_r_to_l", "carCrashRtoL" );
+    msg.set_string( "car_crash_l_to_r", "carCrashLtoR" );
+    msg.set_string( "car_horn_left", "carhornleft" );
+    msg.set_string( "car_horn_right", "carhornright" );
   }
 
   void on_level_start() {
@@ -375,6 +391,10 @@ class script : script_base, Random {
     else {
       return 4;
     }
+  }
+
+  void deactive_mode( Mode@ m ) {
+    ModeConfig config = m.get_mode_config();
   }
 
   void store_positional_data() {
