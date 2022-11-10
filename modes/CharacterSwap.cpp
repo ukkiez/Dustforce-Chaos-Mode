@@ -1,7 +1,7 @@
 #include "../lib/Random.cpp";
-#include "./Mode.cpp";
+#include "../lib/data/characters.cpp";
 
-#include "../data/characters.cpp";
+#include "./Mode.cpp";
 
 class CharacterSwap : Mode, Random {
   ModeConfig get_mode_config() {
@@ -50,8 +50,8 @@ class CharacterSwap : Mode, Random {
       return;
     }
 
-    @script = cast<script@>( get_script() );
-    iteration = script.iteration;
+    // @script = cast<script@>( get_script() );
+    // iteration = script.iteration;
 
     @g = get_scene();
     @player = controller_controllable( 0 ).as_dustman();
@@ -77,6 +77,13 @@ class CharacterSwap : Mode, Random {
     string character = swappable_characters[ srand_range( 0, swappable_characters.length-1 ) ];
     player.character( character );
 
+    // make sure we're not spreading dust as boss characters, as that often
+    // mostly ruins any fun, as it means you just have to wait around and do
+    // nothing until you get swapped back again for fear of spreading dust;
+    // don't check for the character, because sometimes player.character() isn't
+    // actually even accurate
+    player.filth_type( 0 );
+
     initialized = true;
   }
 
@@ -89,13 +96,6 @@ class CharacterSwap : Mode, Random {
       duration = 0;
       index = 0;
       roulette = false;
-    }
-
-    if ( BOSSES.find( player.character() ) >= 0 || V_BOSSES.find( player.character() ) >= 0 ) {
-      // return the player to their original character, as we can't keep them a
-      // boss character if they want to actually SS the level (all assuming they
-      // didn't start as a boss character)
-      player.character( "default" );
     }
 
     initialized = false;

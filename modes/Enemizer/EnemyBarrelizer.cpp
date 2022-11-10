@@ -23,7 +23,7 @@ class EnemyBarrelizer : Mode {
         entity@ e = entity_by_index( i );
 
         if ( @e != null ) {
-          if ( e.is_same( @player ) ) {
+          if ( e.is_same( player.as_entity() ) ) {
             continue;
           }
 
@@ -58,7 +58,6 @@ class EnemyBarrelizer : Mode {
             nodes_wait_time.resize(2);
             nodes.at(0).set_vec2(barrel.x(), barrel.y());
             nodes_wait_time.at(0).set_int32(0);
-
 
             nodes.at(1).set_vec2(barrel.x() + 100, barrel.y() );
             nodes_wait_time.at(1).set_int32(0);

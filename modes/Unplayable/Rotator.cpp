@@ -2,7 +2,7 @@
 
 class Rotator : Mode {
   ModeConfig get_mode_config() {
-    return ModeConfig( 30, "Literally Unplayable", "Rotator" );
+    return ModeConfig( 20, "Literally Unplayable", "Rotator" );
   }
 
   scene@ g;

@@ -1,11 +1,10 @@
-#include "../lib/Random.cpp";
+#include "../../lib/Random.cpp";
+#include "../../lib/data/SFX.cpp";
+#include "../../lib/data/characters.cpp";
 
-#include "./Mode.cpp";
+#include "../Mode.cpp";
 
-#include "../data/SFX.cpp";
-#include "../data/characters.cpp";
-
-class Audioizer : Mode, Random {
+class RandomSfx : Mode, Random {
   ModeConfig get_mode_config() {
     return ModeConfig( 100, "Audioizer", "Random SFX" );
   }
@@ -18,7 +17,7 @@ class Audioizer : Mode, Random {
 
   bool initialized = false;
 
-  Audioizer() {
+  RandomSfx() {
     @g = get_scene();
   }
 
@@ -47,7 +46,7 @@ class Audioizer : Mode, Random {
     int j;
     string tmp;
     for ( uint i = sfx_to_shuffle.length - 1; i > 0; i-- ) {
-      j = srand_range( 0, i + 1 );;
+      j = srand_range( 0, i + 1 );
       tmp = sfx_to_shuffle[ j ];
       sfx_to_shuffle[ j ] = sfx_to_shuffle[ i ];
       sfx_to_shuffle[ i ] = tmp;

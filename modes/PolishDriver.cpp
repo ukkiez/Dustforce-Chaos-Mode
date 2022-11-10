@@ -126,13 +126,16 @@ class PolishDriver : Mode, Random {
       // check if a player is inside the car box
       int _collision = g.get_entity_collision( car.y()+car_hitbox.top, car.y()+car_hitbox.bottom, car.x()+car_hitbox.left, car.x()+car_hitbox.right, 5 );
       if ( _collision > 0 ) {
+        hit = true;
+
         // hit player away and stun them for a bit
         player.stun( stun_direction_x, stun_direction_y );
         player.stun_timer( 20 );
 
         // remove combo
         player.combo_count( 0 );
-        hit = true;
+
+        CAR_PASSING.volume( CAR_PASSING.volume() - 0.2 );
       }
     }
     else {
@@ -190,6 +193,9 @@ class PolishDriver : Mode, Random {
       if ( crash_timer >= 60 ) {
         car.y( car.y() - 20 );
         car.rotation( car.rotation() + crash_rotation2 );
+        if ( CAR_PASSING.is_playing() ) {
+          CAR_PASSING.stop();
+        }
       }
     }
   }

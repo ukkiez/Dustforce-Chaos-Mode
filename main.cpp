@@ -1,53 +1,10 @@
 #include "./lib/Random.cpp";
+#include "./lib/data/characters.cpp";
+
+#include "./imports/modes.cpp";
+#include "./imports/audio-embeds.cpp";
 
 #include "./modes/Mode.cpp";
-
-#include "./modes/Audioizer.cpp";
-#include "./modes/Big.cpp";
-#include "./modes/CharacterSwap.cpp";
-#include "./modes/DisableAttack.cpp";
-#include "./modes/DisableDash.cpp";
-#include "./modes/DisableJump.cpp";
-#include "./modes/Disco.cpp";
-
-#include "./modes/Enemizer/EnemyBarrelizer.cpp";
-#include "./modes/Enemizer/EnemyScaler.cpp";
-#include "./modes/Enemizer/EnemyTimeWarp.cpp";
-
-#include "./modes/InfiniteAircharges.cpp";
-#include "./modes/Letterbox.cpp";
-#include "./modes/MaxSuper.cpp";
-#include "./modes/MinecraftMode.cpp";
-#include "./modes/NoFriction.cpp";
-#include "./modes/PropSwap/index.cpp";
-#include "./modes/PolishDriver.cpp";
-#include "./modes/SpawnApples.cpp";
-#include "./modes/SussyPorcupine.cpp";
-
-#include "./modes/Tilerizer/SpawnBlock.cpp";
-#include "./modes/Tilerizer/SpawnZip.cpp";
-#include "./modes/Tilerizer/SwapSprites.cpp";
-
-#include "./modes/TauntAndDie.cpp";
-#include "./modes/TimeWarp.cpp";
-#include "./modes/Tiny.cpp";
-
-#include "./modes/Unplayable/DashMacro.cpp";
-#include "./modes/Unplayable/Rotator.cpp";
-
-// Disco
-const string EMBED_funkin = "./chaos/audio/ibumsfunkin.ogg";
-
-// SussyPorcupine
-const string EMBED_sussy = "./chaos/audio/amongus.ogg";
-
-// PolishDriver
-const string EMBED_carPassingRtoL = "./chaos/audio/car-passing-R-to-L.ogg";
-const string EMBED_carPassingLtoR = "./chaos/audio/car-passing-L-to-R.ogg";
-const string EMBED_carCrashRtoL = "./chaos/audio/car-crash-R-to-L.ogg";
-const string EMBED_carCrashLtoR = "./chaos/audio/car-crash-L-to-R.ogg";
-const string EMBED_carhornleft = "./chaos/audio/car-horn-left.ogg";
-const string EMBED_carhornright = "./chaos/audio/car-horn-right.ogg";
 
 // class ActiveMode {
 //   uint index;
@@ -62,7 +19,12 @@ class script : script_base, Random {
   scene@ g;
   dustman@ player;
 
+  float level_start_coord_x = 0;
+  float level_start_coord_y = 0;
+
   uint time = 0;
+  uint level_start_delay = 0;
+
   // keep track of which Mode iteration we're on currently, in case a Mode needs
   // to access this in order to properly deal with e.g. checkpoint
   // reinitialization
@@ -81,43 +43,7 @@ class script : script_base, Random {
   array<textfield@> mode_textfields;
   array<textfield@> mode_subtextfields;
 
-  array<Mode@> @modes = {
-    Audioizer(),
-    Big(),
-    CharacterSwap(),
-    DisableAttack(),
-    DisableDash(),
-    DisableJump(),
-    Disco(),
-
-    // Enemizer
-    // EnemyBarrelizer(),
-    EnemyScaler(),
-    EnemyTimeWarp(),
-
-    InfiniteAircharges(),
-    Letterbox(),
-    MaxSuper(),
-    MinecraftMode(),
-    NoFriction(),
-    PolishDriver(),
-    PropSwap(),
-    SpawnApples(),
-    SussyPorcupine(),
-
-    // Tilerizer
-    SpawnBlock(),
-    SpawnZip(),
-    SwapSprites(),
-
-    TauntAndDie(),
-    TimeWarp(),
-    Tiny(),
-
-    // Unplayable
-    DashMacro(),
-    Rotator(),
-  };
+  array<Mode@> @modes = get_modes();
 
   array<Mode@> CHECKPOINT_modes;
   array<uint> CHECKPOINT_active_mode_indexes;
@@ -130,9 +56,9 @@ class script : script_base, Random {
   // putting modes in here will automatically give them a 100 weight,
   // guaranteeing them to be available to be picked every round (though still
   // not twice in a row, and retaining the existing limit of concurrent number
-  // of modes)
+  // of modes); these are all already imported
   array<Mode@> DEBUG_modes_override = {
-    MinecraftMode(),
+    LovelyTune(),
   };
 
   array<uint> position_history( 5 );
@@ -164,16 +90,7 @@ class script : script_base, Random {
   }
 
   void build_sounds( message @msg ) {
-    msg.set_string( "funkin", "funkin" );
-
-    msg.set_string( "sussy", "sussy" );
-
-    msg.set_string( "car_passing_r_to_l", "carPassingRtoL" );
-    msg.set_string( "car_passing_l_to_r", "carPassingLtoR" );
-    msg.set_string( "car_crash_r_to_l", "carCrashRtoL" );
-    msg.set_string( "car_crash_l_to_r", "carCrashLtoR" );
-    msg.set_string( "car_horn_left", "carhornleft" );
-    msg.set_string( "car_horn_right", "carhornright" );
+    _build_sounds( msg );
   }
 
   void on_level_start() {
@@ -199,6 +116,9 @@ class script : script_base, Random {
     }
 
     interval = srand_range( 3, 12 );
+
+    level_start_coord_x = player.x();
+    level_start_coord_y = player.y();
   }
 
   void checkpoint_save() {
@@ -238,15 +158,23 @@ class script : script_base, Random {
     }
 
     if ( player.dead() ) {
-      // try to prevent issues with gathering the player controllable
+      // try to prevent issues with e.g. gathering the player controllable
       return;
     }
 
-    if ( ( time % 60 ) == 0 ) {
-      // collect positional data every 60 step frames, 5 positions max, for
+    if ( ( time % 30 ) == 0 ) {
+      // collect positional data every 30 step frames, 5 positions max, for
       // seeding purposes; note that the SeedGenerator gets its data from the
       // script object, hence why we do it here
       store_positional_data();
+    }
+
+    time++;
+
+    if ( time <= level_start_delay ) {
+      // wait a bit to activate Chaos at level start, to try prevent immediate
+      // unloads and softlocks
+      return;
     }
 
     // activate new modes every X seconds
@@ -329,18 +257,24 @@ class script : script_base, Random {
 
         modes[ active_mode_indexes[ i ] ].step( entities );
       }
-
     }
 
     if ( checkpoint_loaded ) {
       checkpoint_loaded = false;
+
+      if ( ALL_BOSSES.find( player.character() ) >= 0 ) {
+        // make sure not to spread dust as boss characters, as that often mostly
+        // ruins any fun, as it means you just have to wait around and do
+        // nothing until you get swapped to a different character for fear of
+        // spreading dust
+        player.filth_type( 0 );
+      }
     }
 
     // always increment the duration, even if no Mode is active, because that
     // would just mean that last time we didn't have any Modes available and
     // we're just playing vanilla for <interval> seconds
     duration++;
-    time++;
   }
 
   array<uint> filter_modes() {
@@ -398,8 +332,7 @@ class script : script_base, Random {
   }
 
   void store_positional_data() {
-    // collect positional data every 60 step frames, 5 positions max; for
-    // seeding purposes
+    // collect positional data, 5 positions max, for seeding purposes
     uint x = uint( abs( player.as_entity().x() ) );
     uint y = uint( abs( player.as_entity().y() ) );
     position_history.removeAt( 4 );
