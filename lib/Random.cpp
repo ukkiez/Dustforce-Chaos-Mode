@@ -28,15 +28,11 @@ class Random {
 
   // returns between min and max inclusive
   int srand_range( int min, int max ) {
-    try_init();
-
 	  return min + ( srandom() % ( max - min + 1 ) );
   }
 
   // returns between min and max exclusive
 	float srand_range_flt( float min, float max ) {
-    try_init();
-
 		return srandom_flt() * ( max - min ) + min;
 	}
 }
