@@ -3,8 +3,9 @@
 #include "../lib/Random.cpp";
 
 #include "./QueueEvent.cpp";
-
 #include "./events/index.cpp";
+
+#include "../EventList.cpp";
 
 class ActiveEvent {
   QueueEvent@ event;
@@ -33,18 +34,18 @@ class ActiveEvent {
 }
 
 const array<uint> TEXT_COLOURS = {
-    0x11FFFFFF,
-    0x22FFFFFF,
-    0x33FFFFFF,
-    0x44FFFFFF,
-    0x55FFFFFF,
-    0x66FFFFFF,
-    0x77FFFFFF,
-    0x88FFFFFF,
-    0x99FFFFFF,
-    0xAAFFFFFF,
-    0xBBFFFFFF,
-  };
+  0x11FFFFFF,
+  0x22FFFFFF,
+  0x33FFFFFF,
+  0x44FFFFFF,
+  0x55FFFFFF,
+  0x66FFFFFF,
+  0x77FFFFFF,
+  0x88FFFFFF,
+  0x99FFFFFF,
+  0xAAFFFFFF,
+  0xBBFFFFFF,
+};
 
 class Queue : Random {
   // if true, gets only the specified DEBUG events from the get_queue_events()
@@ -80,7 +81,7 @@ class Queue : Random {
   // interval in seconds
   uint interval = 1;
   uint interval_min = 1;
-  uint interval_max = 7;
+  uint interval_max = 5;
 
   // min/max random event duration in frames
   uint duration_min = 180;
@@ -92,12 +93,9 @@ class Queue : Random {
   uint text_fadeout_time = 120;
   uint colours_index = 0;
 
-  array<uint> position_history( 5 );
+  bool turbo_mode = false;
 
   Queue() {
-    // get the main script object so we can access its properties
-    @script = cast<script@>( get_script() );
-
     @g = get_scene();
 
     if ( DEBUG_MODE ) {
@@ -127,6 +125,9 @@ class Queue : Random {
 
       @player = c.as_dustman();
 
+      // get the main script object
+      @script = cast<script@>( get_script() );
+
       initialized = true;
     }
   }
@@ -145,8 +146,8 @@ class Queue : Random {
     }
 
     if ( player.dead() ) {
-      // just stop the queue at this point, otherwise we might run into issues
-      // with e.g. gathering the player controllable, or shenanigans during
+      // just stop the queue at this point, otherwise we might run into e.g.
+      // issues with gathering the player controllable, or shenanigans during
       // loading
       return;
     }
@@ -172,8 +173,14 @@ class Queue : Random {
         active_events.insertLast( ActiveEvent( qe, duration ) );
       }
 
-      // choose after how many seconds we will pick the next random Event
-      interval = srand_range( interval_min, interval_max );
+      if ( !turbo_mode ) {
+        // choose after how many seconds we will pick the next random Event
+        interval = srand_range( interval_min, interval_max );
+      }
+      else {
+        // the interval is always 1 during turbo mode
+        interval = 1;
+      }
     }
 
     work_queue( entities );
@@ -217,6 +224,11 @@ class Queue : Random {
   }
 
   array<QueueEvent@> filter_events() {
+    if ( turbo_mode ) {
+      // don't filter any events by weight during turbo mode
+      return get_queue_events( DEBUG_MODE );
+    }
+
     // generate a range to exclude events based on their weight, e.g. a rolled
     // range of 50 means all weights below 50 should not be included in the pool
     uint range = srand_range( 1, 100 );
@@ -240,17 +252,9 @@ class Queue : Random {
       QueueEvent@ event = active_event.event;
 
       if ( !active_event.initialized ) {
-        puts( "initialize()" );
         event.initialize();
 
-        event_name_textfields.resize( 0 );
-        event_subtext_textfields.resize( 0 );
-        add_name_textfield( active_event.name, active_event.colour );
-        if ( active_event.subtext != "" ) {
-          add_subtext_textfield( active_event.subtext, active_event.colour );
-        }
-        text_display_time = 0;
-
+        script.event_list.add_queue_element( active_event.name, active_event.subtext );
         active_event.initialized = true;
       }
 
@@ -299,50 +303,15 @@ class Queue : Random {
       // call the event's draw method itself
       active_events[ i ].event.draw( sub_frame );
     }
-
-    // draw any event text
-    int default_x = 0;
-    int default_y = 335;
-    int subtext_y_offset = 40;
-
-    if ( text_display_time < 20 ) {
-      default_y += uint( 40 - ( text_display_time * 2 ) );
-    }
-
-    for ( uint i = 0; i < event_name_textfields.length; i++ ) {
-      int x = default_x;
-      int y = default_y;
-
-      draw_text( event_name_textfields[ i ], x, y, 1, 1, 0 );
-      if ( ( i < event_subtext_textfields.length ) && ( event_subtext_textfields[ i ].text() != "" ) ) {
-        draw_text( event_subtext_textfields[ i ], x, y + subtext_y_offset, 1, 1, 0 );
-      }
-    }
   }
 
-  void draw_text( textfield@ text, float x, float y, float scale_x = 1.0, float scale_y = 1.0, float rotation = 0.0 ) {
-    if ( text.text() != "" ) {
-      // draw the text on layer 0, sublayer 0
-      text.draw_hud( 22, 22, x, y, scale_x, scale_y, rotation % 360 );
-    }
+  void activate_turbo_mode() {
+    turbo_mode = true;
+    interval = 1;
+    time_since_last_pick = 0;
   }
-
-  void add_name_textfield( string text, uint colour ) {
-    textfield@ tf = create_textfield();
-    tf.set_font( "Caracteres", 40 );
-    tf.align_horizontal( 0 );
-    tf.align_vertical( 0 );
-    tf.text( text );
-    tf.colour( colour );
-    event_name_textfields.insertLast( tf );
-  }
-  void add_subtext_textfield( string text, uint colour ) {
-    textfield@ tf = create_textfield();
-    tf.set_font( "Caracteres", 26 );
-    tf.align_horizontal( 0 );
-    tf.align_vertical( 0 );
-    tf.text( text );
-    tf.colour( colour );
-    event_subtext_textfields.insertLast( tf );
+  void deactivate_turbo_mode() {
+    turbo_mode = false;
+    time_since_last_pick = 0;
   }
 }

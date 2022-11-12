@@ -9,7 +9,7 @@ const array<uint> COLOURS = {
 
 class Disco : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 35, "FRIDAY FUNKIN'" );
+    return CycleEventConfig( 30, "FRIDAY FUNKIN'" );
   }
 
   scene@ g;

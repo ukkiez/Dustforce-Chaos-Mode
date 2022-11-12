@@ -7,6 +7,16 @@
 #include "./events/index.cpp";
 
 class Cycle : Random {
+  // is automatically set to true if any events are added to the below
+  // DEBUG_events_override array
+  bool DEBUG_MODE = false;
+  // putting events in here will automatically give them a 100 weight,
+  // guaranteeing them to be available to be picked every round (though still
+  // not twice in a row, and retaining the existing limit of concurrent number
+  // of events); these are all already imported
+  array<CycleEvent@> DEBUG_events_override = {
+  };
+
 	script@ script;
   scene@ g;
   dustman@ player;
@@ -17,8 +27,8 @@ class Cycle : Random {
   // checkpoints
   uint iteration = 0;
 
-  // duration that current events are active (in step() frames)
-  uint duration = 0;
+  // time_since_last_pick that current events are active (in step() frames)
+  uint time_since_last_pick = 0;
 
   bool active_event = false;
 
@@ -43,22 +53,9 @@ class Cycle : Random {
   uint CHECKPOINT_current_num_active_events;
   uint CHECKPOINT_iteration;
 
-  // is automatically set to true if any events are added to the below
-  // DEBUG_events_override array
-  bool DEBUG_MODE = false;
-  // putting events in here will automatically give them a 100 weight,
-  // guaranteeing them to be available to be picked every round (though still
-  // not twice in a row, and retaining the existing limit of concurrent number
-  // of events); these are all already imported
-  array<CycleEvent@> DEBUG_events_override = {
-  };
-
-  array<uint> position_history( 5 );
+  bool turbo_mode = false;
 
   Cycle() {
-    // get the main script object so we can access its properties
-    @script = cast<script@>( get_script() );
-
     @g = get_scene();
 
     if ( DEBUG_events_override.length > 0 ) {
@@ -103,6 +100,9 @@ class Cycle : Random {
         event_subtextfields.insertAt( i, event_subtext );
       }
 
+      // get the main script object
+      @script = cast<script@>( get_script() );
+
       initialized = true;
     }
   }
@@ -121,8 +121,8 @@ class Cycle : Random {
     }
 
     if ( player.dead() ) {
-      // just stop the cycle at this point, otherwise we might run into issues
-      // with e.g. gathering the player controllable, or shenanigans during
+      // just stop the cycle at this point, otherwise we might run into e.g.
+      // issues with gathering the player controllable, or shenanigans during
       // loading
       return;
     }
@@ -135,13 +135,20 @@ class Cycle : Random {
     }
 
     // activate new events every X seconds
-    if ( duration % ( interval * 60 ) == 0 ) {
-      duration = 0;
+    if ( time_since_last_pick % ( interval * 60 ) == 0 ) {
+      time_since_last_pick = 0;
       iteration++;
+      script.event_list.iterate_event_cycle();
 
-      // choose after how many seconds we will pick the next set of Events after
-      // this one
-      interval = srand_range( interval_min, interval_max );
+      if ( !turbo_mode ) {
+        // choose after how many seconds we will pick the next set of Events
+        // after this one
+        interval = srand_range( interval_min, interval_max );
+      }
+      else {
+        // the interval is always 1 during turbo mode
+        interval = 1;
+      }
 
       // randomly filter out available events to be activated next, based on
       // their weight and whether they were activated the previous time
@@ -179,6 +186,8 @@ class Cycle : Random {
         event_textfields[ i ].colour( config.colour );
         event_subtextfields[ i ].text( config.subtext );
         event_subtextfields[ i ].colour( config.colour );
+
+        script.event_list.add_cycle_element( config.name, config.subtext );
       }
 
       if ( current_num_active_events == 0 ) {
@@ -227,20 +236,28 @@ class Cycle : Random {
       }
     }
 
-    // always increment the duration, even if no Event is active, because that
-    // would just mean that last time we didn't have any Events available and
-    // we're just playing vanilla for <interval> seconds
-    duration++;
+    // always increment the time_since_last_pick, even if no Event is active,
+    // because that would just mean that last time we didn't have any Events
+    // available and we're just playing vanilla for <interval> seconds
+    time_since_last_pick++;
   }
 
-
   array<uint> filter_events() {
-    // generate a range to exclude events based on their weight, e.g. a rolled
-    // range of 50 means all weights below 50 should not be included in the pool
-    uint range = srand_range( 1, 100 );
+    uint range;
+    if ( !turbo_mode ) {
+      // generate a range to exclude events based on their weight, e.g. a rolled
+      // range of 50 means all weights below 50 should not be included in the pool
+      range = srand_range( 1, 100 );
+    }
+    else {
+      // practically give all events a weight of 100 during turbo mode
+      range = 1;
+    }
+
+    // TODO: get new class instances of the events each time
+    // @events = get_cycle_events();
 
     array<uint> pool = {};
-
     for ( uint i = 0; i < events.length; i++ ) {
       if ( active_event_indexes.find( i ) >= 0 ) {
         // this event was already activated the previous time, so don't add it
@@ -260,23 +277,20 @@ class Cycle : Random {
 
   uint pick_number_of_events() {
     // pick a range for the number of active events that is more weighted
-    // towards 3 and 4 than any other number
+    // towards 3 and 4
 
-    int range = srand_range( 2, 12 );
+    int range = srand_range( 2, 6 );
     if ( range == 2 ) {
       return 2;
     }
-    else if ( range <= 6 ) {
+    else if ( range <= 4 ) {
       return 3;
     }
-    else if ( range <= 11 ) {
+    else if ( range <= 6 ) {
       return 4;
-    }
-    else if ( range <= 12 ) {
-      return 5;
     }
     else {
-      return 4;
+      return 3;
     }
   }
 
@@ -307,37 +321,19 @@ class Cycle : Random {
       return;
     }
 
-    int default_x = -750;
-    int y_offset = 0;
-    int subtext_y_offset = 40;
-
-    if ( duration < 7 ) {
-      default_x -= uint( 300 - ( duration * 30 ) );
-    }
-
-    int y_gap = 100;
-    int starting_point = ( -( y_gap / 2 ) * ( current_num_active_events ) );
-
     for ( uint i = 0; i < current_num_active_events; i++ ) {
-      // call the event's draw method itself
+      // call the event's draw method
       events[ active_event_indexes[ i ] ].draw( sub_frame );
-
-      int x = default_x;
-      int y = ( starting_point + ( y_gap * i ) );
-
-      // attempt to dynamically spread out the event text across the screen, so
-      // that they don't overlap, depending on how many are active
-      draw_text( event_textfields[ i ], x, y, 1, 1, 0 );
-      if ( event_subtextfields[ i ].text() != "" ) {
-        draw_text( event_subtextfields[ i ], x, y + subtext_y_offset, 1, 1, 0 );
-      }
     }
   }
 
-  void draw_text( textfield@ text, float x, float y, float scale_x = 1.0, float scale_y = 1.0, float rotation = 0.0 ) {
-    if ( text.text() != "" ) {
-      // draw the text on layer 0, sublayer 0
-      text.draw_hud( 22, 22, x, y, scale_x, scale_y, rotation % 360 );
-    }
+  void activate_turbo_mode() {
+    turbo_mode = true;
+    interval = 1;
+    time_since_last_pick = 0;
+  }
+  void deactivate_turbo_mode() {
+    turbo_mode = false;
+    time_since_last_pick = 0;
   }
 }

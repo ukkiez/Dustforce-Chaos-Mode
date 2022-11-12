@@ -2,9 +2,7 @@
 
 #include "./Big.cpp";
 #include "./CharacterSwap.cpp";
-#include "./DisableAttack.cpp";
 #include "./DisableDash.cpp";
-#include "./DisableJump.cpp";
 #include "./Disco.cpp";
 
 #include "./InfiniteAircharges.cpp";
@@ -23,9 +21,7 @@ array<CycleEvent@> get_cycle_events() {
   return array<CycleEvent@> = {
     Big(),
     CharacterSwap(),
-    DisableAttack(),
     DisableDash(),
-    DisableJump(),
     Disco(),
 
     InfiniteAircharges(),

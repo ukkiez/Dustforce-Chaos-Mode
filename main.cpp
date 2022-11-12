@@ -1,11 +1,13 @@
 #include "./lib/std.cpp";
 #include "./lib/Random.cpp";
 #include "./lib/data/characters.cpp";
+#include "./lib/util/text.cpp";
 
 #include "./embeds/audio.cpp";
 
 #include "./event-cycle/Cycle.cpp";
 #include "./event-queue/Queue.cpp";
+#include "./EventList.cpp";
 
 class script : script_base, Random {
   scene@ g;
@@ -13,23 +15,35 @@ class script : script_base, Random {
 
   Cycle@ event_cycle;
   Queue@ event_queue;
-
-  float level_start_coord_x = 0;
-  float level_start_coord_y = 0;
+  EventList@ event_list;
 
   uint time = 0;
   uint level_start_delay = 0;
 
-  bool chaos_active = false;
   bool checkpoint_loaded = false;
 
-  array<uint> position_history( 5 );
+  bool turbo_mode = false;
+  // chance of turbo happening = 1/turbo_mode_chance
+  uint turbo_mode_chance = 2000;
+  uint turbo_mode_time = 0;
+  // duration in seconds
+  uint turbo_mode_duration = 10;
+  textfield@ turbo_mode_tf;
+
+  uint position_history_length = 10;
+  array<uint> position_history( position_history_length );
 
   script() {
     @g = get_scene();
 
     @event_cycle = Cycle();
     @event_queue = Queue();
+    @event_list = EventList();
+
+    @turbo_mode_tf = create_textfield();
+    turbo_mode_tf.set_font( "Caracteres", 92 );
+    turbo_mode_tf.text( "TURBO MODE\nACTIVATED" );
+    turbo_mode_tf.colour( 0xBBFFFFFF );
   }
 
   void build_sounds( message @msg ) {
@@ -44,11 +58,9 @@ class script : script_base, Random {
 
     @player = c.as_dustman();
 
-    level_start_coord_x = player.x();
-    level_start_coord_y = player.y();
-
     event_cycle.init();
     event_queue.init();
+    event_list.init();
   }
 
   void checkpoint_save() {
@@ -89,9 +101,9 @@ class script : script_base, Random {
     }
 
     if ( ( time % 30 ) == 0 ) {
-      // collect positional data every 30 step frames, 5 positions max, for
-      // seeding purposes; note that the SeedGenerator gets its data from the
-      // script object, hence why we do it here
+      // collect positional data every 30 step frames, for seeding purposes;
+      // note that the SeedGenerator gets its data from the script object, hence
+      // why we do it here
       store_positional_data();
     }
 
@@ -103,12 +115,60 @@ class script : script_base, Random {
       return;
     }
 
-    // if ( event_cycle.initialized ) {
-    //   event_cycle.step( entities );
-    // }
+    if ( ( time % 60 == 0 ) && !turbo_mode ) {
+      // every second, there's a chance that "turbo mode" activates, which gives
+      // all modes a 100 weight, and puts the cycle and queue intervals at 1
+      // second
+      int roll = srand_range( 1, turbo_mode_chance );
+      puts( roll );
+      if ( roll == 1 ) {
+        turbo_mode = true;
+      }
+    }
+
+    if ( turbo_mode ) {
+      if ( turbo_mode_time >= 120 ) {
+        if ( !event_cycle.turbo_mode ) {
+          event_cycle.activate_turbo_mode();
+        }
+        if ( !event_queue.turbo_mode ) {
+          event_queue.activate_turbo_mode();
+        }
+
+        if ( event_cycle.initialized ) {
+          event_cycle.step( entities );
+        }
+
+        if ( event_queue.initialized ) {
+          event_queue.step( entities );
+        }
+
+        if ( event_list.initialized ) {
+          event_list.step( entities );
+        }
+      }
+
+      turbo_mode_time++;
+
+      if ( turbo_mode_time % ( turbo_mode_duration * 60 ) == 0 ) {
+        event_cycle.deactivate_turbo_mode();
+        event_queue.deactivate_turbo_mode();
+        turbo_mode_time = 0;
+        turbo_mode = false;
+      }
+      return;
+    }
+
+    if ( event_cycle.initialized ) {
+      event_cycle.step( entities );
+    }
 
     if ( event_queue.initialized ) {
       event_queue.step( entities );
+    }
+
+    if ( event_list.initialized ) {
+      event_list.step( entities );
     }
   }
 
@@ -116,17 +176,41 @@ class script : script_base, Random {
     // collect positional data, 5 positions max, for seeding purposes
     uint x = uint( abs( player.as_entity().x() ) );
     uint y = uint( abs( player.as_entity().y() ) );
-    position_history.removeAt( 4 );
+    position_history.removeAt( position_history_length-1 );
     position_history.insertAt( 0, x + y );
   }
 
   void draw( float sub_frame ) {
+    if ( turbo_mode ) {
+      if ( turbo_mode_time <= 120 && ( turbo_mode_time % 60 < 30 ) ) {
+        draw_text( turbo_mode_tf, 0, 0 );
+      }
+
+      if ( event_cycle.initialized ) {
+        event_cycle.draw( sub_frame );
+      }
+
+      if ( event_queue.initialized ) {
+        event_queue.draw( sub_frame );
+      }
+
+      if ( event_list.initialized ) {
+        event_list.draw( sub_frame );
+      }
+
+      return;
+    }
+
     if ( event_cycle.initialized ) {
       event_cycle.draw( sub_frame );
     }
 
     if ( event_queue.initialized ) {
       event_queue.draw( sub_frame );
+    }
+
+    if ( event_list.initialized ) {
+      event_list.draw( sub_frame );
     }
   }
 }

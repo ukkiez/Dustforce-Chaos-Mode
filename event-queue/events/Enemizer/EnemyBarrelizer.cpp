@@ -2,7 +2,7 @@
 
 class EnemyBarrelizer : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 50, 0, false, "Enemizer", "Barrelizer" );
+    return QueueEventConfig( 50, 1, false, "Enemizer", "Barrelizer" );
   }
 
   scene@ g;
@@ -50,7 +50,6 @@ class EnemyBarrelizer : QueueEvent {
             ai.y(barrel.y());
 
             varstruct@ vars = ai.vars();
-            vars.get_var("puppet_id").set_int32(barrel.id());
             vararray@ nodes = vars.get_var("nodes").get_array();
             vararray@ nodes_wait_time = vars.get_var("nodes_wait_time").get_array();
 
@@ -63,6 +62,7 @@ class EnemyBarrelizer : QueueEvent {
             nodes_wait_time.at(1).set_int32(0);
 
             g.add_entity( ai );
+            ai.vars().get_var("puppet_id").set_int32(barrel.id());
 
             barrels++;
 

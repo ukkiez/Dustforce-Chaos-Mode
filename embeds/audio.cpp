@@ -2,10 +2,10 @@
 const string EMBED_funkin = "./chaos/assets/audio/ibumsfunkin.ogg";
 
 // PolishDriver
-const string EMBED_carPassingRtoL = "./chaos/assets/audio/car-passing-R-to-L.ogg";
-const string EMBED_carPassingLtoR = "./chaos/assets/audio/car-passing-L-to-R.ogg";
-const string EMBED_carCrashRtoL = "./chaos/assets/audio/car-crash-R-to-L.ogg";
-const string EMBED_carCrashLtoR = "./chaos/assets/audio/car-crash-L-to-R.ogg";
+const string EMBED_carPassingRtoL = "./chaos/assets/audio/car-pass-RL.ogg";
+const string EMBED_carPassingLtoR = "./chaos/assets/audio/car-pass-LR.ogg";
+const string EMBED_carCrashRtoL = "./chaos/assets/audio/car-crash-RL.ogg";
+const string EMBED_carCrashLtoR = "./chaos/assets/audio/car-crash-LR.ogg";
 const string EMBED_carhornleft = "./chaos/assets/audio/car-horn-left.ogg";
 const string EMBED_carhornright = "./chaos/assets/audio/car-horn-right.ogg";
 
