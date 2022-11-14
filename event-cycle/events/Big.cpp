@@ -24,7 +24,7 @@ class Big : CycleEvent {
     controllable@ c = controller_controllable( 0 );
     @player = c.as_dustman();
 
-    player.scale( 1.5, false );
+    player.scale( 1.25, false );
 
     initialized = true;
   }

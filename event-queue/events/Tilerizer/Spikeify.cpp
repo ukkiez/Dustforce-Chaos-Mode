@@ -7,7 +7,7 @@
 
 class Spikeify : QueueEvent, Random {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 15, 0, false, "Exec Func Ruin Level", "Spikeify" );
+    return QueueEventConfig( 40, 0, false, "Exec Func Ruin Level", "Spikeify" );
   }
 
   scene@ g;

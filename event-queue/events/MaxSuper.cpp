@@ -2,7 +2,7 @@
 
 class MaxSuper : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 80, 0, false, "Max Super" );
+    return QueueEventConfig( 70, 0, false, "Max Super" );
   }
 
   scene@ g;

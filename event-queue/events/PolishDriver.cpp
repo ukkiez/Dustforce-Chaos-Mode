@@ -121,9 +121,10 @@ class PolishDriver : QueueEvent, Random {
         car.y( car.y() + 15 );
       }
 
-      // check if a player is inside the car box
+      // check if a player is inside the car box, and if they are mark that they
+      // were hit, unless they are supering
       int _collision = g.get_entity_collision( car.y()+car_hitbox.top, car.y()+car_hitbox.bottom, car.x()+car_hitbox.left, car.x()+car_hitbox.right, 5 );
-      if ( _collision > 0 ) {
+      if ( _collision > 0 && player.attack_state() != 3 ) {
         hit = true;
 
         // hit player away and stun them for a bit
