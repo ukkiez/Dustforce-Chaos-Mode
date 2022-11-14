@@ -33,20 +33,6 @@ class ActiveEvent {
   }
 }
 
-const array<uint> TEXT_COLOURS = {
-  0x11FFFFFF,
-  0x22FFFFFF,
-  0x33FFFFFF,
-  0x44FFFFFF,
-  0x55FFFFFF,
-  0x66FFFFFF,
-  0x77FFFFFF,
-  0x88FFFFFF,
-  0x99FFFFFF,
-  0xAAFFFFFF,
-  0xBBFFFFFF,
-};
-
 class Queue : Random {
   // if true, gets only the specified DEBUG events from the get_queue_events()
   // in ./events/index.cpp, giving them a 100 weight, guaranteeing them to be
@@ -74,9 +60,10 @@ class Queue : Random {
   array<QueueEvent@> @events;
 
   array<ActiveEvent@> @active_events = {};
-  array<uint> active_event_indexes;
 
   array<QueueEventConfig> event_configs = {};
+
+  string last_picked_event_name;
 
   // interval in seconds
   uint interval = 1;
@@ -86,12 +73,6 @@ class Queue : Random {
   // min/max random event duration in frames
   uint duration_min = 180;
   uint duration_max = 720;
-
-  array<textfield@> event_name_textfields;
-  array<textfield@> event_subtext_textfields;
-  uint text_display_time = 0;
-  uint text_fadeout_time = 120;
-  uint colours_index = 0;
 
   bool turbo_mode = false;
 
@@ -163,12 +144,18 @@ class Queue : Random {
       if ( pool.length > 0 ) {
         // get a random event from the pool
         QueueEvent@ qe = pool[ srand_range( 0, pool.length-1 ) ];
-        int duration = qe.get_config().duration;
+        QueueEventConfig config = qe.get_config();
+        int duration = config.duration;
         if ( duration == -1 ) {
           duration = srand_range( duration_min, duration_max );
         }
 
         active_events.insertLast( ActiveEvent( qe, duration ) );
+
+        last_picked_event_name = config.name + config.subtext;
+      }
+      else {
+        last_picked_event_name = "";
       }
 
       if ( !turbo_mode ) {
@@ -182,41 +169,6 @@ class Queue : Random {
     }
 
     work_queue( entities );
-
-    if ( event_name_textfields.length > 0 ) {
-      if ( text_display_time == 0 ) {
-        colours_index = 0;
-      }
-
-      event_name_textfields[ 0 ].colour(
-        TEXT_COLOURS[ colours_index ]
-      );
-
-      if ( event_subtext_textfields.length > 0 ) {
-        event_subtext_textfields[ 0 ].colour(
-          TEXT_COLOURS[ colours_index ]
-        );
-      }
-
-      if ( text_display_time >= text_fadeout_time ) {
-        if ( colours_index >= 0 ) {
-          if ( text_display_time % 2 == 0 ) {
-            if ( colours_index == 0 ) {
-              event_name_textfields.resize( 0 );
-              event_subtext_textfields.resize( 0 );
-            }
-            else {
-              colours_index--;
-            }
-          }
-        }
-      }
-      else if ( ( colours_index < TEXT_COLOURS.length-1 ) && ( text_display_time % 2 ) == 0 ) {
-        colours_index++;
-      }
-
-      text_display_time++;
-    }
 
     time_since_last_pick++;
   }
@@ -236,6 +188,11 @@ class Queue : Random {
 
     array<QueueEvent@> pool = {};
     for ( uint i = 0; i < events.length; i++ ) {
+      if ( ( event_configs[ i ].name + event_configs[ i ].subtext ) == last_picked_event_name ) {
+        // don't pick the same event twice in a row
+        continue;
+      }
+
       if ( event_configs[ i ].weight >= range ) {
         pool.insertLast( events[ i ] );
       }

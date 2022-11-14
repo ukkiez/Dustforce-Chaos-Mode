@@ -5,7 +5,7 @@
 
 class SpawnZip : QueueEvent, Random {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 65, 0, false, "Exec Func Ruin Level", "Surprise Zip" );
+    return QueueEventConfig( 55, 0, false, "Exec Func Ruin Level", "Surprise Zip" );
   }
 
   scene@ g;

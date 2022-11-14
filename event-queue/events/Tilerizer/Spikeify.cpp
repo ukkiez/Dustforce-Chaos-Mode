@@ -13,6 +13,8 @@ class Spikeify : QueueEvent, Random {
   scene@ g;
   dustman@ player;
 
+  uint spike_set = 9;
+
   bool initialized = false;
 
   Spikeify() {
@@ -35,6 +37,7 @@ class Spikeify : QueueEvent, Random {
 
     uint x_tile = srand_range( 15, 25 );
 
+    spike_set = srand_range( 9, 13 );
     for ( uint i = 0; i <= 25; i++ ) {
       int x = tile_coord( player.x() + tile( x_tile ) );
       int y = tile_coord( player.y() + tile( i ) );
@@ -62,19 +65,19 @@ class Spikeify : QueueEvent, Random {
     tilefilth@ tf = g.get_tile_filth( x, y );
     bool set_filth = false;
     if ( ti.edge_top() != 0 && tf.top() >= 0 && tf.top() < 9 ) {
-      tf.top( 9 );
+      tf.top( spike_set );
       set_filth = true;
     }
     if ( ti.edge_left() != 0 &&tf.left() >= 0 && tf.left() < 9 ) {
-      tf.left( 9 );
+      tf.left( spike_set );
       set_filth = true;
     }
     if ( ti.edge_right() != 0 &&tf.right() >= 0 && tf.right() < 9 ) {
-      tf.right( 9 );
+      tf.right( spike_set );
       set_filth = true;
     }
     if ( ti.edge_bottom() != 0 &&tf.bottom() >= 0 && tf.bottom() < 9 ) {
-      tf.bottom( 9 );
+      tf.bottom( spike_set );
       set_filth = true;
     }
 
