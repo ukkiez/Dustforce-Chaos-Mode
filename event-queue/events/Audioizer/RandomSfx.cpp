@@ -46,7 +46,7 @@ class RandomSfx : QueueEvent, Random {
     int j;
     string tmp;
     for ( uint i = sfx_to_shuffle.length - 1; i > 0; i-- ) {
-      j = srand_range( 0, i + 1 );
+      j = srand_range( 0, i );
       tmp = sfx_to_shuffle[ j ];
       sfx_to_shuffle[ j ] = sfx_to_shuffle[ i ];
       sfx_to_shuffle[ i ] = tmp;

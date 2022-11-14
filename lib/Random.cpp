@@ -1,13 +1,18 @@
 #include "./SeedGenerator.cpp";
 
 class Random {
-  SeedGenerator@ seed_generator = SeedGenerator();
-
+  script@ _Random_script;
+  SeedGenerator@ se;
   bool _Random_initialized = false;
+
+  Random() {}
 
   void try_init() {
     if ( !_Random_initialized ) {
-      seed_generator.init();
+      // get the seed generator from the script
+      @_Random_script = cast<script@>( get_script() );
+
+      @se = _Random_script.seed_generator;
       _Random_initialized = true;
     }
   }
@@ -15,14 +20,14 @@ class Random {
   uint srandom() {
     try_init();
 
-    srand( seed_generator.generate_seed() );
+    srand( se.generate_seed() );
     return rand();
   }
 
   float srandom_flt() {
     try_init();
 
-    srand( seed_generator.generate_seed() );
+    srand( se.generate_seed() );
     return float( ( rand() * 16807 ) % 2147483647 ) / float( 0x7FFFFFFF ) + 0.000000000233;
   }
 

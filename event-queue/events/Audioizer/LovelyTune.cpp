@@ -43,6 +43,11 @@ class LovelyTune : QueueEvent, Random {
   void step( int entities ) {
     if ( @SOUND == null || !SOUND.is_playing() ) {
       @SOUND = g.play_sound( sounds[ srand_range( 0, sounds.length-1 ) ], player.x(), player.y(), 1, false, true );
+
+      if ( @SOUND == null ) {
+        return;
+      }
+
       SOUND.time_scale( srand_range_flt( 0.6, 1.4 ) );
       interval = note_lengths[ srand_range( 0, note_lengths.length-1 ) ];
     }

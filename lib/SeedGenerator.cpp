@@ -15,23 +15,22 @@ class SeedGenerator {
   }
 
   uint generate_seed() {
-    // generate a seed based off of the player's positional history and the
-    // number of frames passed by, as well as the level name so we have
-    // different starting modes for each map
-    uint _seed = ( script.time + generate_position_seed() + level_name_seed );
-
+    uint _seed;
     if ( current_frame == script.time ) {
       // we're attempting to create multiple seeds within the same step, so use
       // the previous seed as the base of the next
-      _seed = uint( _seed + current_seed );
+      _seed = ( current_seed * 16807 ) % 2147483647;
     }
     else {
+      // generate a seed based off of the player's positional history and the
+      // number of frames passed by, as well as the level name so we have
+      // different starting modes for each map
+      _seed = ( script.time + generate_position_seed() + level_name_seed );
+
       // remember that we created a seed this frame, in case we want to generate
       // multiple and need to prevent duplicates
       current_frame = script.time;
     }
-
-    _seed *= 3;
 
     current_seed = _seed;
 

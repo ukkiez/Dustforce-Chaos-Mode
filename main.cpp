@@ -27,11 +27,14 @@ class script : script_base, Random {
   uint turbo_mode_chance = 2000;
   uint turbo_mode_time = 0;
   // duration in seconds
-  uint turbo_mode_duration = 10;
+  uint turbo_mode_duration = 5;
   textfield@ turbo_mode_tf;
 
-  uint position_history_length = 10;
+  uint position_history_length = 5;
   array<uint> position_history( position_history_length );
+
+  // define one seed_generator that all Random members will use
+  SeedGenerator@ seed_generator = SeedGenerator();
 
   script() {
     @g = get_scene();
@@ -57,6 +60,8 @@ class script : script_base, Random {
     }
 
     @player = c.as_dustman();
+
+    seed_generator.init();
 
     event_cycle.init();
     event_queue.init();
@@ -127,10 +132,13 @@ class script : script_base, Random {
 
     if ( turbo_mode ) {
       if ( turbo_mode_time >= 120 ) {
-        if ( !event_cycle.turbo_mode ) {
+        if ( turbo_mode_time % 1 == 0 ) {
+          // activate new events every frame for now don't turn on the event
+          // cycle, as it has a lot of modes that would quickly cause epilepsy,
+          // if at least a good migraine; TODO: create a curated list of turbo
+          // modes for the cycle and queue to pick from
+
           event_cycle.activate_turbo_mode();
-        }
-        if ( !event_queue.turbo_mode ) {
           event_queue.activate_turbo_mode();
         }
 
