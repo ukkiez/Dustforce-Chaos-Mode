@@ -111,6 +111,17 @@ class Queue : Random {
     }
   }
 
+  void entity_on_add( entity@ e ) {
+    for ( uint i = 0; i < active_events.length; i++ ) {
+      active_events[ i ].event.entity_on_add( e );
+    }
+  }
+  void entity_on_remove( entity@ e ) {
+    for ( uint i = 0; i < active_events.length; i++ ) {
+      active_events[ i ].event.entity_on_add( e );
+    }
+  }
+
   void step( int entities ) {
     if ( @player == null ) {
       controllable@ c = controller_controllable( 0 );

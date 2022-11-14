@@ -1,8 +1,8 @@
-#include "../CycleEvent.cpp";
+#include "../QueueEvent.cpp";
 
-class Example : CycleEvent {
-  CycleEventConfig get_config() {
-    return CycleEventConfig( 50, "NAME", "SUBTEXT" );
+class Example : QueueEvent {
+  QueueEventConfig get_config() {
+    return QueueEventConfig( 50, -1, false, "NAME", "SUBTEXT" );
   }
 
   scene@ g;

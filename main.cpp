@@ -93,6 +93,25 @@ class script : script_base, Random {
     event_queue.checkpoint_load();
   }
 
+  void entity_on_add( entity@ e ) {
+    if ( event_cycle.initialized ) {
+      event_cycle.entity_on_add( e );
+    }
+
+    if ( event_queue.initialized ) {
+      event_queue.entity_on_add( e );
+    }
+  }
+  void entity_on_remove( entity@ e ) {
+    if ( event_cycle.initialized ) {
+      event_cycle.entity_on_remove( e );
+    }
+
+    if ( event_queue.initialized ) {
+      event_queue.entity_on_remove( e );
+    }
+  }
+
   void step( int entities ) {
     if ( @player == null ) {
       controllable@ c = controller_controllable( 0 );
