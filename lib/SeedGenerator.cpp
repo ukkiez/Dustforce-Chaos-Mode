@@ -31,6 +31,8 @@ class SeedGenerator {
       current_frame = script.time;
     }
 
+    _seed *= 3;
+
     current_seed = _seed;
 
     return _seed;

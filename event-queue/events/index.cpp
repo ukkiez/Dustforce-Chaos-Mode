@@ -15,6 +15,7 @@
 
 #include "./Tilerizer/SpawnBlock.cpp";
 #include "./Tilerizer/SpawnZip.cpp";
+#include "./Tilerizer/Spikeify.cpp";
 #include "./Tilerizer/SwapSprites.cpp";
 
 array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
@@ -24,7 +25,7 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<QueueEvent@> = {
-      PolishDriver(),
+      Spikeify(),
     };
   }
 
@@ -47,6 +48,7 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     // Tilerizer
     SpawnBlock(),
     SpawnZip(),
+    Spikeify(),
     SwapSprites(),
   };
 }

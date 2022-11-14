@@ -1,23 +1,68 @@
+#include "../../lib/Random.cpp";
+
 #include "../CycleEvent.cpp";
 
-class Letterbox : CycleEvent {
+class Letterbox : CycleEvent, Random {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 35, "Letterbox" );
+    return CycleEventConfig( 35, "Letterbox", "or pillarbox" );
   }
 
   scene@ g;
 
-  [persistent] int letterbox_max_width = 175;
+  int screen_radius_y = 450;
+  int screen_radius_x = 800;
 
-  int letterbox_width = 0;
-  bool letterbox_drawn = false;
+  int letterbox_max_width = 175;
+  int pillarbox_max_width = 250;
+
+  int l_x1 = -800;
+  int l_y1 = 450;
+  int l_x2 = 1600;
+
+  int p_x1 = 800;
+  int p_y1 = -450;
+  int p_y2 = 450;
+
+  int width = 0;
+  bool drawn = false;
+
+  bool pillarbox = false;
+
   bool overlay_disabled = false;
 
   Letterbox() {
     @g = get_scene();
   }
 
-  void step( int entities ) {}
+  void step( int entities ) {
+    if ( !drawn ) {
+      if ( pillarbox ) {
+        uint increase = ( pillarbox_max_width - width ) / 7;
+
+        if ( increase == 0 ) {
+          increase = 1;
+        }
+        width += increase;
+
+        if ( width >= pillarbox_max_width ) {
+          drawn = true;
+        }
+      }
+      else {
+        uint increase = ( letterbox_max_width - width ) / 7;
+
+        if ( increase == 0 ) {
+          increase = 1;
+        }
+        width += increase;
+
+        if ( width >= letterbox_max_width ) {
+          drawn = true;
+        }
+      }
+
+    }
+  }
   void draw( float sub_frame ) {
     if ( !overlay_disabled ) {
       // disable the score overlay, since we're blocking it
@@ -25,33 +70,33 @@ class Letterbox : CycleEvent {
       overlay_disabled = true;
     }
 
-    if ( !letterbox_drawn ) {
-      uint increase = ( letterbox_max_width - letterbox_width ) / 7;
-
-      if ( increase == 0 ) {
-        increase = 1;
-      }
-      letterbox_width += increase;
-
-      if ( letterbox_width >= letterbox_max_width ) {
-        letterbox_drawn = true;
-      }
+    if ( pillarbox ) {
+      // draw bars on the left and right side
+      g.draw_rectangle_hud(
+        20, 1, -p_x1, p_y1, ( -screen_radius_x + width ), p_y2, 0, 0xFF000000
+      );
+      g.draw_rectangle_hud(
+        20, 1, p_x1, p_y1, ( screen_radius_x - width ), p_y2, 0, 0xFF000000
+      );
     }
-
-    int screen_radius = 450;
-
-    // draw bars on the top and bottom side (for aesthetics)
-    g.draw_rectangle_hud(
-      20, 1, -800, -450, 1600, ( -screen_radius + letterbox_width ), 0, 0xFF000000
-    );
-    g.draw_rectangle_hud(
-      20, 1, -800, 450, 1600, ( screen_radius - letterbox_width ), 0, 0xFF000000
-    );
+    else {
+      // draw bars on the top and bottom side
+      g.draw_rectangle_hud(
+        20, 1, l_x1, -l_y1, l_x2, ( -screen_radius_y + width ), 0, 0xFF000000
+      );
+      g.draw_rectangle_hud(
+        20, 1, l_x1, l_y1, l_x2, ( screen_radius_y - width ), 0, 0xFF000000
+      );
+    }
   }
 
-  void initialize() {}
+  void initialize() {
+    pillarbox = ( srandom() % 2 == 0 ) ? true : false;
+  }
   void deactivate() {
     g.disable_score_overlay( false );
     overlay_disabled = false;
+    width = 0;
+    drawn = false;
   }
 }
