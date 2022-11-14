@@ -120,7 +120,6 @@ class script : script_base, Random {
       // all modes a 100 weight, and puts the cycle and queue intervals at 1
       // second
       int roll = srand_range( 1, turbo_mode_chance );
-      puts( roll );
       if ( roll == 1 ) {
         turbo_mode = true;
       }

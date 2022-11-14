@@ -39,8 +39,6 @@ class Cycle : Random {
   array<uint> active_event_indexes;
 
   array<CycleEventConfig> event_configs = {};
-  array<textfield@> event_textfields;
-  array<textfield@> event_subtextfields;
 
   // interval in seconds
   uint interval = 1;
@@ -86,20 +84,6 @@ class Cycle : Random {
 
       @player = c.as_dustman();
 
-      for ( uint i = 0; i <= 6; i++ ) {
-        textfield@ event_text = create_textfield();
-        event_text.set_font( "Caracteres", 40 );
-        event_text.align_horizontal( -1 );
-        event_text.align_vertical( 0 );
-        event_textfields.insertAt( i, event_text );
-
-        textfield@ event_subtext = create_textfield();
-        event_subtext.set_font( "Caracteres", 26 );
-        event_subtext.align_horizontal( -1 );
-        event_subtext.align_vertical( 0 );
-        event_subtextfields.insertAt( i, event_subtext );
-      }
-
       // get the main script object
       @script = cast<script@>( get_script() );
 
@@ -125,13 +109,6 @@ class Cycle : Random {
       // issues with gathering the player controllable, or shenanigans during
       // loading
       return;
-    }
-
-    if ( player.filth_type() != 0 ) {
-      // when character swapping to bosses we set filth type to 0, but other
-      // events may have some effects that set the filth type indirectly, e.g.
-      // character scaling; so just make sure the player always has 0 for now
-      player.filth_type( 0 );
     }
 
     // activate new events every X seconds
@@ -181,12 +158,8 @@ class Cycle : Random {
         // initialize the event
         events[ index ].initialize();
 
+        // add the event to the EventList
         CycleEventConfig config = event_configs[ index ];
-        event_textfields[ i ].text( config.name );
-        event_textfields[ i ].colour( config.colour );
-        event_subtextfields[ i ].text( config.subtext );
-        event_subtextfields[ i ].colour( config.colour );
-
         script.event_list.add_cycle_element( config.name, config.subtext );
       }
 
@@ -226,14 +199,6 @@ class Cycle : Random {
 
     if ( checkpoint_loaded ) {
       checkpoint_loaded = false;
-
-      if ( ALL_BOSSES.find( player.character() ) >= 0 ) {
-        // make sure not to spread dust as boss characters, as that often mostly
-        // ruins any fun, as it means you just have to wait around and do
-        // nothing until you get swapped to a different character for fear of
-        // spreading dust
-        player.filth_type( 0 );
-      }
     }
 
     // always increment the time_since_last_pick, even if no Event is active,
