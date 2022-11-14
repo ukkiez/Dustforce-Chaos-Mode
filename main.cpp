@@ -18,7 +18,7 @@ class script : script_base, Random {
   EventList@ event_list;
 
   uint time = 0;
-  uint level_start_delay = 0;
+  uint level_start_delay = 55;
 
   bool checkpoint_loaded = false;
 

@@ -5,7 +5,7 @@
 
 class SpawnZip : QueueEvent, Random {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 50, 0, false, "Exec Func Ruin Level", "Surprise Zip" );
+    return QueueEventConfig( 65, 0, false, "Exec Func Ruin Level", "Surprise Zip" );
   }
 
   scene@ g;
@@ -50,7 +50,7 @@ class SpawnZip : QueueEvent, Random {
     int type = spawn_right ? 19 : 18;
     uint sprite_set = srand_range( 1, 4 );
     uint sprite_tile = srand_range( 1, 5 );
-    for ( int i = 0; i <= 16; i++ ) {
+    for ( int i = 0; i <= 15; i++ ) {
       // spawn a vertical zip in front of the player
       int x = tile( 2 );
       if ( !spawn_right ) {

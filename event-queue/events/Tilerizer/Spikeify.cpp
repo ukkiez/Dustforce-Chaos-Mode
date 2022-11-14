@@ -33,7 +33,7 @@ class Spikeify : QueueEvent, Random {
     uint sprite_set = srand_range( 1, 4 );
     uint sprite_tile = srand_range( 1, 5 );
 
-    uint x_tile = srand_range( 10, 20 );
+    uint x_tile = srand_range( 15, 25 );
 
     for ( uint i = 0; i <= 25; i++ ) {
       int x = tile_coord( player.x() + tile( x_tile ) );

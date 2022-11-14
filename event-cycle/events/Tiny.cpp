@@ -1,10 +1,10 @@
 #include "../CycleEvent.cpp";
 
-#include "../../lib/Random.cpp"
+#include "../../lib/Random.cpp";
 
 class Tiny : CycleEvent, Random {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 50, "Tiny Man Mode" );
+    return CycleEventConfig( 45, "Tiny Man Mode" );
   }
 
   scene@ g;

@@ -2,7 +2,7 @@
 
 class Big : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 50, "Beeg Man Mode" );
+    return CycleEventConfig( 45, "Beeg Man Mode" );
   }
 
   scene@ g;
