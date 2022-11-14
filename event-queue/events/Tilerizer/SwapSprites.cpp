@@ -5,7 +5,7 @@
 
 #include "./data.cpp";
 
-class SwapSprites : QueueEvent, Random {
+class SwapSprites : QueueEvent {
   QueueEventConfig get_config() {
     return QueueEventConfig( 80, 0, false, "Exec Func Ruin Level", "Beautify" );
   }

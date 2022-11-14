@@ -1,3 +1,5 @@
+#include "../lib/Random.cpp";
+
 class CycleEventConfig {
   /*
     Weight is a number 1-100 that specifies what percent chance the Event has to
@@ -29,15 +31,17 @@ class CycleEventConfig {
   CycleEventConfig() {}
 }
 
-interface CycleEvent {
-  // force implementation of a function that specifies the event configuration,
-  // which we'll aggregate on script load to get a readily-available list of all
-  // configurations
-  CycleEventConfig get_config();
+abstract class CycleEvent : Random {
+  CycleEventConfig get_config() {
+    return CycleEventConfig( 100, "<NAME>", "<SUBTEXT>", 0xBBFFFFFF );
+  }
 
-  void step( int entities );
-  void draw( float sub_frame );
+  void step( int entities ) {}
+  void draw( float sub_frame ) {}
 
-  void initialize();
-  void deactivate();
+  void initialize() {}
+  void deactivate() {}
+
+  void entity_on_add( entity@ e ) {}
+  void entity_on_remove( entity@ e ) {}
 }

@@ -53,8 +53,6 @@ class Queue : Random {
   // keep track of the Queue's step() time between the last event pick
   uint time_since_last_pick = 0;
 
-  int last_picked_event_index = -1;
-
   bool checkpoint_loaded = false;
 
   array<QueueEvent@> @events;

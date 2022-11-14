@@ -3,7 +3,7 @@
 
 #include "../CycleEvent.cpp";
 
-class TauntAndDie : CycleEvent, Random {
+class TauntAndDie : CycleEvent {
   CycleEventConfig get_config() {
     return CycleEventConfig( 15, "Mr. Simon Says" );
   }

@@ -3,7 +3,7 @@
 
 #include "../CycleEvent.cpp";
 
-class DisableDash : CycleEvent, Random {
+class DisableDash : CycleEvent {
   CycleEventConfig config = CycleEventConfig( 8, "Disable Dash" );
   CycleEventConfig get_config() {
     return config;

@@ -23,7 +23,7 @@ class script : script_base, Random {
 
   bool checkpoint_loaded = false;
 
-  bool turbo_mode = false;
+  [persist] bool turbo_mode = false;
   // chance of turbo happening = 1/turbo_mode_chance
   uint turbo_mode_chance = 2000;
   uint turbo_mode_time = 0;
@@ -31,6 +31,7 @@ class script : script_base, Random {
   // duration in seconds
   uint turbo_mode_duration = 3;
   textfield@ turbo_mode_tf;
+  sprites@ turbo_warning_symbol;
 
   uint position_history_length = 5;
   array<uint> position_history( position_history_length );
@@ -49,6 +50,9 @@ class script : script_base, Random {
     turbo_mode_tf.set_font( "Caracteres", 92 );
     turbo_mode_tf.text( "TURBO MODE\nACTIVATED" );
     turbo_mode_tf.colour( 0xBBFFFFFF );
+
+    @turbo_warning_symbol = create_sprites();
+    turbo_warning_symbol.add_sprite_set( "props5" );
   }
 
   void build_sounds( message @msg ) {
@@ -132,7 +136,20 @@ class script : script_base, Random {
       }
     }
 
-    if ( turbo_mode ) {
+    if ( !turbo_mode ) {
+      if ( event_cycle.initialized ) {
+        event_cycle.step( entities );
+      }
+
+      if ( event_queue.initialized ) {
+        event_queue.step( entities );
+      }
+
+      if ( event_list.initialized ) {
+        event_list.step( entities );
+      }
+    }
+    else {
       if ( turbo_mode_time >= text_display_time ) {
         if ( turbo_mode_time % 1 == 0 ) {
           // activate new events every frame for now don't turn on the event
@@ -167,18 +184,6 @@ class script : script_base, Random {
       }
       return;
     }
-
-    if ( event_cycle.initialized ) {
-      event_cycle.step( entities );
-    }
-
-    if ( event_queue.initialized ) {
-      event_queue.step( entities );
-    }
-
-    if ( event_list.initialized ) {
-      event_list.step( entities );
-    }
   }
 
   void store_positional_data() {
@@ -191,8 +196,12 @@ class script : script_base, Random {
 
   void draw( float sub_frame ) {
     if ( turbo_mode ) {
-      if ( turbo_mode_time <= 110 && ( turbo_mode_time % 40 < 20 ) ) {
-        draw_text( turbo_mode_tf, 0, 0 );
+      if ( turbo_mode_time <= 110 ) {
+        if ( turbo_mode_time % 40 < 20 ) {
+          turbo_warning_symbol.draw_hud( 20, 22, "symbol_2", 0, 1, 150, 250, 0, 1.5, 1.5, 0xFFFFFFFF );
+        }
+
+        draw_text( turbo_mode_tf, 0, -100 );
       }
 
       if ( event_cycle.initialized ) {

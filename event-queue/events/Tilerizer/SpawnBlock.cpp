@@ -3,7 +3,7 @@
 
 #include "../../QueueEvent.cpp";
 
-class SpawnBlock : QueueEvent, Random {
+class SpawnBlock : QueueEvent {
   QueueEventConfig get_config() {
     return QueueEventConfig( 65, 0, false, "Exec Func Ruin Level", "Surprise bloche" );
   }

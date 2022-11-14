@@ -3,7 +3,7 @@
 
 #include "../CycleEvent.cpp";
 
-class CharacterSwap : CycleEvent, Random {
+class CharacterSwap : CycleEvent {
   CycleEventConfig get_config() {
     return CycleEventConfig( 50, "Character Swap" );
   }

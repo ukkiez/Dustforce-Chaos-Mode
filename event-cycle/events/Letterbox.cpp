@@ -2,7 +2,7 @@
 
 #include "../CycleEvent.cpp";
 
-class Letterbox : CycleEvent, Random {
+class Letterbox : CycleEvent {
   CycleEventConfig get_config() {
     return CycleEventConfig( 35, "Letterbox", "or pillarbox" );
   }

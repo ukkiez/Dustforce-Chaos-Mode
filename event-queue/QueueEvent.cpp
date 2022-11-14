@@ -1,3 +1,5 @@
+#include "../lib/Random.cpp";
+
 class QueueEventConfig {
   /*
     Weight is a number 1-100 that specifies what percent chance the Event has to
@@ -46,15 +48,17 @@ class QueueEventConfig {
   QueueEventConfig() {}
 }
 
-interface QueueEvent {
-  // force implementation of a function that specifies the event configuration,
-  // which we'll aggregate on script load to get a readily-available list of all
-  // configurations
-  QueueEventConfig get_config();
+abstract class QueueEvent : Random {
+  QueueEventConfig get_config() {
+    return QueueEventConfig( 100, -1, false, "<NAME>", "<SUBTEXT>", 0xBBFFFFFF );
+  }
 
-  void step( int entities );
-  void draw( float sub_frame );
+  void step( int entities ) {}
+  void draw( float sub_frame ) {}
 
-  void initialize();
-  void deactivate();
+  void initialize() {}
+  void deactivate() {}
+
+  void entity_on_add( entity@ e ) {}
+  void entity_on_remove( entity@ e ) {}
 }

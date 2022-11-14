@@ -1,11 +1,9 @@
 #include "./SeedGenerator.cpp";
 
-class Random {
+mixin class Random {
   script@ _Random_script;
   SeedGenerator@ se;
   bool _Random_initialized = false;
-
-  Random() {}
 
   void try_init() {
     if ( !_Random_initialized ) {

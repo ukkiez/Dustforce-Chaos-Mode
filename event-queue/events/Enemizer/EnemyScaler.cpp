@@ -1,7 +1,7 @@
 #include "../../../lib/Random.cpp";
 #include "../../QueueEvent.cpp";
 
-class EnemyScaler : QueueEvent, Random {
+class EnemyScaler : QueueEvent {
   QueueEventConfig get_config() {
     return QueueEventConfig( 70, 1, false, "Enemizer", "Sizerizer" );
   }

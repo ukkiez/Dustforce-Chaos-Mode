@@ -5,7 +5,7 @@
 
 #include "./data.cpp";
 
-class Spikeify : QueueEvent, Random {
+class Spikeify : QueueEvent {
   QueueEventConfig get_config() {
     return QueueEventConfig( 40, 0, false, "Exec Func Ruin Level", "Spikeify" );
   }

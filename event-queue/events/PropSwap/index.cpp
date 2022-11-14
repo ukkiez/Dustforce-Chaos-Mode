@@ -4,7 +4,7 @@
 
 #include "./data.cpp";
 
-class PropSwap : QueueEvent, Random {
+class PropSwap : QueueEvent {
   QueueEventConfig get_config() {
     return QueueEventConfig( 100, 0, false, "Prop Swap" );
   }

@@ -3,7 +3,7 @@
 
 #include "../../QueueEvent.cpp";
 
-class SpawnZip : QueueEvent, Random {
+class SpawnZip : QueueEvent {
   QueueEventConfig get_config() {
     return QueueEventConfig( 55, 0, false, "Exec Func Ruin Level", "Surprise Zip" );
   }

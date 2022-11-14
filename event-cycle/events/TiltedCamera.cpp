@@ -2,7 +2,7 @@
 
 #include "../CycleEvent.cpp";
 
-class TiltedCamera : CycleEvent, Random {
+class TiltedCamera : CycleEvent {
   CycleEventConfig get_config() {
     return CycleEventConfig( 5, "Tilted" );
   }

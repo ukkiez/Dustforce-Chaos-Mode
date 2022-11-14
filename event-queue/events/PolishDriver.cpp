@@ -29,7 +29,7 @@ class Box {
 	}
 }
 
-class PolishDriver : QueueEvent, Random {
+class PolishDriver : QueueEvent {
   QueueEventConfig get_config() {
     return QueueEventConfig( 35, 300, false, "Polish Driver" );
   }

@@ -1,9 +1,8 @@
-#include "../../../lib/Random.cpp";
 #include "../../../lib/data/SFX.cpp";
 
 #include "../../QueueEvent.cpp";
 
-class LovelyTune : QueueEvent, Random {
+class LovelyTune : QueueEvent {
   QueueEventConfig get_config() {
     return QueueEventConfig( 50, -1, false, "Audioizer", "A Lovely Tune" );
   }
@@ -57,7 +56,6 @@ class LovelyTune : QueueEvent, Random {
 
     frames++;
   }
-  void draw( float sub_frame ) {}
 
   void initialize() {
     if ( initialized ) {

@@ -2,7 +2,7 @@
 
 #include "../../lib/Random.cpp";
 
-class Tiny : CycleEvent, Random {
+class Tiny : CycleEvent {
   CycleEventConfig get_config() {
     return CycleEventConfig( 45, "Tiny Man Mode" );
   }

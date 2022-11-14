@@ -4,7 +4,7 @@
 
 #include "../../QueueEvent.cpp";
 
-class RandomSfx : QueueEvent, Random {
+class RandomSfx : QueueEvent {
   QueueEventConfig get_config() {
     return QueueEventConfig( 100, -1, false, "Audioizer", "Random SFX" );
   }
