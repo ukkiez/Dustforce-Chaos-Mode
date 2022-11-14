@@ -70,7 +70,7 @@ class MinecraftMode : CycleEvent {
       if ( player.attack_state() == 3 ) {
         effect@ eff = e.as_effect();
 
-        if ( @eff != null && eff.sprite_set() == "dustman" ) {
+        if ( @eff != null && eff.sprite_set() == player.character() ) {
           bool broke = false;
           for ( uint j = 0; j < effects.length; j++ ) {
             if ( effects[ j ].is_same( eff.as_entity() ) ) {

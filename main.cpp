@@ -29,7 +29,7 @@ class script : script_base, Random {
   uint turbo_mode_time = 0;
   uint text_display_time = 120;
   // duration in seconds
-  uint turbo_mode_duration = 2;
+  uint turbo_mode_duration = 3;
   textfield@ turbo_mode_tf;
 
   uint position_history_length = 5;
@@ -159,7 +159,7 @@ class script : script_base, Random {
 
       turbo_mode_time++;
 
-      if ( turbo_mode_time % ( ( turbo_mode_duration + text_display_time ) * 60 ) == 0 ) {
+      if ( turbo_mode_time % ( ( turbo_mode_duration * 60 ) + text_display_time ) == 0 ) {
         event_cycle.deactivate_turbo_mode();
         event_queue.deactivate_turbo_mode();
         turbo_mode_time = 0;
