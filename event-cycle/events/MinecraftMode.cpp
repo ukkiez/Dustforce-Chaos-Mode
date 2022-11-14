@@ -71,7 +71,7 @@ class MinecraftMode : CycleEvent {
 
         hitbox@ h = e.as_hitbox();
 
-        if ( @h == null ) {
+        if ( @h == null || @h.owner() == null ) {
           continue;
         }
 
