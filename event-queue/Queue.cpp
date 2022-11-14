@@ -161,10 +161,8 @@ class Queue : Random {
       // their weight
       array<QueueEvent@> pool = filter_events();
       if ( pool.length > 0 ) {
-        int index = srand_range( 0, pool.length-1 );
-
         // get a random event from the pool
-        QueueEvent@ qe = pool[ index ];
+        QueueEvent@ qe = pool[ srand_range( 0, pool.length-1 ) ];
         int duration = qe.get_config().duration;
         if ( duration == -1 ) {
           duration = srand_range( duration_min, duration_max );

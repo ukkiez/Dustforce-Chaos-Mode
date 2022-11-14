@@ -31,7 +31,7 @@ class Box {
 
 class PolishDriver : QueueEvent, Random {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 30, 300, false, "Polish Driver" );
+    return QueueEventConfig( 35, 300, false, "Polish Driver" );
   }
 
   scene@ g;

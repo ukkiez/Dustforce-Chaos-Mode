@@ -181,7 +181,7 @@ class script : script_base, Random {
 
   void draw( float sub_frame ) {
     if ( turbo_mode ) {
-      if ( turbo_mode_time <= 120 && ( turbo_mode_time % 60 < 30 ) ) {
+      if ( turbo_mode_time <= 110 && ( turbo_mode_time % 40 < 20 ) ) {
         draw_text( turbo_mode_tf, 0, 0 );
       }
 
