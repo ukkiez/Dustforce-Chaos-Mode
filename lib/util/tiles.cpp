@@ -1,6 +1,9 @@
 int tile( int n ) {
   return n * 48;
 }
+float tile( float n ) {
+  return n * 48;
+}
 
 int tile_coord( float v ) {
   return int( floor( v * ( 1.0 / 48 ) ) );

@@ -1,18 +1,35 @@
+#include "../../lib/Random.cpp";
+
 #include "../CycleEvent.cpp";
 
-class Example : CycleEvent {
+class TiltedCamera : CycleEvent, Random {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 50, "CycleEvent Name" );
+    return CycleEventConfig( 5, "Tilted" );
   }
 
   scene@ g;
+  camera@ cam;
   dustman@ player;
+
+  bool ccw = false;
+
+  int frames = 0;
 
   bool initialized = false;
 
-  Example() {}
+  TiltedCamera() {}
 
-  void step( int entities ) {}
+  void step( int entities ) {
+    if ( @cam == null ) {
+      return;
+    }
+
+    if ( frames % 2 == 0 && ( cam.rotation() < 5 &&  cam.rotation() > -5 ) ) {
+      cam.rotation( cam.rotation() + ( ccw ? -1 : 1 ) );
+    }
+
+    frames++;
+  }
   void draw( float sub_frame ) {}
 
   void initialize() {
@@ -30,6 +47,9 @@ class Example : CycleEvent {
       return;
     }
 
+    @cam = get_active_camera();
+    ccw = ( srandom() % 2 == 0 );
+
     initialized = true;
   }
 
@@ -37,6 +57,9 @@ class Example : CycleEvent {
     if ( !initialized ) {
       return;
     }
+
+    cam.rotation( 0 );
+    frames = 0;
 
     initialized = false;
   }

@@ -18,7 +18,8 @@ class script : script_base, Random {
   EventList@ event_list;
 
   uint time = 0;
-  uint level_start_delay = 55;
+  // uint level_start_delay = 55;
+  uint level_start_delay = 0;
 
   bool checkpoint_loaded = false;
 
@@ -26,14 +27,15 @@ class script : script_base, Random {
   // chance of turbo happening = 1/turbo_mode_chance
   uint turbo_mode_chance = 2000;
   uint turbo_mode_time = 0;
+  uint text_display_time = 120;
   // duration in seconds
-  uint turbo_mode_duration = 5;
+  uint turbo_mode_duration = 2;
   textfield@ turbo_mode_tf;
 
   uint position_history_length = 5;
   array<uint> position_history( position_history_length );
 
-  // define one seed_generator that all Random members will use
+  // define one seed_generator that all Random instances will use
   SeedGenerator@ seed_generator = SeedGenerator();
 
   script() {
@@ -131,7 +133,7 @@ class script : script_base, Random {
     }
 
     if ( turbo_mode ) {
-      if ( turbo_mode_time >= 120 ) {
+      if ( turbo_mode_time >= text_display_time ) {
         if ( turbo_mode_time % 1 == 0 ) {
           // activate new events every frame for now don't turn on the event
           // cycle, as it has a lot of modes that would quickly cause epilepsy,
@@ -157,7 +159,7 @@ class script : script_base, Random {
 
       turbo_mode_time++;
 
-      if ( turbo_mode_time % ( turbo_mode_duration * 60 ) == 0 ) {
+      if ( turbo_mode_time % ( ( turbo_mode_duration + text_display_time ) * 60 ) == 0 ) {
         event_cycle.deactivate_turbo_mode();
         event_queue.deactivate_turbo_mode();
         turbo_mode_time = 0;

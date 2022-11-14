@@ -16,8 +16,8 @@ class MinecraftMode : CycleEvent {
   // or after in the iteration order, to determine when we need to replace tiles
   // with dustblocks; this is because attacks can come out a frame early/late
   // depending on this; if the hit_box_controller is before dust_man, then a
-  // light attack will for example take 59 frames to come out, but otherwise it
-  // would take 58 frames
+  // light attack will for example take 9 frames to come out, but otherwise it
+  // would take 8 frames
   bool hit_box_iteration_before_dustman = false;
 
   float speed_x;
@@ -25,6 +25,16 @@ class MinecraftMode : CycleEvent {
   bool just_cleaned = false;
   bool buffered_jump = false;
   bool buffered_dash = false;
+
+  uint special_timer = 0;
+  float super_hitbox_side = 12.5;
+  int super_entity_count = -1;
+  uint initial_effect_count = 0;
+  bool special_started = false;
+  bool super_hitbox_scaled = false;
+  bool can_clean = false;
+
+  array<entity@> effects = {};
 
   bool initialized = false;
 
@@ -57,6 +67,25 @@ class MinecraftMode : CycleEvent {
         continue;
       }
 
+      if ( player.attack_state() == 3 ) {
+        effect@ eff = e.as_effect();
+
+        if ( @eff != null && eff.sprite_set() == "dustman" ) {
+          bool broke = false;
+          for ( uint j = 0; j < effects.length; j++ ) {
+            if ( effects[ j ].is_same( eff.as_entity() ) ) {
+              broke = true;
+              break;
+            }
+          }
+          if ( broke ) {
+            continue;
+          }
+
+          effects.insertLast( eff.as_entity() );
+        }
+      }
+
       if ( e.type_name() == "hit_box_controller" ) {
         bool broke = false;
         for ( uint j = 0; j < hitboxes.length; j++ ) {
@@ -82,6 +111,8 @@ class MinecraftMode : CycleEvent {
     }
 
     step_hitboxes( entities );
+
+    manage_special();
   }
 
   void step_hitboxes( int entities ) {
@@ -116,7 +147,7 @@ class MinecraftMode : CycleEvent {
       if ( _check ) {
         if ( h.hit_outcome() == 4 ) {
           // these types of hit outcomes happen when the player canceled the
-          // attack, like landing after a downlight
+          // attack, e.g. landing during a downlight
           hitboxes.removeAt( i );
           continue;
         }
@@ -133,10 +164,10 @@ class MinecraftMode : CycleEvent {
         // convert all tiles within the dustblock clear rectangle, that this
         // given hitbox would clean
         int count = clean_filth_block_rec(
-          int( left - ks( 30, player ) ),
-          int( top - ks( 30, player ) ),
-          int( right + ks( 30, player ) ),
-          int( bottom + ks( 30, player ) )
+          int( left - adjust_for_scale( 30, player ) ),
+          int( top - adjust_for_scale( 30, player ) ),
+          int( right + adjust_for_scale( 30, player ) ),
+          int( bottom + adjust_for_scale( 30, player ) )
         );
 
         if ( count > 0 ) {
@@ -169,25 +200,25 @@ class MinecraftMode : CycleEvent {
     }
   }
 
-  int ks( int n, dustman@ dm ) {
+  int adjust_for_scale( int n, dustman@ dm ) {
     // take into account player scale
     return int( n * dm.scale() );
   }
 
-  int clean_filth_block_rec( int t_s_x, int t_s_y, int t_e_x, int t_e_y ) {
+  int clean_filth_block_rec( int tile_start_x, int tile_start_y, int tile_end_x, int tile_end_y ) {
     int count = 0;
 
-    t_s_x = int( floor( ( t_s_x ) / 48 ) );
-    t_s_y = int( floor ( ( t_s_y ) / 48 ) );
-    t_e_x = int( floor ( ( t_e_x ) / 48 ) );
-    t_e_y = int( floor ( ( t_e_y ) / 48 ) );
-    int s_x = int( min ( t_s_x,t_e_x ) );
-    int w =  int( max ( t_s_x,t_e_x ) - min( t_s_x,t_e_x ) );
-    int s_y = int( min ( t_s_y,t_e_y) );
-    int h =  int( max ( t_s_y,t_e_y ) - min( t_s_y,t_e_y ) );
-    for ( int i = 0; i <= w; i++) {
-      for ( int b = 0; b <= h; b++) {
-        bool cleaned = clean_tile( s_x + i, s_y + b );
+    tile_start_x = int( floor( ( tile_start_x ) / 48 ) );
+    tile_start_y = int( floor( ( tile_start_y ) / 48 ) );
+    tile_end_x = int( floor( ( tile_end_x ) / 48 ) );
+    tile_end_y = int( floor( ( tile_end_y ) / 48 ) );
+    int start_x = int( min( tile_start_x, tile_end_x ) );
+    int width =  int( max( tile_start_x, tile_end_x ) - min( tile_start_x, tile_end_x ) );
+    int start_y = int( min( tile_start_y, tile_end_y) );
+    int height =  int( max( tile_start_y, tile_end_y ) - min( tile_start_y, tile_end_y ) );
+    for ( int i = 0; i <= width; i++ ) {
+      for ( int j = 0; j <= height; j++ ) {
+        bool cleaned = clean_tile( start_x + i, start_y + j );
         if ( cleaned ) {
           count++;
         }
@@ -195,6 +226,97 @@ class MinecraftMode : CycleEvent {
     }
 
     return count;
+  }
+
+  void manage_special() {
+    if ( player.attack_state() == 3 ) {
+      if ( !special_started && player.attack_timer() > 1.5 ) {
+        special_started = true;
+      }
+
+      if ( special_started ) {
+        if ( !super_hitbox_scaled ) {
+          super_hitbox_side *= player.scale();
+          super_hitbox_scaled = true;
+        }
+
+        if ( super_entity_count == -1 ) {
+          // get all the hittables that will be supered
+          super_entity_count = g.get_entity_collision(
+            player.y() - tile( super_hitbox_side ),
+            player.y() + tile( super_hitbox_side ),
+            player.x() - tile( super_hitbox_side ),
+            player.x() + tile( super_hitbox_side ),
+            7
+          );
+
+          // also don't take into account the player himself
+          super_entity_count -= 1;
+
+          initial_effect_count = effects.length;
+        }
+
+        if ( super_entity_count != -1 ) {
+          if ( super_entity_count == 0 || ( int( effects.length - initial_effect_count ) >= ( super_entity_count * 2 ) ) ) {
+            can_clean = true;
+          }
+
+          if ( can_clean && special_timer < 12 ) {
+            // turn two lines of blocks around the player to dustblocks per frame;
+            // for aesthetic effect, and to account for timewarp if the player is
+            // sped up
+
+            int x = 10;
+            if ( special_timer >= 5 ) {
+              x -= ( special_timer - 4 );
+            }
+
+            // right from the player
+            for ( int i = 0; i <= x; i++ ) {
+              clean_tile(
+                tile_coord( player.x() + tile( i ) ),
+                tile_coord( player.y() - tile( special_timer ) )
+              );
+              if ( special_timer > 0 ) {
+                clean_tile(
+                  tile_coord( player.x() + tile( i ) ),
+                  tile_coord( player.y() + tile( special_timer ) )
+                );
+              }
+            }
+
+            // left from the player
+            for ( int i = 1; i <= x; i++ ) {
+              clean_tile(
+                tile_coord( player.x() - tile( i ) ),
+                tile_coord( player.y() - tile( special_timer ) )
+              );
+              if ( special_timer > 0 ) {
+                clean_tile(
+                  tile_coord( player.x() - tile( i ) ),
+                  tile_coord( player.y() + tile( special_timer ) )
+                );
+              }
+            }
+
+            special_timer++;
+          }
+        }
+      }
+    }
+
+    if ( special_timer > 0 && player.attack_state() != 3 ) {
+      // note that we've finished the last special and the work that needed to
+      // be done
+      special_timer = 0;
+      super_hitbox_side = 12.5;
+      super_entity_count = -1;
+      initial_effect_count = 0;
+      special_started = false;
+      super_hitbox_scaled = false;
+      can_clean = false;
+      effects.resize( 0 );
+    }
   }
 
   bool clean_tile( int x, int y ) {
@@ -236,6 +358,15 @@ class MinecraftMode : CycleEvent {
     hit_box_iteration_before_dustman = false;
 
     just_cleaned = false;
+
+    special_timer = 0;
+    super_hitbox_side = 12.5;
+    super_entity_count = -1;
+    initial_effect_count = 0;
+    special_started = false;
+    super_hitbox_scaled = false;
+    can_clean = false;
+    effects.resize( 0 );
 
     initialized = false;
   }

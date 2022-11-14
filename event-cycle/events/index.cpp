@@ -11,6 +11,7 @@
 #include "./NoFriction.cpp";
 
 #include "./TauntAndDie.cpp";
+#include "./TiltedCamera.cpp";
 #include "./TimeWarp.cpp";
 #include "./Tiny.cpp";
 
@@ -30,6 +31,7 @@ array<CycleEvent@> get_cycle_events() {
     NoFriction(),
 
     TauntAndDie(),
+    TiltedCamera(),
     TimeWarp(),
     Tiny(),
 
