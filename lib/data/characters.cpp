@@ -93,12 +93,12 @@ const dictionary CHARACTER_ACRONYMS = {
   { "trashking", "tk" },
   { "slimeboss", "sb" },
 
-  { "vdustman", "dm" },
-  { "vdustgirl", "dg" },
-  { "vdustkid", "dk" },
-  { "vdustworth", "do" },
-  { "vdustwraith", "dw" },
-  { "vleafsprite", "ls" },
-  { "vtrashking", "tk" },
-  { "vslimeboss", "sb" }
+  { "vdustman", "vdm" },
+  { "vdustgirl", "vdg" },
+  { "vdustkid", "vdk" },
+  { "vdustworth", "vdo" },
+  { "vdustwraith", "vdw" },
+  { "vleafsprite", "vls" },
+  { "vtrashking", "vtk" },
+  { "vslimeboss", "vsb" }
 };

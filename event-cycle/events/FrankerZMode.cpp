@@ -35,7 +35,7 @@ class FrankerZ {
 
 class FrankerZMode : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 50, "FrankerZ Mode", "FrankerZ FrankerZ FrankerZ" );
+    return CycleEventConfig( 45, "FrankerZ Mode", "FrankerZ FrankerZ FrankerZ" );
   }
 
   scene@ g;
@@ -60,8 +60,6 @@ class FrankerZMode : CycleEvent {
   float special_attack_timer;
   uint special_frankerz_frame_interval = 8;
   array<entity@> special_effects = {};
-
-  string char_acronym = "dm";
 
   uint frames = 0;
 
@@ -130,7 +128,7 @@ class FrankerZMode : CycleEvent {
           continue;
         }
 
-        if ( eff.sprite_index() != ( char_acronym + "strike" ) ) {
+        if ( eff.sprite_index() != ( string( CHARACTER_ACRONYMS[ player.character() ] ) + "strike" ) ) {
           continue;
         }
 
@@ -196,7 +194,6 @@ class FrankerZMode : CycleEvent {
 
     @spr = create_sprites();
     spr.add_sprite_set( "script" );
-    char_acronym = string( CHARACTER_ACRONYMS[ player.character() ] );
 
     initialized = true;
   }
