@@ -4,12 +4,10 @@
 #include "./CharacterSwap.cpp";
 #include "./DisableDash.cpp";
 #include "./Disco.cpp";
-
 #include "./InfiniteAircharges.cpp";
 #include "./Letterbox.cpp";
 #include "./MinecraftMode.cpp";
 #include "./NoFriction.cpp";
-
 #include "./TauntAndDie.cpp";
 #include "./TiltedCamera.cpp";
 #include "./TimeWarp.cpp";
@@ -24,12 +22,10 @@ array<CycleEvent@> get_cycle_events() {
     CharacterSwap(),
     DisableDash(),
     Disco(),
-
     InfiniteAircharges(),
     Letterbox(),
     MinecraftMode(),
     NoFriction(),
-
     TauntAndDie(),
     TiltedCamera(),
     TimeWarp(),

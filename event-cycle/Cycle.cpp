@@ -6,6 +6,26 @@
 
 #include "./events/index.cpp";
 
+class ActiveCycleEvent {
+  CycleEvent@ event;
+
+  bool initialized = false;
+
+  string name;
+  string subtext;
+  uint colour;
+
+  ActiveCycleEvent( CycleEvent@ qe ) {
+    @this.event = qe;
+
+    CycleEventConfig config = qe.get_config();
+
+    this.name = config.name;
+    this.subtext = config.subtext;
+    this.colour = config.colour;
+  }
+}
+
 class Cycle : Random {
   // is automatically set to true if any events are added to the below
   // DEBUG_events_override array
@@ -36,9 +56,11 @@ class Cycle : Random {
 
   array<CycleEvent@> @events = get_cycle_events();
 
-  array<uint> active_event_indexes;
+  array<ActiveCycleEvent@> @active_events = {};
 
   array<CycleEventConfig> event_configs = {};
+
+  array<uint> active_event_indexes;
 
   // interval in seconds
   uint interval = 1;
@@ -46,9 +68,8 @@ class Cycle : Random {
   uint interval_max = 12;
   uint current_num_active_events;
 
-  array<CycleEvent@> CHECKPOINT_events;
+  array<ActiveCycleEvent@> CHECKPOINT_active_events;
   array<uint> CHECKPOINT_active_event_indexes;
-  uint CHECKPOINT_current_num_active_events;
   uint CHECKPOINT_iteration;
 
   bool turbo_mode = false;
@@ -144,7 +165,10 @@ class Cycle : Random {
 
       // randomly filter out available events to be activated next, based on
       // their weight and whether they were activated the previous time
-      array<uint> filtered_pool = filter_events();
+      array<CycleEvent@> pool = filter_events();
+
+      // deactivate and remove the previously active events
+      remove_active_events();
 
       if ( active_event_indexes.length > 0 ) {
         // empty out the active event index list
@@ -155,66 +179,39 @@ class Cycle : Random {
       // towards 3 and 4 than any other
       current_num_active_events = pick_number_of_events();
 
-      if ( current_num_active_events > filtered_pool.length ) {
-        current_num_active_events = filtered_pool.length;
+      if ( current_num_active_events > pool.length ) {
+        current_num_active_events = pool.length;
       }
 
-      for ( uint i = 0; i < current_num_active_events; i++ ) {
-        // randomly pick new events to activate
-        uint index = filtered_pool[ srand_range( 0, filtered_pool.length - 1 ) ];
+      if ( pool.length > 0 ) {
+        for ( uint i = 0; i < current_num_active_events; i++ ) {
+          // randomly pick new events to activate
 
-        while ( active_event_indexes.find( index ) >= 0 ) {
-          // don't pick duplicate events
-          index = filtered_pool[ srand_range( 0, filtered_pool.length - 1 ) ];
+          uint index = srand_range( 0, pool.length - 1 );
+          while ( active_event_indexes.find( index ) >= 0 ) {
+            // don't pick duplicate events
+            index = srand_range( 0, pool.length - 1 );
+          }
+
+          active_event_indexes.insertLast( index );
+
+          // get a random event from the pool
+          CycleEvent@ ce = pool[ index ];
+          CycleEventConfig config = ce.get_config();
+
+          active_events.insertLast( ActiveCycleEvent( ce ) );
         }
 
-        active_event_indexes.insertLast( index );
-
-        // initialize the event
-        events[ index ].initialize();
-
-        // add the event to the EventList
-        CycleEventConfig config = event_configs[ index ];
-        script.event_list.add_cycle_element( config.name, config.subtext );
+        active_event = true;
       }
-
-      if ( current_num_active_events == 0 ) {
+      else {
         active_event = false;
         // never stay without any Events active for longer than 5 seconds
         interval = ( interval < 5 ) ? 5 : interval;
       }
-      else {
-        active_event = true;
-      }
     }
 
-    if ( checkpoint_loaded && ( CHECKPOINT_iteration != iteration ) ) {
-      // reinitialize and deactivate all events that were active at the last
-      // saved checkpoint, if we're past the iteration from that time;
-      // reinitialization is necessary since script variables may have been
-      // reset/lost
-      for ( uint i = 0; i < CHECKPOINT_current_num_active_events; i++ ) {
-        CHECKPOINT_events[ CHECKPOINT_active_event_indexes[ i ] ].initialize();
-        CHECKPOINT_events[ CHECKPOINT_active_event_indexes[ i ] ].deactivate();
-      }
-    }
-
-    if ( active_event ) {
-      for ( uint i = 0; i < current_num_active_events; i++ ) {
-        if ( checkpoint_loaded ) {
-          // reinitialize the event after we loaded from a checkpoint, to make
-          // sure the script variables aren't messed up
-          events[ active_event_indexes[ i ] ].deactivate();
-          events[ active_event_indexes[ i ] ].initialize();
-        }
-
-        events[ active_event_indexes[ i ] ].step( entities );
-      }
-    }
-
-    if ( checkpoint_loaded ) {
-      checkpoint_loaded = false;
-    }
+    work_cycle( entities );
 
     // always increment the time_since_last_pick, even if no Event is active,
     // because that would just mean that last time we didn't have any Events
@@ -222,7 +219,48 @@ class Cycle : Random {
     time_since_last_pick++;
   }
 
-  array<uint> filter_events() {
+  void work_cycle( int entities ) {
+    if ( checkpoint_loaded && ( CHECKPOINT_iteration != iteration ) ) {
+      // reinitialize and deactivate all events that were active at the last
+      // saved checkpoint, if we're past the iteration from that time;
+      // reinitialization is necessary since script variables may have been
+      // reset/lost
+      for ( uint i = 0; i < CHECKPOINT_active_events.length; i++ ) {
+        CHECKPOINT_active_events[ i ].event.initialize();
+        CHECKPOINT_active_events[ i ].event.deactivate();
+      }
+    }
+
+    for ( uint i = 0; i < active_events.length; i++ ) {
+      ActiveCycleEvent@ active_event = active_events[ i ];
+      CycleEvent@ event = active_event.event;
+
+      if ( !active_event.initialized ) {
+        event.initialize();
+
+        // add the event to the EventList
+        script.event_list.add_cycle_element( active_event.name, active_event.subtext );
+        active_event.initialized = true;
+      }
+
+      if ( checkpoint_loaded ) {
+        // reinitialize the event after we loaded from a checkpoint, to make
+        // sure the script variables aren't messed up
+        event.deactivate();
+        event.initialize();
+      }
+
+      // just step the event, as well as increasing the time it has been
+      // active
+      event.step( entities );
+    }
+
+    if ( checkpoint_loaded ) {
+      checkpoint_loaded = false;
+    }
+  }
+
+  array<CycleEvent@> filter_events() {
     uint range;
     if ( !turbo_mode ) {
       // generate a range to exclude events based on their weight, e.g. a rolled
@@ -234,21 +272,26 @@ class Cycle : Random {
       range = 1;
     }
 
-    // TODO: get new class instances of the events each time
-    // @events = get_cycle_events();
+    // get new class instances of the events
+    @events = get_cycle_events();
 
-    array<uint> pool = {};
+    array<CycleEvent@> pool = {};
     for ( uint i = 0; i < events.length; i++ ) {
-      if ( active_event_indexes.find( i ) >= 0 ) {
-        // this event was already activated the previous time, so don't add it
-        // to the pool; also deactivate this last event and remove it from the
-        // ones marked as active
-        events[ i ].deactivate();
+      string id = event_configs[ i ].name + event_configs[ i ].subtext;
+
+      bool broke = false;
+      for ( uint j = 0; j < active_events.length; j++ ) {
+        if ( id == ( active_events[ j ].name + active_events[ j ].subtext ) ) {
+          broke = true;
+          break;
+        }
+      }
+      if ( broke ) {
         continue;
       }
 
       if ( event_configs[ i ].weight >= range ) {
-        pool.insertLast( i );
+        pool.insertLast( events[ i ] );
       }
     }
 
@@ -274,15 +317,22 @@ class Cycle : Random {
     }
   }
 
+  void remove_active_events() {
+    for ( uint i = 0; i < active_events.length; i++ ) {
+      active_events[ i ].event.deactivate();
+    }
+
+    active_events.resize( 0 );
+  }
+
   void checkpoint_save() {
     // keep track of script state across checkpoints, so we can go back to it
     // when a checkpoint gets loaded to be in line with the game state at that
     // point; to prevent e.g. saving a checkpoint while attack is disabled, and
     // a minute later the checkpoint loads and the event will no longer be
     // active and able to be deactivated
-    CHECKPOINT_events = events;
+    CHECKPOINT_active_events = active_events;
     CHECKPOINT_active_event_indexes = active_event_indexes;
-    CHECKPOINT_current_num_active_events = current_num_active_events;
     CHECKPOINT_iteration = iteration;
   }
   void checkpoint_load() {
@@ -297,13 +347,10 @@ class Cycle : Random {
   }
 
   void draw( float sub_frame ) {
-    if ( !active_event ) {
-      return;
-    }
-
-    for ( uint i = 0; i < current_num_active_events; i++ ) {
-      // call the event's draw method
-      events[ active_event_indexes[ i ] ].draw( sub_frame );
+    // call active event draw methods
+    for ( uint i = 0; i < active_events.length; i++ ) {
+      // call the event's draw method itself
+      active_events[ i ].event.draw( sub_frame );
     }
   }
 

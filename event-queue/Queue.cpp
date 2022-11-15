@@ -7,7 +7,7 @@
 
 #include "../EventList.cpp";
 
-class ActiveEvent {
+class ActiveQueueEvent {
   QueueEvent@ event;
 
   uint time = 0;
@@ -20,7 +20,7 @@ class ActiveEvent {
   string subtext;
   uint colour;
 
-  ActiveEvent( QueueEvent@ qe, uint duration ) {
+  ActiveQueueEvent( QueueEvent@ qe, uint duration ) {
     @this.event = qe;
     this.duration = duration;
 
@@ -57,7 +57,7 @@ class Queue : Random {
 
   array<QueueEvent@> @events;
 
-  array<ActiveEvent@> @active_events = {};
+  array<ActiveQueueEvent@> @active_events = {};
 
   array<QueueEventConfig> event_configs = {};
 
@@ -159,7 +159,7 @@ class Queue : Random {
           duration = srand_range( duration_min, duration_max );
         }
 
-        active_events.insertLast( ActiveEvent( qe, duration ) );
+        active_events.insertLast( ActiveQueueEvent( qe, duration ) );
 
         last_picked_event_name = config.name + config.subtext;
       }
@@ -212,7 +212,7 @@ class Queue : Random {
 
   void work_queue( int entities ) {
     for ( uint i = 0; i < active_events.length; i++ ) {
-      ActiveEvent@ active_event = active_events[ i ];
+      ActiveQueueEvent@ active_event = active_events[ i ];
       QueueEvent@ event = active_event.event;
 
       if ( !active_event.initialized ) {

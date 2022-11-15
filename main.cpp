@@ -23,13 +23,16 @@ class script : script_base, Random {
 
   bool checkpoint_loaded = false;
 
+  [persist] bool _cycle = true;
+  [persist] bool _queue = true;
   [persist] bool turbo_mode = false;
+
   // chance of turbo happening = 1/turbo_mode_chance
   uint turbo_mode_chance = 2000;
   uint turbo_mode_time = 0;
   uint text_display_time = 120;
   // duration in seconds
-  uint turbo_mode_duration = 3;
+  [persist] uint turbo_mode_duration = 3;
   textfield@ turbo_mode_tf;
   sprites@ turbo_warning_symbol;
 
@@ -69,8 +72,12 @@ class script : script_base, Random {
 
     seed_generator.init();
 
-    event_cycle.init();
-    event_queue.init();
+    if ( _cycle ) {
+      event_cycle.init();
+    }
+    if ( _queue ) {
+      event_queue.init();
+    }
     event_list.init();
   }
 
@@ -170,15 +177,13 @@ class script : script_base, Random {
     }
     else {
       if ( turbo_mode_time >= text_display_time ) {
-        if ( turbo_mode_time % 1 == 0 ) {
-          // activate new events every frame for now don't turn on the event
-          // cycle, as it has a lot of modes that would quickly cause epilepsy,
-          // if at least a good migraine; TODO: create a curated list of turbo
-          // modes for the cycle and queue to pick from
+        // activate new events every frame for now don't turn on the event
+        // cycle, as it has a lot of modes that would quickly cause epilepsy, if
+        // at least a good migraine; TODO: create a curated list of turbo modes
+        // for the cycle and queue to pick from
 
-          event_cycle.activate_turbo_mode();
-          event_queue.activate_turbo_mode();
-        }
+        event_cycle.activate_turbo_mode();
+        event_queue.activate_turbo_mode();
 
         if ( event_cycle.initialized ) {
           event_cycle.step( entities );
