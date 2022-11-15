@@ -53,7 +53,7 @@ The main loop that the Queue module runs, consists of:
 - Copy boilerplate code from `/boilerplates`, either `CycleEvent.cpp` or `QueueEvent.cpp`.
 - Create a new file in `/events-cycle/events` or `/events-queue/events`. Paste in the boilerplate code.
 - Give the class and constructor whatever name you want, related to what the event does.
-- Go to `/event-cycle/events/index.cpp` or `/event-queue/events/index.cpp` and include your file. Put your class instance in the `get_<event-type>_events()` function, in the returned array at the bottom where all the rest are already specified. (For debugging, see the testing/debugging section below.)
+- Go to `/event-cycle/events/index.cpp` or `/event-queue/events/index.cpp` and include your file. Put your class instance in the `get_<event-type>_events()` function, in the returned array at the bottom where all the rest are already specified. (For debugging, see: [testing/debugging](#testing))
 - Specify in the `initialize()` method whatever code the event needs to run the moment it starts. E.g. gathering variables from the scene. Here, you could also already start doing what your event might want to do immediately, like randomizing SFX, spawning apples, etc.
 - Do whatever else your events wants to do, as you would in a normal script. In `step()`, `draw()`, `entity_on_add()`, etc. This doesn't always have to be the case, sometimes `initialize()` can contain all the code you need. In this case, you can just remove whatever methods you don't need, like maybe `void draw(){}`. `checkpoint_save()` and `checkpoint_load()` are not available.
 
