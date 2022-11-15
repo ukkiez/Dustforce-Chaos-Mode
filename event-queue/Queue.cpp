@@ -37,7 +37,8 @@ class Queue : Random {
   // if true, gets only the specified DEBUG events from the get_queue_events()
   // in ./events/index.cpp, giving them a 100 weight, guaranteeing them to be
   // available to be picked every round (though still not twice in a row, and
-  // retaining the existing limit of concurrent number of events)
+  // retaining the existing limit of concurrent number of events); this can be
+  // altered by an annotation specified in the main script module
   bool DEBUG_MODE = false;
 
 	script@ script;
@@ -76,23 +77,6 @@ class Queue : Random {
 
   Queue() {
     @g = get_scene();
-
-    if ( DEBUG_MODE ) {
-      puts( "--- DEBUG_MODE ON ---\n" );
-    }
-
-    @events = get_queue_events( DEBUG_MODE );
-    for ( uint i = 0; i < events.length; i++ ) {
-      QueueEventConfig config = events[ i ].get_config();
-
-      if ( DEBUG_MODE ) {
-        config.weight = 100;
-      }
-
-      // fill up the array with all event configurations up front, so they will
-      // be readily available for the script
-      event_configs.insertLast( config );
-    }
   }
 
   void init() {
@@ -106,6 +90,23 @@ class Queue : Random {
 
       // get the main script object
       @script = cast<script@>( get_script() );
+
+      if ( DEBUG_MODE ) {
+        puts( "--- QUEUE DEBUG_MODE ON ---" );
+      }
+
+      @events = get_queue_events( DEBUG_MODE );
+      for ( uint i = 0; i < events.length; i++ ) {
+        QueueEventConfig config = events[ i ].get_config();
+
+        if ( DEBUG_MODE ) {
+          config.weight = 100;
+        }
+
+        // fill up the array with all event configurations up front, so they will
+        // be readily available for the script
+        event_configs.insertLast( config );
+      }
 
       initialized = true;
     }

@@ -27,15 +27,12 @@ class ActiveCycleEvent {
 }
 
 class Cycle : Random {
-  // is automatically set to true if any events are added to the below
-  // DEBUG_events_override array
+  // if true, gets only the specified DEBUG events from the get_cycle_events()
+  // in ./events/index.cpp, giving them a 100 weight, guaranteeing them to be
+  // available to be picked every round (though still not twice in a row, and
+  // retaining the existing limit of concurrent number of events); this can be
+  // altered by an annotation specified in the main script module
   bool DEBUG_MODE = false;
-  // putting events in here will automatically give them a 100 weight,
-  // guaranteeing them to be available to be picked every round (though still
-  // not twice in a row, and retaining the existing limit of concurrent number
-  // of events); these are all already imported
-  array<CycleEvent@> DEBUG_events_override = {
-  };
 
 	script@ script;
   scene@ g;
@@ -54,7 +51,7 @@ class Cycle : Random {
 
   bool checkpoint_loaded = false;
 
-  array<CycleEvent@> @events = get_cycle_events();
+  array<CycleEvent@> @events = {};
 
   array<ActiveCycleEvent@> @active_events = {};
 
@@ -76,24 +73,6 @@ class Cycle : Random {
 
   Cycle() {
     @g = get_scene();
-
-    if ( DEBUG_events_override.length > 0 ) {
-      // only pick DEBUG events when provided
-      events = DEBUG_events_override;
-      DEBUG_MODE = true;
-    }
-
-    for ( uint i = 0; i < events.length; i++ ) {
-      CycleEventConfig config = events[ i ].get_config();
-
-      if ( DEBUG_MODE ) {
-        config.weight = 100;
-      }
-
-      // fill up the array with all event configurations up front, so they will
-      // be readily available for the script
-      event_configs.insertLast( config );
-    }
   }
 
   void init() {
@@ -107,6 +86,23 @@ class Cycle : Random {
 
       // get the main script object
       @script = cast<script@>( get_script() );
+
+      if ( DEBUG_MODE ) {
+        puts( "--- CYCLE DEBUG_MODE ON ---" );
+      }
+
+      @events = get_cycle_events( DEBUG_MODE );
+      for ( uint i = 0; i < events.length; i++ ) {
+        CycleEventConfig config = events[ i ].get_config();
+
+        if ( DEBUG_MODE ) {
+          config.weight = 100;
+        }
+
+        // fill up the array with all event configurations up front, so they will
+        // be readily available for the script
+        event_configs.insertLast( config );
+      }
 
       initialized = true;
     }
@@ -273,7 +269,7 @@ class Cycle : Random {
     }
 
     // get new class instances of the events
-    @events = get_cycle_events();
+    @events = get_cycle_events( DEBUG_MODE );
 
     array<CycleEvent@> pool = {};
     for ( uint i = 0; i < events.length; i++ ) {

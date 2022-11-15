@@ -1,10 +1,8 @@
 #include "../CycleEvent.cpp";
 
-#include "../../lib/Random.cpp";
-
-class Tiny : CycleEvent {
+class PlayerScale : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 45, "Tiny Man Mode" );
+    return CycleEventConfig( 45, "Tiny/Beeg Mode" );
   }
 
   scene@ g;
@@ -12,7 +10,7 @@ class Tiny : CycleEvent {
 
   bool initialized = false;
 
-  Tiny() {}
+  PlayerScale() {}
 
   void step( int entities ) {}
   void draw( float sub_frame ) {}
@@ -24,9 +22,21 @@ class Tiny : CycleEvent {
 
     @g = get_scene();
     controllable@ c = controller_controllable( 0 );
-    @player = c.as_dustman();
+    if ( @c != null ) {
+      @player = c.as_dustman();
+    }
 
-    player.scale( srand_range_flt( 0.5, 0.8 ), false );
+    if ( @player == null ) {
+      return;
+    }
+
+    // randomly choose between scaling up or down
+    if ( srandom() % 2 == 0 ) {
+      player.scale( srand_range_flt( 0.5, 0.8 ), false );
+    }
+    else {
+      player.scale( 1.25, false );
+    }
 
     initialized = true;
   }

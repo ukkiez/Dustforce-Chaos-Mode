@@ -24,15 +24,19 @@ class script : script_base, Random {
   bool checkpoint_loaded = false;
 
   [persist] bool _cycle = true;
+  [persist] bool _cycle_debug_mode = false;
+
   [persist] bool _queue = true;
+  [persist] bool _queue_debug_mode = false;
+
   [persist] bool turbo_mode = false;
+  [persist] uint turbo_mode_duration = 3;
 
   // chance of turbo happening = 1/turbo_mode_chance
   uint turbo_mode_chance = 2000;
   uint turbo_mode_time = 0;
   uint text_display_time = 120;
   // duration in seconds
-  [persist] uint turbo_mode_duration = 3;
   textfield@ turbo_mode_tf;
   sprites@ turbo_warning_symbol;
 
@@ -73,9 +77,17 @@ class script : script_base, Random {
     seed_generator.init();
 
     if ( _cycle ) {
+      if ( _cycle_debug_mode ) {
+        event_cycle.DEBUG_MODE = true;
+      }
+
       event_cycle.init();
     }
     if ( _queue ) {
+      if ( _queue_debug_mode ) {
+        event_queue.DEBUG_MODE = true;
+      }
+
       event_queue.init();
     }
     event_list.init();
