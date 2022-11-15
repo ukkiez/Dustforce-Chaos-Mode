@@ -4,6 +4,7 @@
 #include "./lib/util/text.cpp";
 
 #include "./embeds/audio.cpp";
+#include "./embeds/sprites.cpp";
 
 #include "./event-cycle/Cycle.cpp";
 #include "./event-queue/Queue.cpp";
@@ -64,6 +65,9 @@ class script : script_base, Random {
 
   void build_sounds( message @msg ) {
     build_audio_embeds( msg );
+  }
+  void build_sprites( message @msg ) {
+    build_sprite_embeds( msg );
   }
 
   void on_level_start() {

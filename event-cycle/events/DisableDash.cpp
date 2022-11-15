@@ -4,9 +4,8 @@
 #include "../CycleEvent.cpp";
 
 class DisableDash : CycleEvent {
-  CycleEventConfig config = CycleEventConfig( 8, "Disable Dash" );
   CycleEventConfig get_config() {
-    return config;
+    return CycleEventConfig( 8, "Disable Dash" );
   }
 
   scene@ g;
