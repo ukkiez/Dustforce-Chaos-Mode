@@ -59,7 +59,7 @@ The main loop that the Queue module runs, consists of:
 
 *Note that every `CycleEvent` and `QueueEvent` class inherently has access to the seeded Random class methods as part of its base class, with the available methods specified in `/lib/Random.cpp`*
 
-- Once done, think about what needs to happen in `deactivate()`. Here, you revert any changes that may have been otherwise permanent. For example, if in `initialize(){}` I put `player.time_warp(2)`, in `deactivate(){}` I put `player.time_warp(0)` to revert the effect.
+- Once done, think about what needs to happen in `deactivate()`. Here, you revert any changes that may have been otherwise permanent. For example, if in `initialize(){}` I put `player.scale(2)`, in `deactivate(){}` I'll put `player.scale(1)` to revert the effect.
 
   Additionally, for CycleEvents, `deactivate()` needs to take into account checkpoint reloading, so any variables that the script uses, that are not determined in `initialize()`, should be reset here. For QueueEvents, this is not the case.
 
