@@ -10,6 +10,7 @@
 #include "./MaxSuper.cpp";
 #include "./PolishDriver.cpp";
 #include "./PropSwap/index.cpp";
+#include "./SaveCheckpoint.cpp";
 #include "./SpawnApples.cpp";
 #include "./SussyPorcupine.cpp";
 
@@ -25,7 +26,7 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<QueueEvent@> = {
-      Spikeify(),
+      SaveCheckpoint(),
     };
   }
 
@@ -42,6 +43,7 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     MaxSuper(),
     PolishDriver(),
     PropSwap(),
+    SaveCheckpoint(),
     SpawnApples(),
     SussyPorcupine(),
 

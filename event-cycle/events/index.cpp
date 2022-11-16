@@ -1,11 +1,11 @@
 #include "../CycleEvent.cpp";
 
+#include "./BecomeBook.cpp";
 #include "./CharacterSwap.cpp";
 #include "./DisableDash.cpp";
 #include "./Disco.cpp";
 #include "./FrankerZMode.cpp";
 #include "./InfiniteAircharges.cpp";
-#include "./BecomeBook.cpp";
 #include "./Letterbox.cpp";
 #include "./MinecraftMode.cpp";
 #include "./NoFriction.cpp";
@@ -29,12 +29,12 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
   }
 
   return array<CycleEvent@> = {
+    BecomeBook(),
     CharacterSwap(),
     DisableDash(),
     Disco(),
     FrankerZMode(),
     InfiniteAircharges(),
-    BecomeBook(),
     Letterbox(),
     MinecraftMode(),
     NoFriction(),
