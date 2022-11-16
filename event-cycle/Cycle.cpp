@@ -296,16 +296,16 @@ class Cycle : Random {
 
   uint pick_number_of_events() {
     // pick a range for the number of active events that is more weighted
-    // towards 3 and 4
+    // towards 2 and 3
 
     int range = srand_range( 2, 6 );
-    if ( range == 2 ) {
+    if ( range <= 3 ) {
       return 2;
     }
-    else if ( range <= 4 ) {
+    else if ( range <= 5 ) {
       return 3;
     }
-    else if ( range <= 6 ) {
+    else if ( range == 6 ) {
       return 4;
     }
     else {
