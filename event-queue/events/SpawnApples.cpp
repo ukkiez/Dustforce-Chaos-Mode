@@ -14,9 +14,6 @@ class SpawnApples : QueueEvent {
 
   SpawnApples() {}
 
-  void step( int entities ) {}
-  void draw( float sub_frame ) {}
-
   void initialize() {
     if ( initialized ) {
       return;
@@ -60,13 +57,5 @@ class SpawnApples : QueueEvent {
       apple.y( player.y() - y );
       g.add_entity( apple );
     }
-  }
-
-  void deactivate() {
-    // if ( !initialized ) {
-    //   return;
-    // }
-
-    // initialized = false;
   }
 }

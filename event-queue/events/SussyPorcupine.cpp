@@ -97,12 +97,4 @@ class SussyPorcupine : QueueEvent, callback_base {
   int tile( int n ) {
     return n * 48;
   }
-
-  void deactivate() {
-    if ( !initialized ) {
-      return;
-    }
-
-    initialized = false;
-  }
 }

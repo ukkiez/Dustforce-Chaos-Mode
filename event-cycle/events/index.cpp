@@ -5,6 +5,7 @@
 #include "./Disco.cpp";
 #include "./FrankerZMode.cpp";
 #include "./InfiniteAircharges.cpp";
+#include "./BecomeBook.cpp";
 #include "./Letterbox.cpp";
 #include "./MinecraftMode.cpp";
 #include "./NoFriction.cpp";
@@ -23,7 +24,7 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<CycleEvent@> = {
-      FrankerZMode(),
+      BecomeBook(),
     };
   }
 
@@ -33,6 +34,7 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     Disco(),
     FrankerZMode(),
     InfiniteAircharges(),
+    BecomeBook(),
     Letterbox(),
     MinecraftMode(),
     NoFriction(),
