@@ -66,8 +66,6 @@ class RandomSfx : QueueEvent {
       return;
     }
 
-    g.clear_sound_overrides();
-
     initialized = false;
   }
 }

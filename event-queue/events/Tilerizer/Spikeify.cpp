@@ -36,6 +36,9 @@ class Spikeify : QueueEvent {
     uint sprite_tile = srand_range( 1, 5 );
 
     uint x_tile = srand_range( 15, 25 );
+    if ( player.face() == -1 ) {
+      x_tile = -x_tile;
+    }
 
     spike_set = srand_range( 9, 13 );
     for ( uint i = 0; i <= 25; i++ ) {
@@ -48,11 +51,9 @@ class Spikeify : QueueEvent {
       set_filth = set_filth || replace_tf( x, y );
       set_filth = set_filth || replace_tf( x, -y );
 
-      if ( !set_filth ) {
-        continue;
+      if ( set_filth ) {
+        break;
       }
-
-      break;
     }
 
     initialized = true;
@@ -62,21 +63,28 @@ class Spikeify : QueueEvent {
     // check whether the tile has an exposed edge and whether it already has a
     // spike on it
     tileinfo@ ti = g.get_tile( x, y );
+    if ( @ti == null ) {
+      return false;
+    }
     tilefilth@ tf = g.get_tile_filth( x, y );
+    if ( @tf == null ) {
+      return false;
+    }
+
     bool set_filth = false;
     if ( ti.edge_top() != 0 && tf.top() >= 0 && tf.top() < 9 ) {
       tf.top( spike_set );
       set_filth = true;
     }
-    if ( ti.edge_left() != 0 &&tf.left() >= 0 && tf.left() < 9 ) {
+    if ( ti.edge_left() != 0 && tf.left() >= 0 && tf.left() < 9 ) {
       tf.left( spike_set );
       set_filth = true;
     }
-    if ( ti.edge_right() != 0 &&tf.right() >= 0 && tf.right() < 9 ) {
+    if ( ti.edge_right() != 0 && tf.right() >= 0 && tf.right() < 9 ) {
       tf.right( spike_set );
       set_filth = true;
     }
-    if ( ti.edge_bottom() != 0 &&tf.bottom() >= 0 && tf.bottom() < 9 ) {
+    if ( ti.edge_bottom() != 0 && tf.bottom() >= 0 && tf.bottom() < 9 ) {
       tf.bottom( spike_set );
       set_filth = true;
     }
