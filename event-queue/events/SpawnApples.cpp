@@ -4,7 +4,7 @@
 
 class SpawnApples : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 100, 0, false, "Skyhawk's Favour" );
+    return QueueEventConfig( 100, 0, "Skyhawk's Favour" );
   }
 
   scene@ g;

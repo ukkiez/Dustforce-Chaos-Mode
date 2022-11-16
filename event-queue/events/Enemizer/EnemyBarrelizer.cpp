@@ -2,7 +2,7 @@
 
 class EnemyBarrelizer : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 50, 1, false, "Enemizer", "Barrelizer" );
+    return QueueEventConfig( 50, 1, "Enemizer", "Barrelizer" );
   }
 
   scene@ g;

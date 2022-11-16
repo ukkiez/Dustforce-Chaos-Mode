@@ -18,10 +18,6 @@ class QueueEventConfig {
   // preference and the Event Queue should simply pick a random duration
   int duration;
 
-  // if true, indicates that the Event Queue should keep the event running,
-  // until the event itself knows it's finished and should deactivate
-  bool keep_running;
-
   // these determine the text and their colour displayed in the on-screen list
   // of active Chaos Events, whenever they get picked; subtext and colour are
   // optional
@@ -32,14 +28,12 @@ class QueueEventConfig {
   QueueEventConfig(
     uint weight = 1,
     int duration = -1,
-    bool keep_running = false,
     string name = "",
     string subtext = "",
     uint colour = 0xBBFFFFFF
   ) {
     this.weight = weight;
     this.duration = duration;
-    this.keep_running = keep_running;
     this.name = name;
     this.subtext = subtext;
     this.colour = colour;
@@ -50,7 +44,7 @@ class QueueEventConfig {
 
 abstract class QueueEvent : Random {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 100, -1, false, "<NAME>", "<SUBTEXT>", 0xBBFFFFFF );
+    return QueueEventConfig( 100, -1, "<NAME>", "<SUBTEXT>", 0xBBFFFFFF );
   }
 
   void step( int entities ) {}

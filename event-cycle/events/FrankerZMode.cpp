@@ -2,7 +2,7 @@
 
 #include "../CycleEvent.cpp";
 
-const uint FRANKERZ_COLOUR = 0xDDFFFFFF;
+const uint FRANKERZ_COLOUR = 0xCCFFFFFF;
 
 class FrankerZ {
   float x;
@@ -35,7 +35,7 @@ class FrankerZ {
 
 class FrankerZMode : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 45, "FrankerZ Mode", "FrankerZ FrankerZ FrankerZ" );
+    return CycleEventConfig( 40, "FrankerZ Mode", "FrankerZ FrankerZ FrankerZ" );
   }
 
   scene@ g;

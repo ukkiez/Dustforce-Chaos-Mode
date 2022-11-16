@@ -4,7 +4,7 @@
 // reported" SFX from amogus
 class SussyPorcupine : QueueEvent, callback_base {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 40, 0, false, "AMOGUS", "Sussy Porcupine" );
+    return QueueEventConfig( 40, 0, "AMOGUS", "Sussy Porcupine" );
   }
 
   scene@ g;

@@ -12,7 +12,6 @@ class ActiveQueueEvent {
 
   uint time = 0;
   uint duration = 0;
-  bool keep_running = false;
 
   bool initialized = false;
 
@@ -25,7 +24,6 @@ class ActiveQueueEvent {
     this.duration = duration;
 
     QueueEventConfig config = qe.get_config();
-    this.keep_running = config.keep_running;
 
     this.name = config.name;
     this.subtext = config.subtext;
@@ -221,12 +219,6 @@ class Queue : Random {
 
         script.event_list.add_queue_element( active_event.name, active_event.subtext );
         active_event.initialized = true;
-      }
-
-      if ( active_event.keep_running ) {
-        // keep running this event until it sends a signal to deactivate itself
-        event.step( entities );
-        continue;
       }
 
       if ( active_event.duration == 0 ) {
