@@ -7,7 +7,8 @@ Inspired by existing Chaos mods from various speedgames.
 - [Contributor's Guide](#guide)
   - [Criteria](#criteria)
   - [Types of Events](#types)
-  - [Creating a new Event](#creation)
+  - [Adding a new Event (short explanation)](#creation-short)
+  - [Adding a new Event (detailed explanation)](#creation-detailed)
   - [Testing / Debugging](#testing)
 
 ## Contributor's Guide <a id="guide"></a>
@@ -19,6 +20,8 @@ Most anything goes. Each event has a certain weight that can be attributed to it
 - Outright softlocking (coincidentally, in combination with other events, is fine)
 - Crashing the game
 - Unavoidable instant run-killers/total loss of player control
+
+It doesn't have to be super fun or extremely hilarious per se at all. But, if you want to have a flying penis do a drive-by, jizzing dust everywhere, I'm all for it.
 
 ### Types of events <a id="types"></a>
 **1. Cycle events**
@@ -46,15 +49,42 @@ The main loop that the Queue module runs, consists of:
 - `deactivate()` the event.
 - Pick a new event at any point and add it to the queue.
 
-### Creating a new event <a id="creation"></a>
+### Creating a new event (short explanation) <a id="creation-short"></a>
+- Choose Cycle or Queue Event
+  - Cycle Events = things active for longer durations
+  - Queue Events = one-time effects
+
+- Get boilerplate code from `/boilerplates`. Your script goes in `/events-cycle|events-queue/events/<your-script>.cpp`,
+
+- Use the `initialize(){}` method as a type of `level_on_start()`, or if your code just needs to run one step, put all your script code here.
+
+- Use whatever methods such as `step()` or `draw()` that your script needs.
+
+- Use the `deactivate(){}` method to revert any effects your script might otherwise permanently have. E.g. if you did `player.scale(2)`, add `player.scale(1)`. For CycleEvents, also reset your script variables here.
+
+- `#include` the file in `events/index.cpp`, add the class instance in the `get_..._events()` function there.
+- Alter the returned EventConfig in the `get_config()` method in your script.
+
+  See: `/event-cycle/CycleEvent.cpp` or `/event-queue/QueueEvent.cpp` for the meaning of the arguments.
+
+- For testing your script, see: [testing/debugging](#testing)
+
+### Creating a new event (detailed explanation) <a id="creation-detailed"></a>
 - Determine whether you want the event to be part of the Cycle or the Queue. Generally, Cycle events are things that want to be active for longer, usually affecting gameplay/control directly, e.g. scaling the player up/down, changing physics, turning on Minecraft Mode, creating a "letterbox" effect that blocks the sides of the screen, etc.
 
   Queue Events are more one-time effects, like spawning a bunch of apples, swapping props, replacing/removing geometry, etc.
-- Copy boilerplate code from `/boilerplates`, either `CycleEvent.cpp` or `QueueEvent.cpp`.
-- Create a new file in `/events-cycle/events` or `/events-queue/events`. Paste in the boilerplate code.
+- Copy boilerplate code from `/boilerplates/`, either `CycleEvent.cpp` or `QueueEvent.cpp`.
+
+- Create a new file in `/events-cycle/events/` or `/events-queue/events/`. Paste in the boilerplate code.
+
 - Give the class and constructor whatever name you want, related to what the event does.
-- Go to `/event-cycle/events/index.cpp` or `/event-queue/events/index.cpp` and include your file. Put your class instance in the `get_<event-type>_events()` function, in the returned array at the bottom where all the rest are already specified. (For debugging, see: [testing/debugging](#testing))
+
+- Go to `/event-cycle/events/index.cpp` or `/event-queue/events/index.cpp` and include your file. Put your class instance in the `get_<event-type>_events()` function, in the returned array at the bottom where all the rest are already specified.
+
+- For testing your script, see: [testing/debugging](#testing)
+
 - Specify in the `initialize()` method whatever code the event needs to run the moment it starts. E.g. gathering variables from the scene. Here, you could also already start doing what your event might want to do immediately, like randomizing SFX, spawning apples, etc.
+
 - Do whatever else your events wants to do, as you would in a normal script. In `step()`, `draw()`, `entity_on_add()`, etc. This doesn't always have to be the case, sometimes `initialize()` can contain all the code you need. In this case, you can just remove whatever methods you don't need, like maybe `void draw(){}`. `checkpoint_save()` and `checkpoint_load()` are not available.
 
 *Note that every `CycleEvent` and `QueueEvent` class inherently has access to the seeded Random class methods as part of its base class, with the available methods specified in `/lib/Random.cpp`*
@@ -68,7 +98,7 @@ The main loop that the Queue module runs, consists of:
 - Lastly, determine the Event's configuration in the `QueueEvent|CycleEvent::get_config()` method, which is a method at the top of the class in the boilerplate code. See: `/event-queue/QueueEvent.cpp` or `/event-cycle/CycleEvent.cpp` for an explanation of the arguments, in the respective `Queue|CycleEventConfig` classes.
 
 ### Testing/debugging the Event <a id="testing"></a>
-- There's an optional test map to use in `/test_level`, to put in your `level_src`. Here, the `chaos/main.cpp` script is already included (but make sure to recompile of course), and there's a simple map area to test in.
+- There's an optional test map to use in `/test_level/`, to put in your `level_src`. Here, the `chaos/main.cpp` script is already included (but make sure to recompile of course), and there's a simple map area to test in.
 - The main script module has annotations to specify `DebugMode` for both the Cycle and Queue. If on, this will only run events DEBUG events as specified in `/events-cycle|events-queue/events/index.cpp`.
 
   In the `get_<event-type>_events()` function. First thing you'll see is:
