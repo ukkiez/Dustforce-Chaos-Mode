@@ -24,6 +24,10 @@ class EnemyTimeWarp : QueueEvent {
     for ( int i = 0; i < entities; i++ ) {
       entity @e = entity_by_index( i );
 
+      if ( @e == null ) {
+        continue;
+      }
+
       if ( e.id() == player.id() ) {
         continue;
       }
