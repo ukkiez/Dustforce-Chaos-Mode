@@ -76,7 +76,7 @@ class SpawnZip : QueueEvent {
         0, // bottom
         0, // left
         0, // right
-        false, // affectSpikes
+        true, // affectSpikes
         true // overwrite
       );
     }
