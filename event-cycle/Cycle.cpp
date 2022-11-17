@@ -61,7 +61,7 @@ class Cycle : Random {
 
   // interval in seconds
   uint interval = 1;
-  uint interval_min = 3;
+  uint interval_min = 5;
   uint interval_max = 12;
   uint current_num_active_events;
 

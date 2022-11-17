@@ -14,12 +14,13 @@ Inspired by existing Chaos mods from various speedgames.
 ## Contributor's Guide <a id="guide"></a>
 **Note: "Event" is the term that we're using for the random effects/modes/things that the script activates, e.g. the "SpawnApples" event, or "MinecraftMode" event.**
 ### Criteria <a id="criteria"></a>
-Most anything goes. Each event has a certain weight that can be attributed to it, determining how likely it is to be picked each interval, so if something is rather extreme/ridiculous it can be justified as an addition just fine, simply by virtue of having it be a low % chance of occurring. That said, there's a few things I'd like to avoid in general:
+Most anything goes. Each event has a certain weight that can be attributed to it, determining how likely it is to be picked each interval, so if something is rather extreme/ridiculous it can be justified as an addition just fine, simply by virtue of having it be a low % chance of occurring. That said, there's a handful of things I'd like to avoid:
 - Causing motion sickness (so, for example, no continuous camera rotating)
 - Crashing the game
-- Unavoidable instant run-killers
+- 100% always unavoidably killing a run
+- Being overly annoying
 
-It doesn't have to be super fun or extremely hilarious per se at all. But, if you want to have a flying penis do a drive-by, jizzing dust everywhere, I'm all for it.
+It doesn't have to be super fun or extremely hilarious at all. But, if you want to have a flying penis do a drive-by, jizzing dust everywhere, I'm all for it.
 
 ### Types of events <a id="types"></a>
 **1. Cycle events**

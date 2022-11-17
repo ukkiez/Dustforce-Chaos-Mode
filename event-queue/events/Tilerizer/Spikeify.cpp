@@ -36,13 +36,27 @@ class Spikeify : QueueEvent {
     uint sprite_tile = srand_range( 1, 5 );
 
     uint x_tile = srand_range( 15, 25 );
-    if ( player.face() == -1 ) {
-      x_tile = -x_tile;
-    }
 
     spike_set = srand_range( 9, 13 );
+    // attempt to spawn a single spike somewhere to the right of the player
     for ( uint i = 0; i <= 25; i++ ) {
       int x = tile_coord( player.x() + tile( x_tile ) );
+      int y = tile_coord( player.y() + tile( i ) );
+
+      bool set_filth = false;
+      set_filth = replace_tf( x, y );
+      set_filth = set_filth || replace_tf( x, -y );
+      set_filth = set_filth || replace_tf( x, y );
+      set_filth = set_filth || replace_tf( x, -y );
+
+      if ( set_filth ) {
+        break;
+      }
+    }
+
+    // attempt to do the same to the left of the player
+    for ( uint i = 0; i <= 25; i++ ) {
+      int x = tile_coord( player.x() + tile( -x_tile ) );
       int y = tile_coord( player.y() + tile( i ) );
 
       bool set_filth = false;

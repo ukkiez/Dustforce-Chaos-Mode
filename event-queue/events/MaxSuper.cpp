@@ -16,8 +16,8 @@ class MaxSuper : QueueEvent {
     if ( @c != null ) {
       @player = c.as_dustman();
 
-      if ( player.skill_combo() < 120 ) {
-        player.skill_combo( 120 );
+      if ( player.skill_combo() < 100 ) {
+        player.skill_combo( 100 );
       }
     }
   }

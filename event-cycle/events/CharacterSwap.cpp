@@ -42,8 +42,6 @@ class CharacterSwap : CycleEvent {
     }
   }
 
-  void draw( float sub_frame ) {}
-
   void initialize() {
     if ( initialized ) {
       return;

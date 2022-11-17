@@ -227,6 +227,10 @@ class script : script_base, Random {
   }
 
   void store_positional_data() {
+    if ( @player.as_entity() == null ) {
+      return;
+    }
+
     // collect positional data, 5 positions max, for seeding purposes
     uint x = uint( abs( player.as_entity().x() ) );
     uint y = uint( abs( player.as_entity().y() ) );
