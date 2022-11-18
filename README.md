@@ -50,8 +50,8 @@ The main loop that the Queue module runs, consists of:
 
 ### Creating a new event (short explanation) <a id="creation-short"></a>
 - Choose Cycle or Queue Event
-  - Cycle Events = things active for longer durations
-  - Queue Events = one-time effects
+  - Cycle Events = usually gameplay effects, active for longer durations, balanced around only a few being possible to be active at the same time
+  - Queue Events = anything else, can be active for any arbitary duration (currently a duration has to be specified, but we can also code in the possibility for the event itself to signal when it needs to end)
 
 - Get boilerplate code from `/boilerplates`. Your script goes in `/events-cycle|events-queue/events/<your-script>.cpp`,
 
@@ -69,9 +69,10 @@ The main loop that the Queue module runs, consists of:
 - For testing your script, see: [testing/debugging](#testing)
 
 ### Creating a new event (detailed explanation) <a id="creation-detailed"></a>
-- Determine whether you want the event to be part of the Cycle or the Queue. Generally, Cycle events are things that want to be active for longer, usually affecting gameplay/control directly, e.g. scaling the player up/down, changing physics, turning on Minecraft Mode, creating a "letterbox" effect that blocks the sides of the screen, etc.
+- Determine whether you want the event to be part of the Cycle or the Queue. Generally, Cycle events are things that want to be active for longer, usually affecting gameplay/control directly, e.g. scaling the player up/down, changing physics, turning on Minecraft Mode, creating a "letterbox" effect that blocks the sides of the screen, etc. These are specifically balanced around the fact that only a few can be possibly active at the same time.
 
-  Queue Events are more one-time effects, like spawning a bunch of apples, swapping props, replacing/removing geometry, etc.
+  Queue Events are anything else, including one-time effects like spawning a bunch of apples, swapping props, replacing/removing geometry, etc. Many can possibly be active at the same time, as the duration can be arbitarily specified. Currently a duration has to be specified, but we can easily code in a way for events to signal themselves to the Queue that they need to be deactivated, and can therefore run for any amount of duration it needs to.
+
 - Copy boilerplate code from `/boilerplates/`, either `CycleEvent.cpp` or `QueueEvent.cpp`.
 
 - Create a new file in `/events-cycle/events/` or `/events-queue/events/`. Paste in the boilerplate code.
