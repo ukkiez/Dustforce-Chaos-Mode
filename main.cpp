@@ -9,6 +9,7 @@
 #include "./event-cycle/Cycle.cpp";
 #include "./event-queue/Queue.cpp";
 #include "./EventList.cpp";
+#include "./NexusChaos.cpp";
 
 class script : script_base, Random {
   scene@ g;
@@ -17,6 +18,7 @@ class script : script_base, Random {
   Cycle@ event_cycle;
   Queue@ event_queue;
   EventList@ event_list;
+  NexusChaos@ nexus_chaos;
 
   uint time = 0;
   // uint level_start_delay = 55;
@@ -53,6 +55,10 @@ class script : script_base, Random {
     @event_cycle = Cycle();
     @event_queue = Queue();
     @event_list = EventList();
+
+    if ( g.level_type() == 1 || g.level_type() == 2 ) {
+      @nexus_chaos = NexusChaos();
+    }
 
     @turbo_mode_tf = create_textfield();
     turbo_mode_tf.set_font( "Caracteres", 92 );
@@ -95,6 +101,10 @@ class script : script_base, Random {
       event_queue.init();
     }
     event_list.init();
+
+    if ( g.level_type() == 1 || g.level_type() == 2 ) {
+      nexus_chaos.init();
+    }
   }
 
   void checkpoint_save() {
@@ -190,6 +200,10 @@ class script : script_base, Random {
       if ( event_list.initialized ) {
         event_list.step( entities );
       }
+
+      if ( @nexus_chaos != null && nexus_chaos.initialized ) {
+        nexus_chaos.step( entities );
+      }
     }
     else {
       if ( turbo_mode_time >= text_display_time ) {
@@ -211,6 +225,10 @@ class script : script_base, Random {
 
         if ( event_list.initialized ) {
           event_list.step( entities );
+        }
+
+        if ( @nexus_chaos != null && nexus_chaos.initialized ) {
+          nexus_chaos.step( entities );
         }
       }
 
@@ -260,6 +278,10 @@ class script : script_base, Random {
         event_list.draw( sub_frame );
       }
 
+      if ( @nexus_chaos != null && nexus_chaos.initialized ) {
+        nexus_chaos.draw( sub_frame );
+      }
+
       return;
     }
 
@@ -273,6 +295,10 @@ class script : script_base, Random {
 
     if ( event_list.initialized ) {
       event_list.draw( sub_frame );
+    }
+
+    if ( @nexus_chaos != null && nexus_chaos.initialized ) {
+      nexus_chaos.draw( sub_frame );
     }
   }
 }

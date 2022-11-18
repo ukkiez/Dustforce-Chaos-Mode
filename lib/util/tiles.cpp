@@ -30,3 +30,16 @@ void replace_tile( scene@ g, int x, int y, int sprite_set, int sprite_tile = -1,
     );
   }
 }
+
+void set_tile( scene@ g, int x, int y, bool solid, int type = 0, int sprite_set = 1, int sprite_tile = 1, uint layer = 19, uint palette = 1 ) {
+  g.set_tile(
+    x,
+    y,
+    layer,
+    solid,
+    type,
+    sprite_set,
+    sprite_tile,
+    palette
+  );
+}

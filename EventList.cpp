@@ -33,9 +33,6 @@ class EventList {
   scene@ g;
   dustman@ player;
 
-  // int default_y = 0;
-  // int default_x = 0;
-
   // Cycle elements
   array<ListElement@> cycle_elements = {};
   uint cycle_text_display_time = 0;
