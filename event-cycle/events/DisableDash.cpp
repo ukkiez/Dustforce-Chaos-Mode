@@ -39,6 +39,10 @@ class DisableDash : CycleEvent {
   }
 
   void step( int entities ) {
+    // permanently override dash/fall intent
+    player.dash_intent( 0 );
+    player.fall_intent( 0 );
+
     if ( @tf != null ) {
       text_display_time++;
     }
@@ -59,8 +63,6 @@ class DisableDash : CycleEvent {
       @player = c.as_dustman();
     }
 
-    g.dash_enabled( true );
-
     initialized = true;
   }
 
@@ -69,7 +71,6 @@ class DisableDash : CycleEvent {
       return;
     }
 
-    g.dash_enabled( false );
     colour_index = 0;
     text_display_time = 0;
 
