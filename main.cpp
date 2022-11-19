@@ -9,7 +9,7 @@
 #include "./event-cycle/Cycle.cpp";
 #include "./event-queue/Queue.cpp";
 #include "./EventList.cpp";
-#include "./NexusChaos.cpp";
+#include "./nexus/NexusChaos.cpp";
 
 class script : script_base, Random {
   scene@ g;
@@ -124,6 +124,10 @@ class script : script_base, Random {
 
     event_cycle.checkpoint_load();
     event_queue.checkpoint_load();
+
+    if ( @nexus_chaos != null ) {
+      nexus_chaos.checkpoint_load();
+    }
   }
 
   void entity_on_add( entity@ e ) {

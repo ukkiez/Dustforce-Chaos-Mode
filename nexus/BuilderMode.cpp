@@ -1,4 +1,4 @@
-class NexusChaos {
+class BuilderMode {
   scene@ g;
   dustman@ player;
 
@@ -10,8 +10,8 @@ class NexusChaos {
   string enter_builder_mode_text = "Press TAUNT to enter\nBuilder Mode";
   string build_instructions_text = "Light attack = place\nHeavy attack = remove\nTaunt = exit";
 
-  float tile_offset_x = tile( 3 );
-  float tile_offset_x_left = tile( -4 );
+  float tile_offset_x = tile( 2 );
+  float tile_offset_x_left = tile( -3 );
   float tile_offset_y = tile( -1 );
 
   bool build_mode = false;
@@ -28,7 +28,7 @@ class NexusChaos {
 
   bool initialized = false;
 
-  NexusChaos() {}
+  BuilderMode() {}
 
   void init() {
     @g = get_scene();
@@ -90,6 +90,8 @@ class NexusChaos {
       if ( light_intent_zeroed && player.light_intent() == 10 ) {
         light_intent_zeroed = false;
         placing_tile = true;
+
+        player.light_intent( 0 );
       }
       if ( !light_intent_zeroed && player.light_intent() != 10 ) {
         light_intent_zeroed = true;
@@ -99,6 +101,7 @@ class NexusChaos {
       if ( heavy_intent_zeroed && player.heavy_intent() == 10 ) {
         heavy_intent_zeroed = false;
         removing_tile = true;
+        player.heavy_intent( 0 );
       }
       if ( !heavy_intent_zeroed && player.heavy_intent() != 10 ) {
         heavy_intent_zeroed = true;
