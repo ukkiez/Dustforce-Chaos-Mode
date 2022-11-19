@@ -1,0 +1,62 @@
+#include "../../lib/Box.cpp";
+
+#include "../NexusEvent.cpp";
+
+class OpenClose : NexusEvent {
+  scene@ g;
+  dustman@ player;
+
+  Box@ proximity_box = Box( -150, -50, 150, 50 );
+
+  array<entity@> doors = {};
+
+  int interval = 30;
+  int time = 0;
+
+  OpenClose() {
+    @g = get_scene();
+
+    controllable@ c = controller_controllable( 0 );
+    if ( @c != null ) {
+      @player = c.as_dustman();
+    }
+  }
+
+  void step( int entities ) {
+    for ( int i = 0; i < entities; i++ ) {
+      entity@ e = entity_by_index( i );
+      if ( @e == null ) {
+        continue;
+      }
+
+      if ( e.type_name() == "level_door" ) {
+        bool broke = false;
+        for ( uint j = 0; j < doors.length; j++ ) {
+          if ( e.is_same( doors[ j ] ) ) {
+            broke = true;
+            break;
+          }
+        }
+        if ( broke ) {
+          continue;
+        }
+
+        doors.insertLast( e );
+      }
+    }
+
+    flicker();
+
+    time++;
+  }
+
+  void flicker() {
+    for ( uint i = 0; i < doors.length; i++ ) {
+      entity@ door = doors[ i ];
+
+      if ( time % interval == 0 && rand() % 2 == 0 ) {
+        door.sprite_index( door.sprite_index() == "open" ? "closed" : "open" );
+      }
+    }
+  }
+}

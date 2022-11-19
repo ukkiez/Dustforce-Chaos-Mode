@@ -55,7 +55,7 @@ class ShyDoors : NexusEvent {
         }
 
         srand( timestamp_now() );
-        doors.insertLast( Door( e, rand_range( 1, 3 ) ) );
+        doors.insertLast( Door( e, rand_range( 1, 5 ) ) );
       }
     }
 
