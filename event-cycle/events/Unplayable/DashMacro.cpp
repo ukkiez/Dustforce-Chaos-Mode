@@ -24,7 +24,7 @@ class DashMacro : CycleEvent {
       player.fall_intent( 1 );
     }
 
-    if ( player.x_intent() != 0 ) {
+    if ( frames % 12 == 11 && player.x_intent() != 0 ) {
       player.face( player.x_intent() );
     }
 
