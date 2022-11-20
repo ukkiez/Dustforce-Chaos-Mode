@@ -21,8 +21,8 @@ class script : script_base, Random {
   NexusChaos@ nexus_chaos;
 
   uint time = 0;
-  // uint level_start_delay = 55;
-  uint level_start_delay = 0;
+  uint level_start_delay = 55;
+  // uint level_start_delay = 0;
 
   bool checkpoint_loaded = false;
 

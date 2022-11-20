@@ -1,6 +1,9 @@
 // Disco
 const string EMBED_funkin = "./chaos/assets/audio/ibumsfunkin.ogg";
 
+// DiscordPing
+const string EMBED_discordping = "./chaos/assets/audio/discord-ping.ogg";
+
 // PolishDriver
 const string EMBED_carPassingRtoL = "./chaos/assets/audio/car-pass-RL.ogg";
 const string EMBED_carPassingLtoR = "./chaos/assets/audio/car-pass-LR.ogg";
@@ -14,6 +17,8 @@ const string EMBED_sussy = "./chaos/assets/audio/amongus.ogg";
 
 void build_audio_embeds( message@ msg ) {
   msg.set_string( "funkin", "funkin" );
+
+  msg.set_string( "discord_ping", "discordping" );
 
   msg.set_string( "car_passing_r_to_l", "carPassingRtoL" );
   msg.set_string( "car_passing_l_to_r", "carPassingLtoR" );

@@ -17,7 +17,7 @@ class Rotator : CycleEvent {
   void step( int entities ) {
     player.rotation( 90 );
 
-    if ( time % 15 == 0 ) {
+    if ( time % 20 == 0 ) {
       player.face( -player.face() );
       player.attack_face( -player.attack_face() );
     }

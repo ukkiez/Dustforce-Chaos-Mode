@@ -15,6 +15,7 @@
 #include "./TimeWarp.cpp";
 
 #include "./Unplayable/DashMacro.cpp";
+#include "./Unplayable/WorthMode.cpp";
 #include "./Unplayable/Rotator.cpp";
 
 array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
@@ -24,8 +25,6 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<CycleEvent@> = {
-      BecomeBook(),
-      CharacterSwap(),
     };
   }
 
@@ -45,6 +44,7 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
 
     // Unplayable
     DashMacro(),
+    WorthMode(),
     Rotator(),
 
     /*

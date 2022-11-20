@@ -3,6 +3,8 @@
 #include "./Audioizer/LovelyTune.cpp";
 #include "./Audioizer/RandomSfx.cpp";
 
+#include "./DiscordPing.cpp";
+
 #include "./Enemizer/EnemyScaler.cpp";
 #include "./Enemizer/EnemyTimeWarp.cpp";
 
@@ -13,6 +15,7 @@
 #include "./SpawnApples.cpp";
 #include "./SussyPorcupine.cpp";
 
+#include "./Tilerizer/RemoveTiles.cpp";
 #include "./Tilerizer/SpawnBlock.cpp";
 #include "./Tilerizer/SpawnZip.cpp";
 #include "./Tilerizer/Spikeify.cpp";
@@ -25,6 +28,7 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<QueueEvent@> = {
+      RemoveTiles(),
     };
   }
 
@@ -37,7 +41,7 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     EnemyScaler(),
     EnemyTimeWarp(),
 
-    // MaxSuper(),
+    DiscordPing(),
     PolishDriver(),
     PropSwap(),
     SaveCheckpoint(),
@@ -45,6 +49,7 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     SussyPorcupine(),
 
     // Tilerizer
+    RemoveTiles(),
     SpawnBlock(),
     SpawnZip(),
     Spikeify(),
