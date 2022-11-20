@@ -37,7 +37,7 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     EnemyScaler(),
     EnemyTimeWarp(),
 
-    MaxSuper(),
+    // MaxSuper(),
     PolishDriver(),
     PropSwap(),
     SaveCheckpoint(),

@@ -34,9 +34,39 @@ class BecomeBook : CycleEvent {
 
   bool initialized = false;
 
+  bool set_sprites = false;
+
   BecomeBook() {}
 
   void step( int entities ) {
+    if ( !set_sprites ) {
+      // delay setting the book sprite after we remove the player's skill combo,
+      // to prevent crashing with drawing the super trail in certain states
+      if ( frames > 7 ) {
+        original_fall_max = player.fall_max();
+        original_hover_accel = player.hover_accel();
+        original_dash_max = player.dash_max();
+
+        player.fall_max( 750 );
+        player.hover_accel( 1500 );
+
+        player.dash_max( 3 );
+
+        // make player's sprite set invisible; this actually somehow has some effect
+        // on physics in some situations but we don't really care
+        player.set_sprites( create_sprites() );
+
+        @spr = create_sprites();
+        spr.add_sprite_set( "book" );
+
+        set_sprites = true;
+      }
+
+      frames++;
+
+      return;
+    }
+
     if ( !special_started ) {
       if ( !player.ground() && player.y_speed() > 1 ) {
         if ( current_sprite_name != "cue" ) {
@@ -89,6 +119,10 @@ class BecomeBook : CycleEvent {
   }
 
   void draw( float sub_frame ) {
+    if ( !set_sprites ) {
+      return;
+    }
+
     int facing = player.face();
     if ( player.attack_state() == 1 || player.attack_state() == 2 ) {
       facing = player.attack_face();
@@ -99,6 +133,8 @@ class BecomeBook : CycleEvent {
     if ( current_sprite_name == "cue" && !special_started ) {
       y = -75;
     }
+
+    y *= player.scale();
 
     if ( special_frames > 10 ) {
       // make the book disappear during special, like how dustman normally does
@@ -114,8 +150,8 @@ class BecomeBook : CycleEvent {
       player.x(),
       player.y() + y,
       0,
-      facing,
-      1.5,
+      facing * player.scale(),
+      1.5 * player.scale(),
       BOOK_COLOURS[ colour_index ]
     );
   }
@@ -135,22 +171,11 @@ class BecomeBook : CycleEvent {
       return;
     }
 
-    @original_sprites = player.get_sprites();
-    original_fall_max = player.fall_max();
-    original_hover_accel = player.hover_accel();
-    original_dash_max = player.dash_max();
-
-    // make player's sprite set invisible; this actually somehow has some effect
-    // on physics in some situations but we don't really care
-    player.set_sprites( create_sprites() );
-
-    @spr = create_sprites();
-    spr.add_sprite_set( "book" );
-
-    player.fall_max( 750 );
-    player.hover_accel( 1500 );
-
-    player.dash_max( 3 );
+    // remove the player's potential super, to prevent crashing with drawing the
+    // super trail in certain player states, as we change the player's sprite
+    // set (see step())
+    player.skill_combo( 0 );
+    g.special_enabled( true );
 
     initialized = true;
   }
@@ -160,10 +185,13 @@ class BecomeBook : CycleEvent {
       return;
     }
 
-    player.set_sprites( original_sprites );
+    g.special_enabled( false );
+    sprites@ s = create_sprites();
+    s.add_sprite_set( player.character() );
+    player.set_sprites( s );
+
     player.fall_max( original_fall_max );
     player.hover_accel( original_hover_accel );
-
     player.dash_max( original_dash_max );
 
     original_fall_max = 0;
@@ -179,6 +207,8 @@ class BecomeBook : CycleEvent {
     colour_index = 0;
 
     frames = 1;
+
+    set_sprites = false;
 
     initialized = false;
   }

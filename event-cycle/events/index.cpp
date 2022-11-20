@@ -24,7 +24,8 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<CycleEvent@> = {
-    DisableDash(),
+      BecomeBook(),
+      CharacterSwap(),
     };
   }
 
@@ -38,7 +39,6 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     Letterbox(),
     MinecraftMode(),
     NoFriction(),
-    PlayerScale(),
     TauntAndDie(),
     TiltedCamera(),
     TimeWarp(),
@@ -46,5 +46,11 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     // Unplayable
     DashMacro(),
     Rotator(),
+
+    /*
+      don't use PlayerScale() for now, as it is simply too buggy in combination
+      with other events
+    */
+    // PlayerScale(),
   };
 }
