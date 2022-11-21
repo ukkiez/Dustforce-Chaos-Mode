@@ -1,6 +1,6 @@
 #include "../../CycleEvent.cpp";
 
-class JumpMacro : CycleEvent {
+class JumpMacro : CycleEvent, callback_base {
   CycleEventConfig get_config() {
     return CycleEventConfig( 12, "Literally Unplayable", "Jump Macro" );
   }
@@ -13,8 +13,27 @@ class JumpMacro : CycleEvent {
   JumpMacro() {}
 
   void step( int entities ) {
-    if ( player.ground() || ( player.state() >= 11 && player.state() <= 14 ) ) {
+    if ( player.ground() || check_nearby_wall() || ( player.state() >= 11 && player.state() <= 14 ) ) {
       player.jump_intent( 1 );
+    }
+  }
+
+  bool check_nearby_wall() {
+    int x = tile_coord( player.x() + 24 );
+    int x2 = tile_coord( player.x() - 24 );
+    tileinfo@ ti_right = g.get_tile( x, tile_coord( player.y() - 58 ), 19 );
+    tileinfo@ ti_left = g.get_tile( x2, tile_coord( player.y() - 58 ), 19 );
+
+    if ( ( ti_right.solid() && ti_right.type() == 0 ) || ( ti_left.solid() && ti_left.type() == 0 ) ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  void on_subframe_end( dustman@ dm, int ) {
+    if ( dm.state() == 10 ) {
+      dm.state( 8 );
     }
   }
 
@@ -32,6 +51,9 @@ class JumpMacro : CycleEvent {
     if ( @player == null ) {
       return;
     }
+
+
+    player.on_subframe_end_callback( this, "on_subframe_end", 0 );
 
     initialized = true;
   }
