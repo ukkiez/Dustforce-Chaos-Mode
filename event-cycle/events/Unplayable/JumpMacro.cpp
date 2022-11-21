@@ -32,6 +32,13 @@ class JumpMacro : CycleEvent, callback_base {
   }
 
   void on_subframe_end( dustman@ dm, int ) {
+    if ( !initialized ) {
+      // make sure this particular subframe end callback is not running any more
+      // code once this event is done; it would be preferable to remove the
+      // callback entirely, but that isn't possible
+      return;
+    }
+
     if ( dm.state() == 10 ) {
       dm.state( 8 );
     }
@@ -52,9 +59,16 @@ class JumpMacro : CycleEvent, callback_base {
       return;
     }
 
-
     player.on_subframe_end_callback( this, "on_subframe_end", 0 );
 
     initialized = true;
+  }
+
+  void deactivate() {
+    if ( !initialized ) {
+      return;
+    }
+
+    initialized = false;
   }
 }

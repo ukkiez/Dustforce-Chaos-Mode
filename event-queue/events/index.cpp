@@ -3,11 +3,11 @@
 #include "./Audioizer/LovelyTune.cpp";
 #include "./Audioizer/RandomSfx.cpp";
 
-#include "./DiscordPing.cpp";
-
 #include "./Enemizer/EnemyScaler.cpp";
 #include "./Enemizer/EnemyTimeWarp.cpp";
 
+#include "./Bullies.cpp";
+#include "./DiscordPing.cpp";
 #include "./MaxSuper.cpp";
 #include "./PolishDriver.cpp";
 #include "./PropSwap/index.cpp";
@@ -28,7 +28,7 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<QueueEvent@> = {
-      RemoveTiles(),
+      Bullies(),
     };
   }
 
@@ -41,6 +41,7 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     EnemyScaler(),
     EnemyTimeWarp(),
 
+    Bullies(),
     DiscordPing(),
     PolishDriver(),
     PropSwap(),

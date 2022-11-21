@@ -15,7 +15,7 @@ class RemoveTiles : QueueEvent {
 
   void remove_tiles() {
     uint count = 0;
-    uint max = 5;
+    uint max = 10;
     for ( uint i = 0; i <= 50; i++ ) {
       uint x_tile = srand_range( 0, 25 );
       int x = tile_coord( player.x() + tile( x_tile ) );

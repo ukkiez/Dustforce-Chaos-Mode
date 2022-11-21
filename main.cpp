@@ -1,4 +1,5 @@
 #include "./lib/std.cpp";
+#include "./lib/math.cpp";
 #include "./lib/Random.cpp";
 #include "./lib/data/characters.cpp";
 #include "./lib/util/text.cpp";
@@ -21,8 +22,8 @@ class script : script_base, Random {
   NexusChaos@ nexus_chaos;
 
   uint time = 0;
-  uint level_start_delay = 55;
-  // uint level_start_delay = 0;
+  // uint level_start_delay = 55;
+  uint level_start_delay = 0;
 
   bool checkpoint_loaded = false;
 
@@ -43,8 +44,11 @@ class script : script_base, Random {
   textfield@ turbo_mode_tf;
   sprites@ turbo_warning_symbol;
 
-  uint position_history_length = 5;
+  uint position_history_length = 10;
   array<uint> position_history( position_history_length );
+  uint x_y_position_history_length = 10;
+  array<float> position_history_x( x_y_position_history_length );
+  array<float> position_history_y( x_y_position_history_length );
 
   // define one seed_generator that all Random instances will use
   SeedGenerator@ seed_generator = SeedGenerator();
@@ -167,12 +171,10 @@ class script : script_base, Random {
       return;
     }
 
-    if ( ( time % 30 ) == 0 ) {
-      // collect positional data every 30 step frames, for seeding purposes;
-      // note that the SeedGenerator gets its data from the script object, hence
-      // why we do it here
-      store_positional_data();
-    }
+    // collect positional data, for seeding purposes and for some events; note
+    // that the SeedGenerator gets its data from the script object, hence why we
+    // do it here
+    store_positional_data();
 
     time++;
 
@@ -253,11 +255,23 @@ class script : script_base, Random {
       return;
     }
 
-    // collect positional data, 5 positions max, for seeding purposes
-    uint x = uint( abs( player.as_entity().x() ) );
-    uint y = uint( abs( player.as_entity().y() ) );
-    position_history.removeAt( position_history_length-1 );
-    position_history.insertAt( 0, x + y );
+    if ( ( time % 15 ) == 0 ) {
+      // store positional data for seeding purposes
+      uint x = uint( abs( player.x() ) );
+      uint y = uint( abs( player.y() ) );
+      position_history.removeAt( position_history_length-1 );
+      position_history.insertAt( 0, x + y );
+
+      if ( ( time % 60 ) == 0 ) {
+        // store X and Y positional data, relatively infrequently, for certain
+        // events
+        position_history_x.removeAt( x_y_position_history_length-1 );
+        position_history_x.insertAt( 0, player.x() );
+
+        position_history_y.removeAt( x_y_position_history_length-1 );
+        position_history_y.insertAt( 0, player.y() );
+      }
+    }
   }
 
   void draw( float sub_frame ) {

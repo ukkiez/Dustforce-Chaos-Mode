@@ -43,6 +43,8 @@ class BecomeBook : CycleEvent {
       // delay setting the book sprite after we remove the player's skill combo,
       // to prevent crashing with drawing the super trail in certain states
       if ( frames > 7 ) {
+        // remember the original values *again* at this point, in case something
+        // changed in the meantime
         original_fall_max = player.fall_max();
         original_hover_accel = player.hover_accel();
         original_dash_max = player.dash_max();
@@ -176,6 +178,11 @@ class BecomeBook : CycleEvent {
     // set (see step())
     player.skill_combo( 0 );
     g.special_enabled( true );
+
+    // remember the original values
+    original_fall_max = player.fall_max();
+    original_hover_accel = player.hover_accel();
+    original_dash_max = player.dash_max();
 
     initialized = true;
   }
