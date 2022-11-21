@@ -1,4 +1,4 @@
-class BuilderMode {
+class NexusBuilderMode {
   scene@ g;
   dustman@ player;
 
@@ -28,7 +28,7 @@ class BuilderMode {
 
   bool initialized = false;
 
-  BuilderMode() {}
+  NexusBuilderMode() {}
 
   void init() {
     @g = get_scene();

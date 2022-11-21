@@ -10,7 +10,7 @@ class NexusChaos : Random {
 
   bool DEBUG_MODE = false;
 
-  BuilderMode@ builder_mode;
+  NexusBuilderMode@ builder_mode;
 
   array<NexusEvent@> @events;
   NexusEvent@ nexus_event;
@@ -32,7 +32,7 @@ class NexusChaos : Random {
       return;
     }
 
-    @builder_mode = BuilderMode();
+    @builder_mode = NexusBuilderMode();
     builder_mode.init();
 
     initialized = true;
@@ -44,7 +44,7 @@ class NexusChaos : Random {
       @player = c.as_dustman();
     }
 
-    @builder_mode = BuilderMode();
+    @builder_mode = NexusBuilderMode();
     builder_mode.init();
   }
 
