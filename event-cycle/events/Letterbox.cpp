@@ -4,7 +4,7 @@
 
 class Letterbox : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 35, "Letterbox", "or pillarbox" );
+    return CycleEventConfig( 350, "Letterbox", "or pillarbox" );
   }
 
   scene@ g;

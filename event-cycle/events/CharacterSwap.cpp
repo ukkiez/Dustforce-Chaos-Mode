@@ -5,7 +5,7 @@
 
 class CharacterSwap : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 50, "Character Swap" );
+    return CycleEventConfig( 500, "Character Swap" );
   }
 
   scene@ g;

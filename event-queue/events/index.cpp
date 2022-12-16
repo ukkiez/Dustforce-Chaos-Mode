@@ -8,7 +8,7 @@
 
 #include "./Bullies.cpp";
 #include "./DiscordPing.cpp";
-#include "./LoadingScreen.cpp";
+#include "./Maintenance.cpp";
 #include "./MaxSuper.cpp";
 #include "./PolishDriver.cpp";
 #include "./PropSwap/index.cpp";
@@ -29,7 +29,7 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<QueueEvent@> = {
-      LoadingScreen(),
+      Maintenance(),
     };
   }
 
@@ -43,7 +43,7 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     EnemyTimeWarp(),
 
     DiscordPing(),
-    LoadingScreen(),
+    Maintenance(),
     PolishDriver(),
     PropSwap(),
     SaveCheckpoint(),

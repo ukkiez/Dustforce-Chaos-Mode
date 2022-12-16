@@ -28,7 +28,7 @@ It doesn't have to be super fun or extremely hilarious at all. But, if you want 
 Runs multiple events at the same time, for the same random duration, and deactivates them at the same time, before picking a new list for the next "cycle".
 
 The main loop that the Cycle module runs, consists of:
-- Roll a number 1-100
+- Roll a number 1-1000
 - Randomly pick a list of events, whose weight is >= the roll.
 - Roll a random duration to run the events.
 - Call all events' defined `initialize()` methods
@@ -41,7 +41,7 @@ The main loop that the Cycle module runs, consists of:
 Runs events at a faster rate than the Cycle, one at a time. The duration of the events is not tied to the intervals at which new events are picked. In other words, Event `X` can still be running when new Event `Y` is picked. Hence, the name "Queue".
 
 The main loop that the Queue module runs, consists of:
-- Roll a number 1-100
+- Roll a number 1-1000
 - Randomly pick **one** event, whose weight is >= the roll.
 - `initialize()` the event.
 - Run the event for as long as `QueueEvent::get_config()` specifies (which could even be `0`, in which case only `initialize()` would be called, or can be `-1` so that the Queue picks a random duration instead)

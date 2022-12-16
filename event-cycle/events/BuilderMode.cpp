@@ -2,7 +2,7 @@
 
 class BuilderMode : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 25, "Builder Mode", "Impromptu Ramen Map" );
+    return CycleEventConfig( 250, "Builder Mode", "Impromptu Ramen Map" );
   }
 
   scene@ g;

@@ -6,7 +6,7 @@
 
 class RandomSfx : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 100, -1, "Audioizer", "Random SFX" );
+    return QueueEventConfig( 1000, -1, "Audioizer", "Random SFX" );
   }
 
   scene@ g;

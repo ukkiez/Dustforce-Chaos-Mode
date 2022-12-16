@@ -2,7 +2,7 @@
 
 class DashMacro : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 12, "Literally Unplayable", "Dash Macro" );
+    return CycleEventConfig( 120, "Literally Unplayable", "Dash Macro" );
   }
 
   scene@ g;

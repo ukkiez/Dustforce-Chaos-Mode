@@ -2,11 +2,11 @@
 
 class CycleEventConfig {
   /*
-    Weight is a number 1-100 that specifies what percent chance the Event has to
-    be in the pool of activateable Events, every time the Cycler wants to
+    Weight is a number 1-1000 that specifies what percent chance the Event has
+    to be in the pool of activateable Events, every time the Cycler wants to
     activate new ones.
 
-    The way we pick Events is first to generate a number n from 1 to 100, and
+    The way we pick Events is first to generate a number n from 1 to 1000, and
     filter out all Events that have a weight below n. What we are left with is a
     pool of Events available to be actually activated. Finally, we pick a random
     number of modes from this leftover pool. It's also not possible for Events
@@ -21,7 +21,7 @@ class CycleEventConfig {
   string subtext;
   uint colour;
 
-  CycleEventConfig( uint weight = 1, string name = "", string subtext = "", uint colour = 0xBBFFFFFF ) {
+  CycleEventConfig( uint weight = 1000, string name = "", string subtext = "", uint colour = 0xBBFFFFFF ) {
     this.weight = weight;
     this.name = name;
     this.subtext = subtext;
@@ -33,7 +33,7 @@ class CycleEventConfig {
 
 abstract class CycleEvent : Random {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 100, "<NAME>", "<SUBTEXT>", 0xBBFFFFFF );
+    return CycleEventConfig( 1000, "<NAME>", "<SUBTEXT>", 0xBBFFFFFF );
   }
 
   void step( int entities ) {}

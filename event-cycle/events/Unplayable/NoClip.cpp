@@ -2,7 +2,7 @@
 
 class NoClip : CycleEvent, callback_base {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 10, "Literally Unplayable", "No Clip Mode" );
+    return CycleEventConfig( 100, "Literally Unplayable", "No Clip Mode" );
   }
 
   scene@ g;

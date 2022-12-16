@@ -33,7 +33,7 @@ class ActiveQueueEvent {
 
 class Queue : Random {
   // if true, gets only the specified DEBUG events from the get_queue_events()
-  // in ./events/index.cpp, giving them a 100 weight, guaranteeing them to be
+  // in ./events/index.cpp, giving them a 1000 weight, guaranteeing them to be
   // available to be picked every round (though still not twice in a row, and
   // retaining the existing limit of concurrent number of events); this can be
   // altered by an annotation specified in the main script module
@@ -98,7 +98,7 @@ class Queue : Random {
         QueueEventConfig config = events[ i ].get_config();
 
         if ( DEBUG_MODE ) {
-          config.weight = 100;
+          config.weight = 1000;
         }
 
         // fill up the array with all event configurations up front, so they will
@@ -188,8 +188,9 @@ class Queue : Random {
     }
 
     // generate a range to exclude events based on their weight, e.g. a rolled
-    // range of 50 means all weights below 50 should not be included in the pool
-    uint range = srand_range( 1, 100 );
+    // range of 500 means all weights below 500 should not be included in the
+    // pool
+    uint range = srand_range( 1, 1000 );
 
     // get new class instances of the events
     @events = get_queue_events( DEBUG_MODE );

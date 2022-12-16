@@ -5,7 +5,7 @@
 
 class DisableDash : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 8, "Disable Dash" );
+    return CycleEventConfig( 80, "Disable Dash" );
   }
 
   scene@ g;

@@ -35,7 +35,7 @@ class FrankerZ {
 
 class FrankerZMode : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 40, "FrankerZ Mode", "FrankerZ FrankerZ FrankerZ" );
+    return CycleEventConfig( 400, "FrankerZ Mode", "FrankerZ FrankerZ FrankerZ" );
   }
 
   scene@ g;

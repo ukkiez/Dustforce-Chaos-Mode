@@ -2,7 +2,7 @@
 
 class BecomeBook : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 15, "Literary Terrorist", "Become a Book" );
+    return CycleEventConfig( 150, "Literary Terrorist", "Become a Book" );
   }
 
   array<uint> BOOK_COLOURS = {

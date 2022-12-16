@@ -2,7 +2,7 @@
 
 class Bullies : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 5, 605, "An invader", "has entered your world" );
+    return QueueEventConfig( 50, 605, "An invader", "has entered your world" );
   }
 
   scene@ g;

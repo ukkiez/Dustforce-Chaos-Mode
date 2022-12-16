@@ -4,7 +4,7 @@
 
 class PolishDriver : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 35, 300, "Polish Driver" );
+    return QueueEventConfig( 350, 300, "Polish Driver" );
   }
 
   scene@ g;

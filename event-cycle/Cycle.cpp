@@ -28,7 +28,7 @@ class ActiveCycleEvent {
 
 class Cycle : Random {
   // if true, gets only the specified DEBUG events from the get_cycle_events()
-  // in ./events/index.cpp, giving them a 100 weight, guaranteeing them to be
+  // in ./events/index.cpp, giving them a 1000 weight, guaranteeing them to be
   // available to be picked every round (though still not twice in a row, and
   // retaining the existing limit of concurrent number of events); this can be
   // altered by an annotation specified in the main script module
@@ -96,7 +96,7 @@ class Cycle : Random {
         CycleEventConfig config = events[ i ].get_config();
 
         if ( DEBUG_MODE ) {
-          config.weight = 100;
+          config.weight = 1000;
         }
 
         // fill up the array with all event configurations up front, so they will
@@ -260,11 +260,12 @@ class Cycle : Random {
     uint range;
     if ( !turbo_mode ) {
       // generate a range to exclude events based on their weight, e.g. a rolled
-      // range of 50 means all weights below 50 should not be included in the pool
-      range = srand_range( 1, 100 );
+      // range of 500 means all weights below 500 should not be included in the
+      // pool
+      range = srand_range( 1, 1000 );
     }
     else {
-      // practically give all events a weight of 100 during turbo mode
+      // practically give all events a weight of 1000 during turbo mode
       range = 1;
     }
 

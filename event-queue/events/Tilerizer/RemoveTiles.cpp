@@ -3,7 +3,7 @@
 
 class RemoveTiles : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 25, 0, "Tilerizer", "Remove Fun" );
+    return QueueEventConfig( 250, 0, "Tilerizer", "Remove Fun" );
   }
 
   scene@ g;

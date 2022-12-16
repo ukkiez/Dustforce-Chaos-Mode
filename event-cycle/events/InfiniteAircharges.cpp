@@ -2,7 +2,7 @@
 
 class InfiniteAircharges : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 70, "Infinite Aircharges" );
+    return CycleEventConfig( 700, "Infinite Aircharges" );
   }
 
   scene@ g;

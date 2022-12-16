@@ -2,7 +2,7 @@
 
 class EnemyTimeWarp : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 50, 1, "Enemizer", "Fasterizer" );
+    return QueueEventConfig( 500, 1, "Enemizer", "Fasterizer" );
   }
 
   scene@ g;

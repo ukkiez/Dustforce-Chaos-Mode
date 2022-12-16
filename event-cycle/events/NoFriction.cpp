@@ -2,7 +2,7 @@
 
 class NoFriction : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 80, "No Friction" );
+    return CycleEventConfig( 800, "No Friction" );
   }
 
   scene@ g;

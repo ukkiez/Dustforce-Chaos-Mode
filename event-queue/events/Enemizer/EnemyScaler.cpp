@@ -3,7 +3,7 @@
 
 class EnemyScaler : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 70, 1, "Enemizer", "Sizerizer" );
+    return QueueEventConfig( 700, 1, "Enemizer", "Sizerizer" );
   }
 
   scene@ g;

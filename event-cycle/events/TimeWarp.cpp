@@ -4,7 +4,7 @@
 
 class TimeWarp : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 50, "Time Warp" );
+    return CycleEventConfig( 500, "Time Warp" );
   }
 
   scene@ g;
@@ -26,7 +26,7 @@ class TimeWarp : CycleEvent {
     controllable@ c = controller_controllable( 0 );
     @player = c.as_dustman();
 
-    srandom() % 2 == 0 ? player.time_warp( 0.7 ) : player.time_warp( 1.5 );
+    srandom() % 2 == 0 ? player.time_warp( 0.8 ) : player.time_warp( 1.5 );
 
     initialized = true;
   }

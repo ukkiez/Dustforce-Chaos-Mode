@@ -5,7 +5,7 @@
 
 class SpawnBlock : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 65, 0, "Exec Func Ruin Level", "Surprise bloche" );
+    return QueueEventConfig( 650, 0, "Exec Func Ruin Level", "Surprise bloche" );
   }
 
   scene@ g;

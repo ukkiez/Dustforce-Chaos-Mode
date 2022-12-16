@@ -2,7 +2,7 @@
 
 class PlayerScale : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 45, "Tiny/Beeg Mode" );
+    return CycleEventConfig( 450, "Tiny/Beeg Mode" );
   }
 
   scene@ g;

@@ -4,7 +4,7 @@
 
 class LovelyTune : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 50, -1, "Audioizer", "A Lovely Tune" );
+    return QueueEventConfig( 500, -1, "Audioizer", "A Lovely Tune" );
   }
 
   scene@ g;

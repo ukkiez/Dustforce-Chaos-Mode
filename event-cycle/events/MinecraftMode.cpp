@@ -4,7 +4,7 @@
 
 class MinecraftMode : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 40, "Minecraft Mode" );
+    return CycleEventConfig( 400, "Minecraft Mode" );
   }
 
   scene@ g;

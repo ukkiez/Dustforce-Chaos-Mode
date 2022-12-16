@@ -2,7 +2,7 @@
 
 class JumpMacro : CycleEvent, callback_base {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 12, "Literally Unplayable", "Jump Macro" );
+    return CycleEventConfig( 120, "Literally Unplayable", "Jump Macro" );
   }
 
   scene@ g;

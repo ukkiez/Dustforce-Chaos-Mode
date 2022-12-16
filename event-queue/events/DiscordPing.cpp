@@ -2,7 +2,7 @@
 
 class DiscordPing : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 10, 0, "Message" );
+    return QueueEventConfig( 100, 0, "Message" );
   }
 
   scene@ g;

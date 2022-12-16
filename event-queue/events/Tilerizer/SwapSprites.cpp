@@ -7,7 +7,7 @@
 
 class SwapSprites : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 80, 0, "Exec Func Ruin Level", "Beautify" );
+    return QueueEventConfig( 800, 0, "Exec Func Ruin Level", "Beautify" );
   }
 
   scene@ g;

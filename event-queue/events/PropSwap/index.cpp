@@ -6,7 +6,7 @@
 
 class PropSwap : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 100, 0, "Prop Swap" );
+    return QueueEventConfig( 1000, 0, "Prop Swap" );
   }
 
   scene@ g;

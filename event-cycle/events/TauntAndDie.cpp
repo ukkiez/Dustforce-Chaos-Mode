@@ -5,7 +5,7 @@
 
 class TauntAndDie : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 15, "Mr. Simon Says" );
+    return CycleEventConfig( 150, "Mr. Simon Says" );
   }
 
   scene@ g;

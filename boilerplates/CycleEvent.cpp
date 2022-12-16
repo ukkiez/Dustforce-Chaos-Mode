@@ -2,7 +2,7 @@
 
 class Example : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 50, "NAME", "SUBTEXT" );
+    return CycleEventConfig( 500, "NAME", "SUBTEXT" );
   }
 
   scene@ g;

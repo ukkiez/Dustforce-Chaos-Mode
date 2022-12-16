@@ -2,7 +2,7 @@
 
 class Example : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 50, -1, "NAME", "SUBTEXT" );
+    return QueueEventConfig( 500, -1, "NAME", "SUBTEXT" );
   }
 
   scene@ g;

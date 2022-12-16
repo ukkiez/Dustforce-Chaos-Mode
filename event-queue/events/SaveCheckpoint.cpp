@@ -4,7 +4,7 @@
 
 class SaveCheckpoint : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 25, 60, "Save Checkpoint" );
+    return QueueEventConfig( 250, 60, "Save Checkpoint" );
   }
 
   scene@ g;
