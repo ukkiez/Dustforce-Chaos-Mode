@@ -28,7 +28,6 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<QueueEvent@> = {
-      Bullies(),
     };
   }
 
@@ -41,7 +40,6 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     EnemyScaler(),
     EnemyTimeWarp(),
 
-    Bullies(),
     DiscordPing(),
     PolishDriver(),
     PropSwap(),
@@ -55,5 +53,9 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     SpawnZip(),
     Spikeify(),
     SwapSprites(),
+
+    // comment out Bullies for now, since AI controlled dustman entities only
+    // work in Dustmod-type levels unfortunately
+    // Bullies(),
   };
 }

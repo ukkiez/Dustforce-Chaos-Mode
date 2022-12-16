@@ -34,7 +34,11 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
   return array<CycleEvent@> = {
     BecomeBook(),
     BuilderMode(),
-    CharacterSwap(),
+
+    // don't use character swap for the moment, as it has crashing behaviour at
+    // the moment
+    // CharacterSwap(),
+
     DisableDash(),
     Disco(),
     FrankerZMode(),
@@ -53,10 +57,8 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     Rotator(),
     WorthMode(),
 
-    /*
-      don't use PlayerScale() for now, as it is simply too buggy in combination
-      with other events
-    */
+    // don't use PlayerScale() for now, as it is simply too buggy in combination
+    // with other events
     // PlayerScale(),
   };
 }
