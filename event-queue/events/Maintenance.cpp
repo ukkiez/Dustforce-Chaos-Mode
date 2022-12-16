@@ -25,6 +25,7 @@ class Maintenance : QueueEvent {
     "Updating Windows...",
   };
 
+  script@ _script;
   scene@ g;
   dustman@ player;
 
@@ -52,7 +53,9 @@ class Maintenance : QueueEvent {
   uint current_text_interval = 10;
 
   uint start_delay = 120;
-  array<int> lag_array( 800000 );
+
+  int lag_array_length = 800000;
+  array<int> lag_array( 0 );
 
   uint frames = 0;
 
@@ -60,7 +63,7 @@ class Maintenance : QueueEvent {
   uint end_frames = 0;
   uint end_frames_max = 60;
 
-  bool initialized = false;
+  bool draw_screen_fader = false;
 
   Maintenance() {
     @main_text = create_textfield();
@@ -72,6 +75,8 @@ class Maintenance : QueueEvent {
     subtext.set_font( "ProximaNovaReg", 58 );
     subtext.text( loading_text_start );
     subtext.colour( 0xDDFFFFFF );
+
+    @g = get_scene();
   }
 
   void step( int entities ) {
@@ -139,18 +144,25 @@ class Maintenance : QueueEvent {
     draw_text( main_text, 0, -100 );
     draw_text( subtext, 0, 125 );
 
-    // draw an opaque black rectangle across the entire screen to darken it
-    g.draw_rectangle_hud(
-      20, 1, -800, -450, 800, 450, 0, 0x22000000
-    );
+    if ( draw_screen_fader ) {
+      // draw an opaque black rectangle across the entire screen to darken it
+      g.draw_rectangle_hud(
+        20, 1, -800, -450, 800, 450, 0, 0x22000000
+      );
+    }
   }
 
   void initialize() {
-    if ( initialized ) {
-      return;
+    @g = get_scene();
+
+    // get the main script object
+    @_script = cast<script@>( get_script() );
+
+    if ( !_script.turbo_mode ) {
+      lag_array.resize( lag_array_length );
+      draw_screen_fader = true;
     }
 
-    @g = get_scene();
     controllable@ c = controller_controllable( 0 );
     if ( @c != null ) {
       @player = c.as_dustman();
