@@ -8,6 +8,7 @@
 
 #include "./Bullies.cpp";
 #include "./DiscordPing.cpp";
+#include "./LoadingScreen.cpp";
 #include "./MaxSuper.cpp";
 #include "./PolishDriver.cpp";
 #include "./PropSwap/index.cpp";
@@ -28,6 +29,7 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<QueueEvent@> = {
+      LoadingScreen(),
     };
   }
 
@@ -41,6 +43,7 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     EnemyTimeWarp(),
 
     DiscordPing(),
+    LoadingScreen(),
     PolishDriver(),
     PropSwap(),
     SaveCheckpoint(),
@@ -54,8 +57,14 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     Spikeify(),
     SwapSprites(),
 
-    // comment out Bullies for now, since AI controlled dustman entities only
-    // work in Dustmod-type levels unfortunately
+    // don't add Bullies for now, since AI controlled dustman entities only work
+    // in Dustmod-type levels unfortunately
     // Bullies(),
+
+    // don't add MaxSuper() for now, as the game could crash if you get super
+    // while being a book (which we try hard to prevent by removing and
+    // disabling super when being a book, but this doesn't circumvent the
+    // MaxSuper event of course)
+    // MaxSuper(),
   };
 }
