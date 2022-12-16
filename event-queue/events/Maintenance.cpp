@@ -2,10 +2,10 @@
 
 class Maintenance : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 5, 500, "Maintenance" );
+    return QueueEventConfig( 10, 500, "Surprise Maintenance" );
   }
 
-  string loading_text_start = "Oops, hold on Fresh";
+  string loading_text_start = "Sorry, hold on Fresh";
   string loading_text_finish = "Unloading loading bar...";
 
   array<string> loading_text = {
@@ -69,19 +69,26 @@ class Maintenance : QueueEvent {
     main_text.colour( 0xDDFFFFFF );
 
     @subtext = create_textfield();
-    subtext.set_font( "ProximaNovaReg", 36 );
+    subtext.set_font( "ProximaNovaReg", 58 );
     subtext.text( loading_text_start );
     subtext.colour( 0xDDFFFFFF );
   }
 
   void step( int entities ) {
+    if ( done ) {
+      return;
+    }
+
     frames++;
 
     if ( frames < start_delay ) {
       return;
     }
 
-    main_text.text( "Loading..." );
+    if ( main_text.text() != "Loading..." ) {
+      main_text.text( "Loading..." );
+      subtext.set_font( "ProximaNovaReg", 36 );
+    }
 
     if ( bar_width >= empty_bar_x2 ) {
       if ( end_frames >= end_frames_max ) {
@@ -152,15 +159,5 @@ class Maintenance : QueueEvent {
     if ( @player == null ) {
       return;
     }
-
-    initialized = true;
-  }
-
-  void deactivate() {
-    if ( !initialized ) {
-      return;
-    }
-
-    initialized = false;
   }
 }
