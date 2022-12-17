@@ -5,6 +5,7 @@
 #include "./events/index.cpp";
 
 class NexusChaos : Random {
+  script@ _script;
   scene@ g;
   dustman@ player;
 
@@ -18,6 +19,15 @@ class NexusChaos : Random {
   bool chose_to_activate = false;
 
   bool initialized = false;
+
+  array<string> NO_DISPLAY_NAME_CHANGE_DOORS = {
+    "newtutorial1",
+    "newtutorial2",
+    "newtutorial3",
+  };
+  array<string> NO_DISPLAY_NAME_CHANGE_NEXUSES = {
+    "Single Player Nexus",
+  };
 
   NexusChaos() {}
 
@@ -36,6 +46,9 @@ class NexusChaos : Random {
 
     @builder_mode = NexusBuilderMode();
     builder_mode.init();
+
+    // get the main script object
+    @_script = cast<script@>( get_script() );
 
     initialized = true;
   }
@@ -56,14 +69,26 @@ class NexusChaos : Random {
     }
 
     if ( !chose_to_activate && @nexus_event == null ) {
-      for ( int i = 0; i < entities; i++ ) {
-        entity@ e = entity_by_index( i );
-        if ( @e == null ) {
-          continue;
-        }
+      if ( NO_DISPLAY_NAME_CHANGE_NEXUSES.find( _script.g.map_name() ) < 0 ) {
+        // don't change the display name of doors in certain nexuses, like the
+        // main Single Player Nexus, to make full-game runs a bit less annoying
+        // and easier to understand
 
-        if ( e.type_name() == "level_door" ) {
-          e.vars().get_var( "display_name" ).set_string( "CHAOS" );
+        for ( int i = 0; i < entities; i++ ) {
+          entity@ e = entity_by_index( i );
+          if ( @e == null ) {
+            continue;
+          }
+
+          if ( e.type_name() == "level_door" ) {
+            if ( NO_DISPLAY_NAME_CHANGE_DOORS.find( e.vars().get_var( "file_name" ).get_string() ) >= 0 ) {
+              // don't change the display name of certain doors, like the
+              // tutorials (mostly to avoid confusion/annoyance)
+              continue;
+            }
+
+            e.vars().get_var( "display_name" ).set_string( "CHAOS" );
+          }
         }
       }
 
