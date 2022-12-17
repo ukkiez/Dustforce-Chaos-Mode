@@ -107,6 +107,10 @@ class script : script_base, Random {
     event_list.init();
 
     if ( g.level_type() == 1 || g.level_type() == 2 ) {
+      // start Chaos immediately as the player gets control, which is the 14th
+      // frame in Nexuses
+      level_start_delay = 14;
+
       nexus_chaos.init();
     }
   }

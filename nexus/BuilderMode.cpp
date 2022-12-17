@@ -69,6 +69,8 @@ class NexusBuilderMode {
       else {
         instructions_builder_mode.text( enter_builder_mode_text );
       }
+
+      player.taunt_intent( 0 );
     }
 
     if ( build_mode ) {
