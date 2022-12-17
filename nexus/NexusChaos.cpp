@@ -8,7 +8,7 @@ class NexusChaos : Random {
   scene@ g;
   dustman@ player;
 
-  bool DEBUG_MODE = false;
+  bool DEBUG_MODE = true;
 
   NexusBuilderMode@ builder_mode;
 
@@ -71,17 +71,10 @@ class NexusChaos : Random {
 
       srand( timestamp_now() );
       int rand_n = rand();
-      if ( rand_n % 2 == 0 ) {
+      if ( DEBUG_MODE || rand_n % 2 == 0 ) {
         srand( timestamp_now() );
         // activate a random nexus event, 50% of the time
         @nexus_event = events[ rand_range( 0, events.length - 1 ) ];
-      }
-
-      if ( @nexus_event != null ) {
-        puts( "true" );
-      }
-      else {
-        puts( "false" );
       }
 
       chose_to_activate = true;
