@@ -94,9 +94,6 @@ class SwapDoors : NexusEvent {
 
     door_2.x( door_1_x );
     door_2.y( door_1_y );
-
-    puts( "Swapped: " + door_1.vars().get_var( "file_name" ).get_string() );
-    puts( "Swapped: " + door_2.vars().get_var( "file_name" ).get_string() );
   }
 
   bool is_swappable( entity@ door ) {

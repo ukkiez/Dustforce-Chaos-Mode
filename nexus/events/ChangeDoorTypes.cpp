@@ -50,7 +50,12 @@ class ChangeDoorTypes : NexusEvent {
           continue;
         }
 
-        e.vars().get_var( "door_set" ).set_int32( LOCKLESS_DOOR_TYPES[ rand_range( 0, LOCKLESS_DOOR_TYPES.length-1 ) ] );
+        if ( e.vars().get_var( "door_set" ).get_int32() != 0 ) {
+          // change the door type; note that if doors have a set of 0, for
+          // whatever reason changing this will break the door and it won't be
+          // openable
+          e.vars().get_var( "door_set" ).set_int32( LOCKLESS_DOOR_TYPES[ rand_range( 0, LOCKLESS_DOOR_TYPES.length-1 ) ] );
+        }
 
         doors.insertLast( e );
       }

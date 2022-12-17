@@ -69,6 +69,11 @@ class ShyDoors : NexusEvent {
         continue;
       }
 
+      if ( _door.entity.vars().get_var( "door_set" ).get_int32() == 0 ) {
+        // don't walk doors that are invisible
+        continue;
+      }
+
       entity@ door = _door.entity;
 
       // check if a player is inside the proximity box
