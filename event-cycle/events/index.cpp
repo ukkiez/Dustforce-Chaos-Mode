@@ -5,6 +5,7 @@
 #include "./CharacterSwap.cpp";
 #include "./DisableDash.cpp";
 #include "./Disco.cpp";
+#include "./EnemyKnockback/index.cpp";
 #include "./FrankerZMode.cpp";
 #include "./InfiniteAircharges.cpp";
 #include "./Letterbox.cpp";
@@ -28,6 +29,7 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<CycleEvent@> = {
+      EnemyKnockback(),
     };
   }
 
