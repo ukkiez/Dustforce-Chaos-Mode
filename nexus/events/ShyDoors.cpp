@@ -71,8 +71,7 @@ class ShyDoors : NexusEvent {
 
       entity@ door = _door.entity;
 
-      // check if a player is inside the car box, and if they are mark that they
-      // were hit, unless they are supering
+      // check if a player is inside the proximity box
       int _collision = g.get_entity_collision(
         door.y() + proximity_box.top,
         door.y() + proximity_box.bottom,
@@ -82,8 +81,7 @@ class ShyDoors : NexusEvent {
       );
 
       if ( _collision > 0 ) {
-        // player is inside range of a door
-
+        // player is inside range of a door, so have it start walking away
         bool right = false;
         if ( player.x() - door.x() > 0 ) {
           right = true;

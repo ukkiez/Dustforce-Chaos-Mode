@@ -37,7 +37,7 @@ class script : script_base, Random {
   [persist] uint turbo_mode_duration = 3;
 
   // chance of turbo happening = 1/turbo_mode_chance
-  uint turbo_mode_chance = 1750;
+  uint turbo_mode_chance = 1500;
   uint turbo_mode_time = 0;
   uint text_display_time = 120;
   // duration in seconds

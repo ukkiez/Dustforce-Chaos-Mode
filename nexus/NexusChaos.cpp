@@ -15,6 +15,8 @@ class NexusChaos : Random {
   array<NexusEvent@> @events;
   NexusEvent@ nexus_event;
 
+  bool chose_to_activate = false;
+
   bool initialized = false;
 
   NexusChaos() {}
@@ -53,7 +55,7 @@ class NexusChaos : Random {
       builder_mode.step( entities );
     }
 
-    if ( @nexus_event == null ) {
+    if ( !chose_to_activate && @nexus_event == null ) {
       for ( int i = 0; i < entities; i++ ) {
         entity@ e = entity_by_index( i );
         if ( @e == null ) {
@@ -68,7 +70,21 @@ class NexusChaos : Random {
       @events = get_nexus_events( DEBUG_MODE );
 
       srand( timestamp_now() );
-      @nexus_event = events[ rand_range( 0, events.length - 1 ) ];
+      int rand_n = rand();
+      if ( rand_n % 2 == 0 ) {
+        srand( timestamp_now() );
+        // activate a random nexus event, 50% of the time
+        @nexus_event = events[ rand_range( 0, events.length - 1 ) ];
+      }
+
+      if ( @nexus_event != null ) {
+        puts( "true" );
+      }
+      else {
+        puts( "false" );
+      }
+
+      chose_to_activate = true;
     }
 
     if ( @nexus_event != null ) {

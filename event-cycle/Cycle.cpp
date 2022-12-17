@@ -110,15 +110,15 @@ class Cycle : Random {
 
   void entity_on_add( entity@ e ) {
     if ( active_event ) {
-      for ( uint i = 0; i < current_num_active_events; i++ ) {
-        events[ active_event_indexes[ i ] ].entity_on_add( e );
+      for ( uint i = 0; i < active_events.length; i++ ) {
+        active_events[ i ].event.entity_on_add( e );
       }
     }
   }
   void entity_on_remove( entity@ e ) {
     if ( active_event ) {
-      for ( uint i = 0; i < current_num_active_events; i++ ) {
-        events[ active_event_indexes[ i ] ].entity_on_remove( e );
+      for ( uint i = 0; i < active_events.length; i++ ) {
+        active_events[ i ].event.entity_on_remove( e );
       }
     }
   }

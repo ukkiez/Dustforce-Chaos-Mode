@@ -2,7 +2,7 @@
 
 class Maintenance : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 10, 500, "Surprise Maintenance" );
+    return QueueEventConfig( 50, 500, "Surprise Maintenance" );
   }
 
   string loading_text_start = "Sorry, hold on Fresh";

@@ -43,6 +43,7 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
 
     DisableDash(),
     Disco(),
+    EnemyKnockback(),
     FrankerZMode(),
     InfiniteAircharges(),
     Letterbox(),
