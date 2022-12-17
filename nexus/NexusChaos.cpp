@@ -8,7 +8,7 @@ class NexusChaos : Random {
   scene@ g;
   dustman@ player;
 
-  bool DEBUG_MODE = true;
+  bool DEBUG_MODE = false;
 
   NexusBuilderMode@ builder_mode;
 
