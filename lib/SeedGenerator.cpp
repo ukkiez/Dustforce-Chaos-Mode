@@ -52,6 +52,15 @@ class SeedGenerator {
   // seed specific to levels by map name
   uint generate_level_name_seed() {
     uint _seed = 0;
+    if ( script.g.level_type() == 1 || script.g.level_type() == 2 ) {
+      // in Nexuses, use the current timestamp to have e.g. going to New Game or
+      // entering a Nexus for the first time be random every time; we don't have
+      // to deal with replays, so that is no issue here
+      srand( timestamp_now() );
+      _seed = rand();
+      return _seed;
+    }
+
     for ( uint i = 0; i < script.g.map_name().length; i++ ) {
       // seed the generator using the last randomly generated number based on
       // the current index map name character; this way, we will get different
