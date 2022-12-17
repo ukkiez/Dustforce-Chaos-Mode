@@ -6,11 +6,12 @@
 #include "./ShyDoors.cpp";
 #include "./SlowDoors.cpp";
 #include "./SwapDoors.cpp";
+#include "./TeleportToDoor.cpp";
 
 array<NexusEvent@> get_nexus_events( bool DEBUG_MODE ) {
   if ( DEBUG_MODE ) {
     return array<NexusEvent@> = {
-      SwapDoors(),
+      TeleportToDoor(),
     };
   }
 
@@ -21,5 +22,6 @@ array<NexusEvent@> get_nexus_events( bool DEBUG_MODE ) {
     ShyDoors(),
     SlowDoors(),
     SwapDoors(),
+    TeleportToDoor(),
   };
 }
