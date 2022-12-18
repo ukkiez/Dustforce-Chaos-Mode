@@ -17,6 +17,7 @@
 #include "./TimeWarp.cpp";
 
 #include "./Unplayable/DashMacro.cpp";
+#include "./Unplayable/InstantAttack.cpp";
 #include "./Unplayable/JumpMacro.cpp";
 #include "./Unplayable/NoClip.cpp";
 #include "./Unplayable/Rotator.cpp";
@@ -29,7 +30,7 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<CycleEvent@> = {
-      BuilderMode(),
+      InstantAttack(),
     };
   }
 
@@ -55,6 +56,7 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
 
     // Unplayable
     DashMacro(),
+    InstantAttack(),
     JumpMacro(),
     NoClip(),
     Rotator(),

@@ -262,6 +262,16 @@ class EnemyKnockback : CycleEvent, callback_base {
       f.dead_c.life( 1 );
     }
 
+    enemies.deleteAll();
+    bounced_enemies.deleteAll();
+    attack_dir = 2;
+    play_impact_heavy = false;
+    play_impact_light = false;
+    callbacks_setup = false;
+    count = 0;
+
+    event_cycle_iteration = 0;
+
     initialized = false;
   }
 }
