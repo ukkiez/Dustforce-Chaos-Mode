@@ -95,10 +95,10 @@ class NexusChaos : Random {
       @events = get_nexus_events( DEBUG_MODE );
 
       srand( timestamp_now() );
-      int rand_n = rand_range( 1, 4 );
-      if ( DEBUG_MODE || rand_n > 1 ) {
+      int rand_n = rand_range( 1, 5 );
+      if ( DEBUG_MODE || ( rand_n > 1 ) ) {
         srand( timestamp_now() );
-        // activate a random nexus event, 75% of the time
+        // activate a random nexus event, 80% of the time
         @nexus_event = events[ rand_range( 0, events.length - 1 ) ];
       }
 
