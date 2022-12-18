@@ -17,7 +17,8 @@ array<NexusEvent@> get_nexus_events( bool DEBUG_MODE ) {
 
   return array<NexusEvent@> = {
     ChangeDoorTypes(),
-    FastDoors(),
+    // remove FastDoors() for now, as it doesn't really do much
+    // FastDoors(),
     OpenClose(),
     ShyDoors(),
     SlowDoors(),

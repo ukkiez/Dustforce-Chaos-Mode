@@ -60,8 +60,8 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     Rotator(),
     WorthMode(),
 
-    // don't use PlayerScale() for now, as it is simply too buggy in combination
-    // with other events
-    // PlayerScale(),
+    // // don't use PlayerScale() for now, as it is simply too buggy in combination
+    // // with other events
+    PlayerScale(),
   };
 }

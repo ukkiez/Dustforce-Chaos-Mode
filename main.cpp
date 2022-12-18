@@ -37,7 +37,7 @@ class script : script_base, Random {
   [persist] uint turbo_mode_duration = 3;
 
   // chance of turbo happening = 1/turbo_mode_chance
-  uint turbo_mode_chance = 1500;
+  uint turbo_mode_chance = 1300;
   uint turbo_mode_time = 0;
   uint text_display_time = 120;
   // duration in seconds
@@ -191,8 +191,8 @@ class script : script_base, Random {
 
     if ( ( time % 60 == 0 ) && !turbo_mode ) {
       // every second, there's a chance that "turbo mode" activates, which gives
-      // all modes a 100 weight, and puts the cycle and queue intervals at 1
-      // second
+      // all modes a 1000 weight, and puts the cycle and queue intervals at 1
+      // frame
       int roll = srand_range( 1, turbo_mode_chance );
       if ( roll == 1 ) {
         turbo_mode = true;

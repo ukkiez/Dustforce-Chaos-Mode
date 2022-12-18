@@ -13,8 +13,6 @@ class TeleportToDoor : NexusEvent {
 
   bool teleported = false;
 
-  int time = 0;
-
   TeleportToDoor() {
     @g = get_scene();
 
@@ -63,13 +61,11 @@ class TeleportToDoor : NexusEvent {
       }
     }
 
-    if ( !teleported && teleportable_doors.length > 1 ) {
+    if ( !teleported && teleportable_doors.length > 0 ) {
       teleport_to_door();
 
       teleported = true;
     }
-
-    time++;
   }
 
   void teleport_to_door() {

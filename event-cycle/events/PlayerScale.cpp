@@ -2,7 +2,7 @@
 
 class PlayerScale : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 450, "Tiny/Beeg Mode" );
+    return CycleEventConfig( 100, "Tiny/Beeg Mode" );
   }
 
   scene@ g;
@@ -32,10 +32,10 @@ class PlayerScale : CycleEvent {
 
     // randomly choose between scaling up or down
     if ( srandom() % 2 == 0 ) {
-      player.scale( srand_range_flt( 0.5, 0.8 ), false );
+      player.scale( srand_range_flt( 0.4, 0.6 ), false );
     }
     else {
-      player.scale( 1.25, false );
+      player.scale( 1.5, false );
     }
 
     initialized = true;

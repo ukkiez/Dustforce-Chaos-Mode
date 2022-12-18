@@ -2,7 +2,7 @@
 
 class Maintenance : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 50, 500, "Surprise Maintenance" );
+    return QueueEventConfig( 75, 500, "Surprise Maintenance" );
   }
 
   string loading_text_start = "Sorry, hold on Fresh";
@@ -54,7 +54,7 @@ class Maintenance : QueueEvent {
 
   uint start_delay = 120;
 
-  int lag_array_length = 800000;
+  int lag_array_length = 700000;
   array<int> lag_array( 0 );
 
   uint frames = 0;

@@ -96,7 +96,6 @@ class NexusChaos : Random {
 
       srand( timestamp_now() );
       int rand_n = rand_range( 1, 4 );
-      puts( rand_n );
       if ( DEBUG_MODE || rand_n > 1 ) {
         srand( timestamp_now() );
         // activate a random nexus event, 75% of the time
