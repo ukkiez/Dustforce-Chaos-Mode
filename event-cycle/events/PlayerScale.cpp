@@ -2,7 +2,7 @@
 
 class PlayerScale : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 100, "Tiny/Beeg Mode" );
+    return CycleEventConfig( 120, "Tiny/Beeg Mode" );
   }
 
   scene@ g;
@@ -35,7 +35,7 @@ class PlayerScale : CycleEvent {
       player.scale( srand_range_flt( 0.4, 0.6 ), false );
     }
     else {
-      player.scale( 1.5, false );
+      player.scale( srand_range_flt( 1.3, 1.6 ), false );
     }
 
     initialized = true;
