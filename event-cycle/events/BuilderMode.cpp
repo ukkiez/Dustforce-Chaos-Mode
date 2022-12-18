@@ -91,12 +91,19 @@ class BuilderMode : CycleEvent {
   }
 
   void remove_tile() {
-    float x = player.x() + ( facing == 1 ? tile_offset_x : tile_offset_x_left );
-    float y = player.y() + tile_offset_y;
-    set_tile( g, tile_coord( x ), tile_coord( y ), false );
-    set_tile( g, tile_coord( x + tile( 1 ) ), tile_coord( y ), false );
-    set_tile( g, tile_coord( x ), tile_coord( y + tile( 1 ) ), false );
-    set_tile( g, tile_coord( x + tile( 1 ) ), tile_coord( y + tile( 1 ) ), false );
+    int x = tile_coord( player.x() + ( facing == 1 ? tile_offset_x : tile_offset_x_left ) );
+    int y = tile_coord( player.y() + tile_offset_y );
+    set_tile( g, x, y, false );
+    remove_tile_filth( g, x, y );
+
+    set_tile( g, x + 1, y, false );
+    remove_tile_filth( g, x + 1, y );
+
+    set_tile( g, x, y + 1, false );
+    remove_tile_filth( g, x, y + 1 );
+
+    set_tile( g, x + 1, y + 1, false );
+    remove_tile_filth( g, x + 1, y + 1 );
   }
 
   void initialize() {
