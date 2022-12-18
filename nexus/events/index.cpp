@@ -11,7 +11,6 @@
 array<NexusEvent@> get_nexus_events( bool DEBUG_MODE ) {
   if ( DEBUG_MODE ) {
     return array<NexusEvent@> = {
-      SwapDoors(),
     };
   }
 
