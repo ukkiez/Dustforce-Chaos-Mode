@@ -23,6 +23,7 @@ class RemoveTiles : QueueEvent {
       int y = tile_coord( player.y() + tile( i ) );
 
       if ( remove_tile( x, y ) ) {
+        remove_tile_filth( g, x, y );
         count++;
 
         if ( count >= max ) {
@@ -38,6 +39,7 @@ class RemoveTiles : QueueEvent {
       int y = tile_coord( player.y() - tile( i ) );
 
       if ( remove_tile( x, y ) ) {
+        remove_tile_filth( g, x, y );
         count++;
 
         if ( count >= max ) {
@@ -53,6 +55,7 @@ class RemoveTiles : QueueEvent {
       int y = tile_coord( player.y() - tile( i ) );
 
       if ( remove_tile( x, y ) ) {
+        remove_tile_filth( g, x, y );
         count++;
 
         if ( count >= max ) {
@@ -68,6 +71,7 @@ class RemoveTiles : QueueEvent {
       int y = tile_coord( player.y() + tile( i ) );
 
       if ( remove_tile( x, y ) ) {
+        remove_tile_filth( g, x, y );
         count++;
 
         if ( count >= max ) {
