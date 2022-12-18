@@ -34,7 +34,7 @@ class SlowDoors : NexusEvent {
           continue;
         }
 
-        e.time_warp( rand_range( 0.01, 0.3 ) );
+        e.time_warp( rand_range( 0.01, 0.4 ) );
         doors.insertLast( e );
       }
     }
