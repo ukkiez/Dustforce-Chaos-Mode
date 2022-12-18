@@ -102,7 +102,7 @@ class PolishDriver : QueueEvent {
 
         // hit player away and stun them for a bit
         player.stun( stun_direction_x, stun_direction_y );
-        player.stun_timer( 20 );
+        player.stun_timer( 25 );
 
         // remove combo
         player.combo_count( 0 );
