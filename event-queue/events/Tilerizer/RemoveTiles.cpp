@@ -96,8 +96,13 @@ class RemoveTiles : QueueEvent {
 
     for ( uint i = 0; i < 15; i++ ) {
       set_tile( g, tile_coord( player.x() + tile( i + x_offset ) ), tile_coord( player.y() ), false );
+      remove_tile_filth( g, tile_coord( player.x() + tile( i + x_offset ) ), tile_coord( player.y() ) );
+
       set_tile( g, tile_coord( player.x() + tile( i + x_offset ) ), tile_coord( player.y() + tile( 1 ) ), false );
+      remove_tile_filth( g, tile_coord( player.x() + tile( i + x_offset ) ), tile_coord( player.y() + tile( 1 ) ) );
+
       set_tile( g, tile_coord( player.x() + tile( i + x_offset ) ), tile_coord( player.y() + tile( 2 ) ), false );
+      remove_tile_filth( g, tile_coord( player.x() + tile( i + x_offset ) ), tile_coord( player.y() + tile( 2 ) ) );
     }
   }
 

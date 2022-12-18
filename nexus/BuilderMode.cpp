@@ -182,8 +182,15 @@ class NexusBuilderMode {
     float x = player.x() + ( facing == 1 ? tile_offset_x : tile_offset_x_left );
     float y = player.y() + tile_offset_y;
     set_tile( g, tile_coord( x ), tile_coord( y ), false );
+    remove_tile_filth( g, tile_coord( x ), tile_coord( y ) );
+
     set_tile( g, tile_coord( x + tile( 1 ) ), tile_coord( y ), false );
+    remove_tile_filth( g, tile_coord( x + tile( 1 ) ), tile_coord( y ) );
+
     set_tile( g, tile_coord( x ), tile_coord( y + tile( 1 ) ), false );
+    remove_tile_filth( g, tile_coord( x ), tile_coord( y + tile( 1 ) ) );
+
     set_tile( g, tile_coord( x + tile( 1 ) ), tile_coord( y + tile( 1 ) ), false );
+    remove_tile_filth( g, tile_coord( x + tile( 1 ) ), tile_coord( y + tile( 1 ) ) );
   }
 }

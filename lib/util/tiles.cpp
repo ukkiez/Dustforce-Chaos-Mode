@@ -43,3 +43,16 @@ void set_tile( scene@ g, int x, int y, bool solid, int type = 0, int sprite_set 
     palette
   );
 }
+
+void remove_tile_filth( scene@ g, int x, int y, bool affectSpikes = true, bool overwrite = true ) {
+  g.set_tile_filth(
+    x,
+    y,
+    0, // top
+    0, // bottom
+    0, // left
+    0, // right
+    affectSpikes,
+    overwrite
+  );
+}
