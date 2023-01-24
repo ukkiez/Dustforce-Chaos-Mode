@@ -139,11 +139,11 @@ class EventList {
       }
     }
 
-    // draw a separator between the list's cycle and queue elements
-    float x1 = g.hud_screen_width( false ) / 2.1;
-    float x2 = g.hud_screen_width( false ) / 4;
-    float y = g.hud_screen_height( false ) / 6.7;
-    g.draw_line_hud( 22, 22, -x1, y, -x2, y, 5, 0x33abf1fc );
+    // // draw a separator between the list's cycle and queue elements
+    // float x1 = g.hud_screen_width( false ) / 2.1;
+    // float x2 = g.hud_screen_width( false ) / 4;
+    // float y = g.hud_screen_height( false ) / 6.7;
+    // g.draw_line_hud( 22, 22, -x1, y, -x2, y, 5, 0x33abf1fc );
   }
 
   void iterate_event_cycle() {

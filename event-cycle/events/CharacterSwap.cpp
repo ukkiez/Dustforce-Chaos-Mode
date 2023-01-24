@@ -53,16 +53,13 @@ class CharacterSwap : CycleEvent {
       @player = c.as_dustman();
     }
 
-    /*
-      disable roulette for now, since it messes with other modes too much
-    */
-    // if ( srandom() % 2 == 0 ) {
-    //   // start the roulette, which constantly changes your character every X
-    //   // interval in step()
-    //   roulette = true;
-    //   initialized = true;
-    //   return;
-    // }
+    if ( srandom() % 2 == 0 ) {
+      // start the roulette, which constantly changes your character every X
+      // interval in step()
+      roulette = true;
+      initialized = true;
+      return;
+    }
 
     // make sure not to swap to the same character the player already is
     array<string> swappable_characters = {};

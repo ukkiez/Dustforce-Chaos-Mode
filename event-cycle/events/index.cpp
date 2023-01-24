@@ -6,6 +6,7 @@
 #include "./DisableDash.cpp";
 #include "./Disco.cpp";
 #include "./EnemyKnockback/index.cpp";
+#include "./ExplosionMode.cpp";
 #include "./FrankerZMode.cpp";
 #include "./InfiniteAircharges.cpp";
 #include "./Letterbox.cpp";
@@ -30,7 +31,6 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<CycleEvent@> = {
-      InstantAttack(),
     };
   }
 
@@ -38,13 +38,14 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     BecomeBook(),
     BuilderMode(),
 
-    // don't use character swap for the moment, as it has crashing behaviour at
-    // the moment
-    // CharacterSwap(),
+    // don't use character swap for the moment, as it has crashing behaviour;
+    // not anymore with super, but it does with becoming a book
+    CharacterSwap(),
 
     DisableDash(),
     Disco(),
     EnemyKnockback(),
+    ExplosionMode(),
     FrankerZMode(),
     InfiniteAircharges(),
     Letterbox(),
@@ -62,8 +63,6 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     Rotator(),
     WorthMode(),
 
-    // // don't use PlayerScale() for now, as it is simply too buggy in combination
-    // // with other events
     PlayerScale(),
   };
 }

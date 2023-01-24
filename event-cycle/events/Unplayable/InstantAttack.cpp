@@ -54,24 +54,30 @@ class InstantAttack : CycleEvent, callback_base {
     initialized = true;
   }
 
-  void on_subframe_end(dustman@ dm, int) {
-    if ( _script.event_cycle.iteration != event_cycle_iteration ) {
+  void on_subframe_end( dustman@ dm, int ) {
+    if ( !initialized ) {
       // we can't remove these callbacks after deactivating this cycle event,
-      // but we can check if we're currently in a later cycle iteration than
-      // when this event was originally initialized
+      // but we can check if the event was ever deactivated
       return;
     }
 
-    if (dm.attack_timer() > 0) {
+    // if ( _script.event_cycle.iteration != event_cycle_iteration ) {
+    //   // we can't remove these callbacks after deactivating this cycle event,
+    //   // but we can check if we're currently in a later cycle iteration than
+    //   // when this event was originally initialized
+    //   return;
+    // }
+
+    if ( dm.attack_timer() > 0 ) {
       hitbox@ h = dm.hitbox();
       if (h !is null) { // light or heavy attacks
-        h.state_timer(h.activate_time());
+        h.state_timer( h.activate_time() );
       } else { // super
       }
       dm.freeze_frame_timer(0);
     }
 
-    if (dm.attack_timer() < 0 and dm.attack_timer() != -1) {
+    if ( dm.attack_timer() < 0 and dm.attack_timer() != -1 ) {
       dm.attack_timer(0);
     }
   }
@@ -81,6 +87,8 @@ class InstantAttack : CycleEvent, callback_base {
     if ( !initialized ) {
       return;
     }
+
+    callback_setup = false;
 
     initialized = false;
   }

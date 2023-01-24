@@ -56,9 +56,9 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     Spikeify(),
     SwapSprites(),
 
-    // don't add Bullies for now, since AI controlled dustman entities only work
-    // in Dustmod-type levels unfortunately
-    // Bullies(),
+    // maybe don't add Bullies for the plugin, since AI controlled dustman
+    // entities only work in Dustmod-type levels unfortunately
+    Bullies(),
 
     // don't add MaxSuper() for now, as the game could crash if you get super
     // while being a book (which we try hard to prevent by removing and
