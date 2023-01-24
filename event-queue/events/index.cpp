@@ -64,7 +64,8 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     // don't add MaxSuper() for now, as the game could crash if you get super
     // while being a book (which we try hard to prevent by removing and
     // disabling super when being a book, but this doesn't circumvent the
-    // MaxSuper event of course)
+    // MaxSuper event of course); NOTE: this seems to not be the case anymore
+    // (pending more testing), but the event is kind of lame anyway
     // MaxSuper(),
   };
 }

@@ -17,11 +17,15 @@
 #include "./TiltedCamera.cpp";
 #include "./TimeWarp.cpp";
 
+#include "./Unplayable/DashForever.cpp";
 #include "./Unplayable/DashMacro.cpp";
+#include "./Unplayable/HalfDash.cpp";
 #include "./Unplayable/InstantAttack.cpp";
 #include "./Unplayable/JumpMacro.cpp";
 #include "./Unplayable/NoClip.cpp";
+#include "./Unplayable/Pogo.cpp";
 #include "./Unplayable/Rotator.cpp";
+#include "./Unplayable/SuperOnly.cpp";
 #include "./Unplayable/WorthMode.cpp";
 
 array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
@@ -56,11 +60,15 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     TimeWarp(),
 
     // Unplayable
+    DashForever(),
     DashMacro(),
+    HalfDash(),
     InstantAttack(),
     JumpMacro(),
     NoClip(),
+    Pogo(),
     Rotator(),
+    SuperOnly(),
     WorthMode(),
 
     PlayerScale(),

@@ -176,8 +176,8 @@ class BecomeBook : CycleEvent {
     // remove the player's potential super, to prevent crashing with drawing the
     // super trail in certain player states, as we change the player's sprite
     // set (see step())
-    player.skill_combo( 0 );
-    g.special_enabled( true );
+    // player.skill_combo( 0 );
+    // g.special_enabled( true );
 
     // remember the original values
     original_fall_max = player.fall_max();
