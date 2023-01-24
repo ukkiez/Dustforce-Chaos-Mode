@@ -53,7 +53,7 @@ class CharacterSwap : CycleEvent {
       @player = c.as_dustman();
     }
 
-    if ( srandom() % 2 == 0 ) {
+    if ( srandom() % 4 == 0 ) {
       // start the roulette, which constantly changes your character every X
       // interval in step()
       roulette = true;

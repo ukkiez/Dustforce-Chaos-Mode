@@ -82,7 +82,9 @@ class LovelyTune : QueueEvent {
       return;
     }
 
-    SOUND.stop();
+    if ( @SOUND != null ) {
+      SOUND.stop();
+    }
 
     initialized = false;
   }

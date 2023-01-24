@@ -13,8 +13,12 @@ class SwapSprites : QueueEvent {
   scene@ g;
   dustman@ player;
 
+  script@ _script;
+
   uint frames = 0;
   uint interval = 10;
+
+  bool done = false;
 
   bool initialized = false;
 
@@ -23,6 +27,17 @@ class SwapSprites : QueueEvent {
   }
 
   void step( int entities ) {
+    if ( done ) {
+      return;
+    }
+
+    if ( _script.turbo_mode ) {
+      // during turbo mode, simply replace tiles in a random layer, just once so
+      // as not to cause (too many) performance issues
+      replace_tiles( srand_range( 6, 19 ) );
+      done = true;
+    }
+
     if ( frames % interval == 0 ) {
       if ( frames < 30 ) {
         replace_tiles( 19 );
@@ -90,6 +105,9 @@ class SwapSprites : QueueEvent {
     controllable@ c = controller_controllable( 0 );
     @player = c.as_dustman();
 
+    // get the main script object
+    @_script = cast<script@>( get_script() );
+
     initialized = true;
   }
 
@@ -99,6 +117,7 @@ class SwapSprites : QueueEvent {
     }
 
     frames = 0;
+    done = false;
 
     initialized = false;
   }

@@ -2,10 +2,10 @@
 
 class Maintenance : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 75, 500, "Surprise Maintenance" );
+    return QueueEventConfig( 75, 100, "Surprise Maintenance" );
   }
 
-  string loading_text_start = "Sorry, hold on Fresh";
+  string loading_text_start = "Sorry, hold on...";
   string loading_text_finish = "Unloading loading bar...";
 
   array<string> loading_text = {
@@ -21,7 +21,6 @@ class Maintenance : QueueEvent {
     "Giving 1 heart on Atlas...",
     "Crashing the game...",
     "Installing Trojan...",
-    "Ruining Abrupt Showcase...",
     "Updating Windows...",
     "Looking in Dustforce rulebook...",
     "Blaming Dustmod...",
@@ -57,7 +56,7 @@ class Maintenance : QueueEvent {
 
   uint start_delay = 120;
 
-  int lag_array_length = 700000;
+  int lag_array_length = 300000;
   array<int> lag_array( 0 );
 
   uint frames = 0;
