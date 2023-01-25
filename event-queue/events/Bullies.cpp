@@ -50,8 +50,9 @@ class Bullies : QueueEvent {
     script@ s = cast<script@>( get_script() );
 
     @invader = create_entity( ENTITIES[ srand_range( 0, ENTITIES.length-1 ) ] );
-    float x = s.position_history_x[ s.position_history_x.length-1 ];
-    float y = s.position_history_y[ s.position_history_y.length-1 ];
+    // get a relatively recent position and spawn the invader there
+    float x = s.position_history_x[ 1 ];
+    float y = s.position_history_y[ 1 ];
     if ( x == 0 ) {
       x = player.x() - 500;
     }
