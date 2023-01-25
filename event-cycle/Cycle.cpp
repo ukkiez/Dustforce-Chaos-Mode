@@ -202,8 +202,8 @@ class Cycle : Random {
       }
       else {
         active_event = false;
-        // never stay without any Events active for longer than 5 seconds
-        interval = ( interval < 5 ) ? 5 : interval;
+        // never stay without any Events active for longer than 4 seconds
+        interval = ( interval > 4 ) ? 4 : interval;
       }
     }
 
