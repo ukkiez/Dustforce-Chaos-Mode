@@ -30,6 +30,8 @@
 #include "./Unplayable/SupersDontHitEnemies.cpp";
 #include "./Unplayable/WorthMode.cpp";
 
+#include "./UkkiezMode.cpp";
+
 array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
   if ( DEBUG_MODE ) {
     // putting events in here will only queue these, and give their configs a
@@ -37,6 +39,7 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<CycleEvent@> = {
+      UkkiezMode(),
     };
   }
 
@@ -75,5 +78,7 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     SuperOnly(),
     SupersDontHitEnemies(),
     WorthMode(),
+
+    UkkiezMode(),
   };
 }
