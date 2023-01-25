@@ -3,7 +3,7 @@
 // all slope boosts are reverse slope boosts
 class UkkiezMode : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 180, "Ukkiez' Effect" );
+    return CycleEventConfig( 200, "Ukkiez' Effect" );
   }
 
   scene@ g;

@@ -24,7 +24,7 @@ class ExplosionAnimation : Random {
 
 class ExplosionMode : CycleEvent, callback_base {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 150, "Michael Mode" );
+    return CycleEventConfig( 225, "Michael Mode" );
   }
 
   scene@ g;
