@@ -24,7 +24,7 @@ class ExplosionAnimation : Random {
 
 class ExplosionMode : CycleEvent, callback_base {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 50, "Explosion Mode" );
+    return CycleEventConfig( 150, "Michael Mode" );
   }
 
   scene@ g;
@@ -60,6 +60,12 @@ class ExplosionMode : CycleEvent, callback_base {
   void entity_on_add( entity@ entity ) {
     if ( entity.type_name() == "hit_box_controller" ) {
       entity.as_hitbox().on_hit_filter_callback( this, "on_hit", 0 );
+    }
+
+    if ( player.attack_state() == 3 ) {
+      if ( entity.type_name() == "effect" ) {
+        active_animations.insertLast( ExplosionAnimation( entity.x(), entity.y(), entity.id() ) );
+      }
     }
   }
   bool on_hit( hitbox@ h, hittable@ hit, int ) {
