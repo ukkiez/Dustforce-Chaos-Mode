@@ -1,8 +1,8 @@
 #include "../../CycleEvent.cpp";
 
-class HalfDash : CycleEvent {
+class NoWallrun : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 130, "Literally Unplayable", "Cool Dash" );
+    return CycleEventConfig( 160, "Literally Unplayable", "No Wallrun" );
   }
 
   scene@ g;
@@ -10,13 +10,11 @@ class HalfDash : CycleEvent {
 
   bool initialized = false;
 
-  HalfDash() {}
+  NoWallrun() {}
 
   void step( int entities ) {
-    if ( player.state() == 9 ) {
-      if ( player.state_timer() < 0.5 ) {
-        player.state_timer( player.state_timer() + 2.5 );
-      }
+    if ( player.state() == 11 ) {
+      player.state( 13 );
     }
   }
 

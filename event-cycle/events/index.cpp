@@ -23,9 +23,11 @@
 #include "./Unplayable/InstantAttack.cpp";
 #include "./Unplayable/JumpMacro.cpp";
 #include "./Unplayable/NoClip.cpp";
+#include "./Unplayable/NoWallrun.cpp";
 #include "./Unplayable/Pogo.cpp";
 #include "./Unplayable/Rotator.cpp";
 #include "./Unplayable/SuperOnly.cpp";
+#include "./Unplayable/SupersDontHitEnemies.cpp";
 #include "./Unplayable/WorthMode.cpp";
 
 array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
@@ -35,6 +37,7 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<CycleEvent@> = {
+      NoWallrun(),
     };
   }
 
@@ -55,6 +58,7 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     Letterbox(),
     MinecraftMode(),
     NoFriction(),
+    PlayerScale(),
     TauntAndDie(),
     TiltedCamera(),
     TimeWarp(),
@@ -66,11 +70,11 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     InstantAttack(),
     JumpMacro(),
     NoClip(),
+    NoWallrun(),
     Pogo(),
     Rotator(),
     SuperOnly(),
+    SupersDontHitEnemies(),
     WorthMode(),
-
-    PlayerScale(),
   };
 }

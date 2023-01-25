@@ -1,8 +1,8 @@
 #include "../../CycleEvent.cpp";
 
-class HalfDash : CycleEvent {
+class SupersDontHitEnemies : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 130, "Literally Unplayable", "Cool Dash" );
+    return CycleEventConfig( 130, "Literally Unplayable", "Cool Super" );
   }
 
   scene@ g;
@@ -10,13 +10,14 @@ class HalfDash : CycleEvent {
 
   bool initialized = false;
 
-  HalfDash() {}
+  SupersDontHitEnemies() {}
 
   void step( int entities ) {
-    if ( player.state() == 9 ) {
-      if ( player.state_timer() < 0.5 ) {
-        player.state_timer( player.state_timer() + 2.5 );
-      }
+    if ( player.attack_state() == 3 ) {
+      player.team( 0 );
+    }
+    else if ( player.team() != 1 ) {
+      player.team( 1 );
     }
   }
 
@@ -41,6 +42,10 @@ class HalfDash : CycleEvent {
   void deactivate() {
     if ( !initialized ) {
       return;
+    }
+
+    if ( player.team() != 1 ) {
+      player.team( 1 );
     }
 
     initialized = false;
