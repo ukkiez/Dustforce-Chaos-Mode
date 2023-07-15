@@ -2,7 +2,7 @@
 
 class SupersDontHitEnemies : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 130, "Literally Unplayable", "Cool Super" );
+    return CycleEventConfig( 200, "Literally Unplayable", "Cool Super" );
   }
 
   scene@ g;
