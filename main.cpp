@@ -138,9 +138,14 @@ class script : script_base, Random {
       nexus_chaos.checkpoint_load();
     }
 
-    // make sure we don't get shenanigans with turbo mode activating over and
-    // over again on checkpoint load
-    turbo_mode = false;
+    if ( turbo_mode ) {
+      // make sure we don't get shenanigans with turbo mode activating over and
+      // over again on checkpoint load
+      turbo_mode = false;
+
+      event_cycle.turbo_mode = false;
+      event_queue.turbo_mode = false;
+    }
   }
 
   void entity_on_add( entity@ e ) {
