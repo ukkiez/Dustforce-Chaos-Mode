@@ -157,7 +157,7 @@ class Tetromino {
 
 class Tetris : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 300, 600, "Tetris" );
+    return QueueEventConfig( 1000, 600, "Tetris" );
   }
 
   scene@ g;
@@ -193,7 +193,7 @@ class Tetris : QueueEvent {
 
     tetrominoes.insertLast(
       Tetromino(
-        tile_coord( player.x() + ( tile( srand_range( -20, 20 ) ) ) ),
+        tile_coord( player.x() + ( tile( srand_range( 5, 20 ) ) ) ),
         tile_coord( player.y() - tile( srand_range( 5, 15 ) ) ),
         srand_range( 0, int( configurations.length - 1 ) )
       )
