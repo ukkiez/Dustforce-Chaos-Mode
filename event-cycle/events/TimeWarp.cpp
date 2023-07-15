@@ -4,7 +4,7 @@
 
 class TimeWarp : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 350, "Time Warp" );
+    return CycleEventConfig( 250, "Time Warp" );
   }
 
   scene@ g;
