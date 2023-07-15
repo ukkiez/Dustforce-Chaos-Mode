@@ -158,6 +158,15 @@ class script : script_base, Random {
     }
   }
 
+  void editor_step() {
+    if ( g.time_warp() != 1 ) {
+      // some events change the time scale, and if you enter the editor when
+      // that is the case that time warp will remain, so undo this if it ever
+      // happened
+      g.time_warp( 1 );
+    }
+  }
+
   void step( int entities ) {
     if ( @player == null ) {
       controllable@ c = controller_controllable( 0 );
@@ -260,7 +269,7 @@ class script : script_base, Random {
       return;
     }
 
-    if ( ( time % 15 ) == 0 ) {
+    if ( ( time % 10 ) == 0 ) {
       // store positional data for seeding purposes
       uint x = uint( abs( player.x() ) );
       uint y = uint( abs( player.y() ) );

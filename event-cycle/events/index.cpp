@@ -26,6 +26,7 @@
 #include "./Unplayable/NoWallrun.cpp";
 #include "./Unplayable/Pogo.cpp";
 #include "./Unplayable/Rotator.cpp";
+#include "./Unplayable/Superhot.cpp";
 #include "./Unplayable/SuperOnly.cpp";
 #include "./Unplayable/SupersDontHitEnemies.cpp";
 #include "./Unplayable/WorthMode.cpp";
@@ -39,12 +40,11 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<CycleEvent@> = {
-      UkkiezMode(),
     };
   }
 
   return array<CycleEvent@> = {
-    BecomeBook(),
+    // BecomeBook(),
     BuilderMode(),
 
     // don't use character swap for the moment, as it has crashing behaviour;
@@ -75,6 +75,7 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     NoWallrun(),
     Pogo(),
     Rotator(),
+    Superhot(),
     SuperOnly(),
     SupersDontHitEnemies(),
     WorthMode(),
