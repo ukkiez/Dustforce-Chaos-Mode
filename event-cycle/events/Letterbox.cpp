@@ -60,7 +60,6 @@ class Letterbox : CycleEvent {
           drawn = true;
         }
       }
-
     }
   }
   void draw( float sub_frame ) {
