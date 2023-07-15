@@ -15,6 +15,7 @@
 #include "./SaveCheckpoint.cpp";
 #include "./SpawnApples.cpp";
 #include "./SussyPorcupine.cpp";
+#include "./Tetris.cpp";
 
 #include "./Tilerizer/RemoveTiles.cpp";
 #include "./Tilerizer/SpawnBlock.cpp";
@@ -29,7 +30,7 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<QueueEvent@> = {
-      Bullies(),
+      Tetris(),
     };
   }
 
@@ -49,6 +50,7 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     SaveCheckpoint(),
     SpawnApples(),
     SussyPorcupine(),
+    Tetris(),
 
     // Tilerizer
     RemoveTiles(),
