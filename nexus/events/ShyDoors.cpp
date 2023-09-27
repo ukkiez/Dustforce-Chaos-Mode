@@ -24,6 +24,8 @@ class ShyDoors : NexusEvent {
   uint door_walk_timer = 0;
   uint interval = 180;
   bool door_walk = false;
+  uint door_walk_min = 1;
+  uint door_walk_max = 3;
   int walking_distance = 100;
 
   ShyDoors() {
@@ -55,7 +57,7 @@ class ShyDoors : NexusEvent {
         }
 
         srand( timestamp_now() );
-        doors.insertLast( Door( e, rand_range( 2, 5 ) ) );
+        doors.insertLast( Door( e, rand_range( door_walk_min, door_walk_max ) ) );
       }
     }
 
