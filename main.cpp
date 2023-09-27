@@ -36,6 +36,8 @@ class script : script_base, Random {
   [persist] bool turbo_mode = false;
   [persist] uint turbo_mode_duration = 3;
 
+  [persist] bool _nexus_debug_mode = false;
+
   bool is_nexus_type = false;
 
   // chance of turbo happening = 1/turbo_mode_chance
@@ -111,9 +113,13 @@ class script : script_base, Random {
 
     if ( is_nexus_type ) {
       // start Chaos immediately as the player gets control, which is the 14th
-      // frame in Nexuses, which means put the delay at 13 to account for the
+      // frame in Nexuses, which means we put the delay at 13 to account for the
       // initialization frame
       level_start_delay = 13;
+
+      if ( _nexus_debug_mode ) {
+        nexus_chaos.DEBUG_MODE = true;
+      }
 
       nexus_chaos.init();
     }
