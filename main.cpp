@@ -36,6 +36,8 @@ class script : script_base, Random {
   [persist] bool turbo_mode = false;
   [persist] uint turbo_mode_duration = 3;
 
+  bool is_nexus_type = false;
+
   // chance of turbo happening = 1/turbo_mode_chance
   uint turbo_mode_chance = 1300;
   uint turbo_mode_time = 0;
@@ -61,6 +63,7 @@ class script : script_base, Random {
     @event_list = EventList();
 
     if ( g.level_type() == 1 || g.level_type() == 2 ) {
+      is_nexus_type = true;
       @nexus_chaos = NexusChaos();
     }
 
@@ -106,7 +109,7 @@ class script : script_base, Random {
     }
     event_list.init();
 
-    if ( g.level_type() == 1 || g.level_type() == 2 ) {
+    if ( is_nexus_type ) {
       // start Chaos immediately as the player gets control, which is the 14th
       // frame in Nexuses, which means put the delay at 13 to account for the
       // initialization frame
@@ -207,13 +210,15 @@ class script : script_base, Random {
       return;
     }
 
-    if ( ( time % 60 == 0 ) && !turbo_mode ) {
-      // every second, there's a chance that "turbo mode" activates, which gives
-      // all modes a 1000 weight, and puts the cycle and queue intervals at 1
-      // frame
-      int roll = srand_range( 1, turbo_mode_chance );
-      if ( roll == 1 ) {
-        turbo_mode = true;
+    if ( !is_nexus_type ) {
+      if ( ( time % 60 == 0 ) && !turbo_mode ) {
+        // every second, there's a chance that "turbo mode" activates, which gives
+        // all modes a 1000 weight, and puts the cycle and queue intervals at 1
+        // frame
+        int roll = srand_range( 1, turbo_mode_chance );
+        if ( roll == 1 ) {
+          turbo_mode = true;
+        }
       }
     }
 
