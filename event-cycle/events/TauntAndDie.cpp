@@ -102,14 +102,28 @@ class TauntAndDie : CycleEvent {
       return;
     }
 
+    // depending on the prompt, either you should press taunt or you should not
     if ( srandom() % 2 == 0 ) {
-      // either the prompt will say "press taunt OR die" or "TO die", this
-      // variable determines which of the two it will be; 50% chance for either
       press_to_die = true;
-      text.text( "Press TAUNT to die" );
+
+      array<string> prompts = {
+        "Press TAUNT to die",
+        "Don't press TAUNT or die",
+        "Press TAUNT not to not die",
+        "Press TAUNT and die"
+      };
+
+      text.text( prompts[ srand_range( 0, prompts.length-1 ) ] );
     }
     else {
-      text.text( "Press TAUNT or die" );
+      array<string> prompts = {
+        "Press TAUNT or die",
+        "Press TAUNT to not die",
+        "Press TAUNT not to die",
+        "Don't press TAUNT to die"
+      };
+
+      text.text( prompts[ srand_range( 0, prompts.length-1 ) ] );
     }
 
     initialized = true;

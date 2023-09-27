@@ -40,15 +40,17 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<CycleEvent@> = {
+      TauntAndDie(),
     };
   }
 
   return array<CycleEvent@> = {
+    // don't use become book for the moment, as it has crashing behaviour;
+    // not anymore with super, but it does with swapping characters
     // BecomeBook(),
+
     BuilderMode(),
 
-    // don't use character swap for the moment, as it has crashing behaviour;
-    // not anymore with super, but it does with becoming a book
     CharacterSwap(),
 
     DisableDash(),
