@@ -75,8 +75,8 @@ class NexusBuilderMode {
 
     if ( build_mode ) {
       facing = player.face();
-      if ( player.attack_state() == 1 || player.attack_state() == 2 ) {
-        facing = player.attack_face();
+      if ( player.x_intent() != 0 ) {
+        facing = player.x_intent();
       }
 
       if ( placing_tile ) {
@@ -123,6 +123,21 @@ class NexusBuilderMode {
         tile( tile_coord( player.y() + tile_offset_y ) ),
         0,
         1,
+        1,
+        0x99FFFFFF
+      );
+
+      // directly in front of the player
+      spr.draw_world(
+        20,
+        22,
+        sprite_name,
+        0,
+        1,
+        tile( tile_coord( player.x() + ( facing == 1 ? tile( 1 ) : tile( -1 ) ) ) ),
+        tile( tile_coord( player.y() + tile_offset_y ) ),
+        0,
+        0.5,
         1,
         0x99FFFFFF
       );
@@ -176,6 +191,28 @@ class NexusBuilderMode {
       1,
       1
     );
+
+    // directly in front of the player
+    g.set_tile(
+      tile_coord( player.x() + ( facing == 1 ? tile( 1 ) : tile( -1 ) ) ),
+      tile_coord( player.y() + tile_offset_y + tile( 1 ) ),
+      19,
+      true,
+      0,
+      1,
+      1,
+      1
+    );
+    g.set_tile(
+      tile_coord( player.x() + ( facing == 1 ? tile( 1 ) : tile( -1 ) ) ),
+      tile_coord( player.y() + tile_offset_y ),
+      19,
+      true,
+      0,
+      1,
+      1,
+      1
+    );
   }
 
   void remove_tile() {
@@ -192,5 +229,13 @@ class NexusBuilderMode {
 
     set_tile( g, x + 1, y + 1, false );
     remove_tile_filth( g, x + 1, y + 1 );
+
+    // directly in front of the player
+    x = tile_coord( player.x() + ( facing == 1 ? tile( 1 ) : tile( -1 ) ) );
+    set_tile( g, x, y, false );
+    remove_tile_filth( g, x, y );
+
+    set_tile( g, x, y + 1, false );
+    remove_tile_filth( g, x, y + 1 );
   }
 }

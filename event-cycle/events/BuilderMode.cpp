@@ -31,8 +31,8 @@ class BuilderMode : CycleEvent {
 
   void step( int entities ) {
     facing = player.face();
-    if ( player.attack_state() == 1 || player.attack_state() == 2 ) {
-      facing = player.attack_face();
+    if ( player.x_intent() != 0 ) {
+      facing = player.x_intent();
     }
 
     if ( placing_tile ) {
