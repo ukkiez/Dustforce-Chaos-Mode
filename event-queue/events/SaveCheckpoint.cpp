@@ -59,7 +59,12 @@ class SaveCheckpoint : QueueEvent {
       return;
     }
 
-    g.save_checkpoint( int( player.x() ), int( player.y() ) );
+
+    if ( g.level_type() != 1 && g.level_type() != 2 ) {
+      // save a checkpoint (as long as we're not in a Nexus)
+      g.save_checkpoint( int( player.x() ), int( player.y() ) );
+    }
+
 
     @tf = create_textfield();
     tf.set_font( "Caracteres", 36 );
