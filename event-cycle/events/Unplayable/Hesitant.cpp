@@ -2,7 +2,7 @@
 
 class Hesitant : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 180, "Unplayable", "Hesitant" );
+    return CycleEventConfig( 180, "Hesitant" );
   }
 
   scene@ g;

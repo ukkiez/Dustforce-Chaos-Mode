@@ -11,7 +11,7 @@ class _Hitbox {
 
 class WorthMode : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 200, "Unplayable", "Worth Mode" );
+    return CycleEventConfig( 200, "Worth Mode" );
   }
 
   scene@ g;

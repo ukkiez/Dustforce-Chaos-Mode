@@ -2,7 +2,7 @@
 
 class NoWallrun : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 160, "Unplayable", "No Wallrun" );
+    return CycleEventConfig( 160, "No Wallrun" );
   }
 
   scene@ g;

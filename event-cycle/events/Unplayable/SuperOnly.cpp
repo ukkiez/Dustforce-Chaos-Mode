@@ -3,7 +3,7 @@
 // all attacks become a super instead
 class SuperOnly : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 200, "Unplayable", "Super Only" );
+    return CycleEventConfig( 200, "Super Only" );
   }
 
   scene@ g;

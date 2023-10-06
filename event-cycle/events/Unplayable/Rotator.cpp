@@ -2,7 +2,7 @@
 
 class Rotator : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 200, "Unplayable", "Rotator" );
+    return CycleEventConfig( 200, "Rotator" );
   }
 
   scene@ g;

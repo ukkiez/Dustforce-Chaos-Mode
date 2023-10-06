@@ -2,13 +2,13 @@
 
 class Runner : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 225, "Unplayable", "Runner" );
+    return CycleEventConfig( 200, "Runner" );
   }
 
   scene@ g;
   dustman@ player;
 
-  uint FACTOR = 4;
+  uint FACTOR = 3;
   uint current_state = 0;
   bool speed_set = false;
 

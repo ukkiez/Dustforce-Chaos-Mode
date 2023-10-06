@@ -2,7 +2,7 @@
 
 class Superhot : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 150, "Unplayable", "SUPERHOT" );
+    return CycleEventConfig( 150, "SUPERHOT" );
   }
 
   scene@ g;

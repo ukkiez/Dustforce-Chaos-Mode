@@ -2,7 +2,7 @@
 
 class Pogo : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 200, "Unplayable", "Pogo" );
+    return CycleEventConfig( 200, "Pogo" );
   }
 
   int MAX_PLAYERS = 4;
