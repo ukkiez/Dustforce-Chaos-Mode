@@ -15,6 +15,11 @@ class DashForever : CycleEvent {
   void step( int entities ) {
     if ( player.state() == 9 ) {
       player.state_timer( 0 );
+
+      // keep players from jumping or attacking out of dashing
+      player.jump_intent( 0 );
+      player.light_intent( 0 );
+      player.heavy_intent( 0 );
     }
   }
 
