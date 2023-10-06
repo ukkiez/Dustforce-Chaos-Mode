@@ -1,8 +1,9 @@
 #include "../CycleEvent.cpp";
 
-#include "./BecomeBook.cpp";
+// #include "./BecomeBook.cpp";
 #include "./BuilderMode.cpp";
 #include "./CharacterSwap.cpp";
+#include "./Decorator.cpp";
 #include "./DisableDash.cpp";
 #include "./Disco.cpp";
 #include "./EnemyKnockback/index.cpp";
@@ -42,7 +43,7 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<CycleEvent@> = {
-      Hesitant(),
+      Decorator(),
     };
   }
 
@@ -52,9 +53,8 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     // BecomeBook(),
 
     BuilderMode(),
-
     CharacterSwap(),
-
+    Decorator(),
     DisableDash(),
     Disco(),
     EnemyKnockback(),
