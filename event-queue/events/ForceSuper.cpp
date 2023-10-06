@@ -2,7 +2,7 @@
 
 class ForceSuper : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 150, 200, "Super Time" );
+    return QueueEventConfig( 150, 61, "Super Time" );
   }
 
   scene@ g;
@@ -20,14 +20,13 @@ class ForceSuper : QueueEvent {
       return;
     }
 
-    if ( frames >= 119 ) {
-      cam.script_camera( false );
-    }
-
-    if ( frames <= 50 ) {
+    if ( frames <= 60 ) {
       if ( frames % 10 == 0 ) {
         player.attack_state( 3 );
       }
+    }
+    else {
+      cam.script_camera( false );
     }
 
     frames++;
@@ -59,6 +58,8 @@ class ForceSuper : QueueEvent {
     if ( !initialized ) {
       return;
     }
+
+    cam.script_camera( false );
 
     initialized = false;
   }
