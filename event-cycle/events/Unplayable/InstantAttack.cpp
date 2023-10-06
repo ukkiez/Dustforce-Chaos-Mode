@@ -2,7 +2,7 @@
 
 class InstantAttack : CycleEvent, callback_base {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 275, "Literally Unplayable", "Turbo Attack" );
+    return CycleEventConfig( 275, "Unplayable", "Turbo Attack" );
   }
 
   script@ _script;

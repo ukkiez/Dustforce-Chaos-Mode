@@ -262,7 +262,8 @@ class Cycle : Random {
       // generate a range to exclude events based on their weight, e.g. a rolled
       // range of 500 means all weights below 500 should not be included in the
       // pool
-      range = srand_range( 1, 1000 );
+      range = srand_range( 1, 800 );
+      puts( "Cycle roll: " + range );
     }
     else {
       // practically give all events a weight of 1000 during turbo mode

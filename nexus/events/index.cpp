@@ -18,9 +18,10 @@ array<NexusEvent@> get_nexus_events( bool DEBUG_MODE ) {
     ChangeDoorTypes(),
     FastDoors(),
     OpenClose(),
-    ShyDoors(),
     SlowDoors(),
-    SwapDoors(),
-    TeleportToDoor(),
+    ShyDoors(),
+
+    // SwapDoors(),
+    // TeleportToDoor(),
   };
 }

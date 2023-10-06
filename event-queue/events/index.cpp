@@ -7,7 +7,9 @@
 #include "./Enemizer/EnemyTimeWarp.cpp";
 
 #include "./Bullies.cpp";
+#include "./CloseUp.cpp";
 #include "./DiscordPing.cpp";
+#include "./ForceSuper.cpp";
 #include "./Maintenance.cpp";
 #include "./MaxSuper.cpp";
 #include "./PolishDriver.cpp";
@@ -30,7 +32,7 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<QueueEvent@> = {
-      Tetris(),
+      CloseUp(),
     };
   }
 
@@ -43,7 +45,9 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     EnemyScaler(),
     EnemyTimeWarp(),
 
+    CloseUp(),
     DiscordPing(),
+    ForceSuper(),
     Maintenance(),
     PolishDriver(),
     PropSwap(),
@@ -59,9 +63,9 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     Spikeify(),
     SwapSprites(),
 
-    // maybe don't add Bullies for the plugin, since AI controlled dustman
-    // entities only work in Dustmod-type levels unfortunately
-    Bullies(),
+    // // don't add Bullies for the plugin, since AI controlled dustman
+    // // entities only work in Dustmod-type levels unfortunately
+    // Bullies(),
 
     // don't add MaxSuper() for now, as the game could crash if you get super
     // while being a book (which we try hard to prevent by removing and

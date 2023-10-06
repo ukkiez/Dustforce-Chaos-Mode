@@ -20,12 +20,14 @@
 #include "./Unplayable/DashForever.cpp";
 #include "./Unplayable/DashMacro.cpp";
 #include "./Unplayable/HalfDash.cpp";
+#include "./Unplayable/Hesitant.cpp";
 #include "./Unplayable/InstantAttack.cpp";
 #include "./Unplayable/JumpMacro.cpp";
 #include "./Unplayable/NoClip.cpp";
 #include "./Unplayable/NoWallrun.cpp";
 #include "./Unplayable/Pogo.cpp";
 #include "./Unplayable/Rotator.cpp";
+#include "./Unplayable/Runner.cpp";
 #include "./Unplayable/Superhot.cpp";
 #include "./Unplayable/SuperOnly.cpp";
 #include "./Unplayable/SupersDontHitEnemies.cpp";
@@ -40,7 +42,7 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<CycleEvent@> = {
-      TauntAndDie(),
+      Hesitant(),
     };
   }
 
@@ -71,6 +73,7 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     DashForever(),
     DashMacro(),
     HalfDash(),
+    Hesitant(),
     InstantAttack(),
     JumpMacro(),
     NoClip(),
@@ -80,6 +83,7 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     Superhot(),
     SuperOnly(),
     SupersDontHitEnemies(),
+    Runner(),
     WorthMode(),
 
     UkkiezMode(),

@@ -2,7 +2,7 @@
 
 class HalfDash : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 130, "Literally Unplayable", "Cool Dash" );
+    return CycleEventConfig( 130, "Unplayable", "Cool Dash" );
   }
 
   scene@ g;

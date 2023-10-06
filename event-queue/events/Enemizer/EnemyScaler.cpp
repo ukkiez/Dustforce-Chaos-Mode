@@ -33,10 +33,10 @@ class EnemyScaler : QueueEvent {
         // probability be too tilted, and most often have entities not be shrunk
         float r;
         if ( srand_range( 0, 1 ) == 0 ) {
-          r = srand_range_flt( 0.4, 1 );
+          r = srand_range_flt( 0.25, 1 );
         }
         else {
-          r = srand_range_flt( 1, 2 );
+          r = srand_range_flt( 1, 3 );
         }
         e.as_hittable().scale( r );
       }

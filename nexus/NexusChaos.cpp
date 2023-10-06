@@ -29,6 +29,10 @@ class NexusChaos : Random {
     "Single Player Nexus",
   };
 
+  array<string> DOOR_NAMES = {
+    "CHAOS", "Milkshake", "Loopcore", "Yotta Difficult", "EXEC FUNC JOHN CENA", "Downhill", "Varredor", "Limpando o mundo"
+  };
+
   NexusChaos() {}
 
   void init() {

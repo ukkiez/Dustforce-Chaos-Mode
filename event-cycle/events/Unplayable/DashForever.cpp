@@ -2,7 +2,7 @@
 
 class DashForever : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 100, "Literally Unplayable", "Dash Forever (bye)" );
+    return CycleEventConfig( 100, "Unplayable", "Dash Forever (bye)" );
   }
 
   scene@ g;

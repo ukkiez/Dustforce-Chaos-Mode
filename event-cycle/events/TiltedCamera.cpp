@@ -4,7 +4,7 @@
 
 class TiltedCamera : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 80, "Tilted" );
+    return CycleEventConfig( 100, "Tilted" );
   }
 
   scene@ g;
