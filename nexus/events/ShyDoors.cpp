@@ -25,7 +25,7 @@ class ShyDoors : NexusEvent {
   uint interval = 180;
   bool door_walk = false;
   uint door_walk_min = 1;
-  uint door_walk_max = 5;
+  uint door_walk_max = 4;
   int walking_distance = 100;
 
   ShyDoors() {

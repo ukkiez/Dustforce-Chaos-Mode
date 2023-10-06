@@ -47,18 +47,21 @@ class SwapSprites : QueueEvent {
       }
       else if ( frames < 50 ) {
         replace_tiles( 14 );
+        replace_tiles( 19 );
       }
       else if ( frames < 60 ) {
         replace_tiles( 13 );
       }
       else if ( frames < 70 ) {
         replace_tiles( 11 );
+        replace_tiles( 19 );
       }
       else if ( frames < 80 ) {
         replace_tiles( 10 );
       }
       else if ( frames < 90 ) {
         replace_tiles( 9 );
+        replace_tiles( 19 );
       }
       else if ( frames < 100 ) {
         replace_tiles( 8 );
@@ -68,6 +71,7 @@ class SwapSprites : QueueEvent {
       }
       else if ( frames <= 120 ) {
         replace_tiles( 6 );
+        replace_tiles( 19 );
       }
     }
 
