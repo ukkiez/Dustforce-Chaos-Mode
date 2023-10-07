@@ -8,6 +8,8 @@ class RevengeArmy : QueueEvent {
   scene@ g;
   dustman@ player;
 
+  script@ _script;
+
   uint interval = 5;
 
   int count = 0;
@@ -24,17 +26,30 @@ class RevengeArmy : QueueEvent {
     "enemy_wolf",
     "enemy_trash_can",
     "enemy_bear",
+    "enemy_slime_barrel",
+    "enemy_slime_beast",
+    "enemy_trash_beast",
   };
 
   string enemy_type = "";
+
+  bool done = false;
 
   bool initialized = false;
 
   RevengeArmy() {}
 
   void step( int entities ) {
+    if ( done ) {
+      return;
+    }
+
     if ( frames % interval == 0 ) {
       spawn_enemy( player.x() + srand_range_flt( -500, 500 ), player.y() - srand_range_flt( 100, 550 ) );
+
+      if ( _script.turbo_mode ) {
+        done = true;
+      }
     }
 
     frames++;
@@ -72,6 +87,10 @@ class RevengeArmy : QueueEvent {
     }
 
     @g = get_scene();
+
+    // get the main script object
+    @_script = cast<script@>( get_script() );
+
     controllable@ c = controller_controllable( 0 );
     if ( @c != null ) {
       @player = c.as_dustman();
@@ -91,9 +110,11 @@ class RevengeArmy : QueueEvent {
       return;
     }
 
-    uint interval = 5;
-    int count = 0;
-    uint frames = 0;
+    interval = 5;
+    count = 0;
+    frames = 0;
+
+    done = false;
 
     initialized = false;
   }
