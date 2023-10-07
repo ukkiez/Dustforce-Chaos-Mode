@@ -330,8 +330,13 @@ entity@ create_emitter(const int id, const float x, const float y, const int wid
 
     float fog_speed;
     int trigger_size;
-    get_fog_setting(entity_by_id(normal_fog_trigger), normal_fog, fog_speed, trigger_size);
-    get_fog_setting(entity_by_id(bright_fog_trigger), bright_fog, fog_speed, trigger_size);
+    get_fog_setting( entity_by_id(normal_fog_trigger), normal_fog, fog_speed, trigger_size );
+    get_fog_setting( entity_by_id(bright_fog_trigger), bright_fog, fog_speed, trigger_size );
+
+    if ( srand_range( 0, 3 ) == 3 ) {
+      // have a 1/4th chance to reverse the laser knockback
+      knockback = -knockback;
+    }
 
     initialized = true;
   }
