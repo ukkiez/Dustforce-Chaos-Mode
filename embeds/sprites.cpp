@@ -20,6 +20,9 @@ const string EMBED_explosion15 = "./chaos/assets/sprites/explosion/explosion-15.
 const string EMBED_explosion16 = "./chaos/assets/sprites/explosion/explosion-16.png";
 const string EMBED_explosion17 = "./chaos/assets/sprites/explosion/explosion-17.png";
 
+// LaserMode
+const string EMBED_empty = "./chaos/assets/sprites/empty.png";
+
 void build_sprite_embeds( message@ msg ) {
   msg.set_string( "FrankerZ", "frankerz" );
 
@@ -40,4 +43,14 @@ void build_sprite_embeds( message@ msg ) {
   msg.set_string( "explosion15", "explosion15" );
   msg.set_string( "explosion16", "explosion16" );
   msg.set_string( "explosion17", "explosion17" );
+
+  const array<string> prefixes = { "dm", "dg", "dk", "do", "sb", "ls", "tk", "dw" };
+  for ( uint i = 0; i < prefixes.size(); ++i ) {
+    const string prefix = prefixes[ i ];
+    msg.set_string( prefix + "airheavyd", "empty" );
+    msg.set_string( prefix + "heavyd", "empty" );
+    msg.set_string( prefix + "heavyf", "empty" );
+    msg.set_string( prefix + "heavyu", "empty" );
+    msg.set_string( prefix + "hitfx", "empty" );
+  }
 }

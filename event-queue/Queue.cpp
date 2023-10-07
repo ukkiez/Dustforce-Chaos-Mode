@@ -190,7 +190,7 @@ class Queue : Random {
     // generate a range to exclude events based on their weight, e.g. a rolled
     // range of 500 means all weights below 500 should not be included in the
     // pool
-    uint range = srand_range( 1, 800 );
+    uint range = srand_range( 1, 1000 );
     puts( "Queue roll: " + range );
 
     // get new class instances of the events

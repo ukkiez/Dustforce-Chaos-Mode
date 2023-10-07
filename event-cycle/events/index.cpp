@@ -10,6 +10,7 @@
 #include "./ExplosionMode.cpp";
 #include "./FrankerZMode.cpp";
 #include "./InfiniteAircharges.cpp";
+#include "./LaserMode/index.cpp";
 #include "./Letterbox.cpp";
 #include "./MinecraftMode.cpp";
 #include "./NoFriction.cpp";
@@ -43,7 +44,7 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<CycleEvent@> = {
-      Decorator(),
+      LaserMode(),
     };
   }
 
@@ -61,6 +62,7 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     ExplosionMode(),
     FrankerZMode(),
     InfiniteAircharges(),
+    LaserMode(),
     Letterbox(),
     MinecraftMode(),
     NoFriction(),

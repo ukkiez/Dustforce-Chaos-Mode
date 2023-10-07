@@ -20,6 +20,11 @@ const string EMBED_carhornright = "./chaos/assets/audio/car-horn-right.ogg";
 // SussyPorcupine
 const string EMBED_sussy = "./chaos/assets/audio/amongus.ogg";
 
+// LaserMode
+const string EMBED_charge = "./chaos/assets/audio/charge.ogg";
+const string EMBED_shoot = "./chaos/assets/audio/shoot.ogg";
+const string EMBED_sizzle = "./chaos/assets/audio/sizzle.ogg";
+
 void build_audio_embeds( message@ msg ) {
   msg.set_string( "funkin", "funkin" );
 
@@ -37,4 +42,8 @@ void build_audio_embeds( message@ msg ) {
   msg.set_string( "car_horn_right", "carhornright" );
 
   msg.set_string( "sussy", "sussy" );
+
+  msg.set_string( "charge", "charge" );
+  msg.set_string( "shoot", "shoot" );
+  msg.set_string( "sizzle", "sizzle" );
 }
