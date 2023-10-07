@@ -11,9 +11,11 @@
 #include "./DiscordPing.cpp";
 #include "./ForceSuper.cpp";
 #include "./Maintenance.cpp";
-#include "./MaxSuper.cpp";
+// #include "./MaxSuper.cpp";
+#include "./Misinput.cpp";
 #include "./PolishDriver.cpp";
 #include "./PropSwap/index.cpp";
+#include "./RevengeArmy.cpp";
 #include "./SaveCheckpoint.cpp";
 #include "./SpawnApples.cpp";
 #include "./SussyPorcupine.cpp";
@@ -32,7 +34,7 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<QueueEvent@> = {
-      ForceSuper(),
+      RevengeArmy(),
     };
   }
 
@@ -49,8 +51,10 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     DiscordPing(),
     ForceSuper(),
     Maintenance(),
+    Misinput(),
     PolishDriver(),
     PropSwap(),
+    RevengeArmy(),
     SaveCheckpoint(),
     SpawnApples(),
     SussyPorcupine(),
