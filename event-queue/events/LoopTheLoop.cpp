@@ -2,7 +2,7 @@
 
 class LoopTheLoop : QueueEvent {
   QueueEventConfig get_config() {
-    return QueueEventConfig( 150, 60, "Loop-the-loop" );
+    return QueueEventConfig( 175, 60, "Loop-the-loop" );
   }
 
   scene@ g;
