@@ -22,7 +22,7 @@ class VortexEnemy {
 // enemies start circling around the player once they get close enough
 class Vortex : CycleEvent {
   CycleEventConfig get_config() {
-    return CycleEventConfig( 150, "Vortex" );
+    return CycleEventConfig( 200, "Vortex" );
   }
 
   scene@ g;
