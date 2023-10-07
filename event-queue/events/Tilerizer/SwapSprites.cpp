@@ -5,6 +5,8 @@
 
 #include "./data.cpp";
 
+#include "../../../lib/data/SpriteSet.cpp";
+
 class SwapSprites : QueueEvent {
   QueueEventConfig get_config() {
     return QueueEventConfig( 800, 120, "Exec Func Ruin Level", "Beautify" );
@@ -47,57 +49,60 @@ class SwapSprites : QueueEvent {
       }
       else if ( frames < 50 ) {
         replace_tiles( 14 );
-        replace_tiles( 19 );
+        replace_tiles( 19, 25 );
       }
       else if ( frames < 60 ) {
         replace_tiles( 13 );
       }
       else if ( frames < 70 ) {
         replace_tiles( 11 );
-        replace_tiles( 19 );
+        replace_tiles( 19, 25 );
       }
       else if ( frames < 80 ) {
         replace_tiles( 10 );
       }
       else if ( frames < 90 ) {
         replace_tiles( 9 );
-        replace_tiles( 19 );
+        replace_tiles( 19, 25 );
       }
       else if ( frames < 100 ) {
         replace_tiles( 8 );
       }
       else if ( frames < 110 ) {
         replace_tiles( 7 );
+        replace_tiles( 19, 25 );
       }
       else if ( frames <= 120 ) {
         replace_tiles( 6 );
-        replace_tiles( 19 );
       }
     }
 
     frames++;
   }
 
-  void replace_tiles( uint layer ) {
-    uint sprite_set = srand_range( 1, 4 );
-    uint sprite_tile = srand_range( 1, 5 );
+  void replace_tiles( uint layer, uint iterations = 50 ) {
+    // choose a random sprite set; keep in mind they are 1-indexed
+    SpriteSet@ sprite_set = SPRITE_SETS[ srand_range( 0, SPRITE_SETS.length - 2 ) ];
 
-    for ( uint i = 0; i <= 50; i++ ) {
+    // and a random tile from the set (also 1-indexed)
+    int sprite_tile = srand_range( 1, sprite_set.size );
+
+    for ( uint i = 0; i <= iterations; i++ ) {
       int x = tile_coord( player.x() + tile( srand_range( -60, 60 ) ) );
       int y = tile_coord( player.y() + tile( srand_range( -20, 20 ) ) );
 
       // attempt to create "bowl" shapes in random places
-      replace_tile( g, x, y, sprite_set, sprite_tile, -1, layer );
-      replace_tile( g, x+1, y, sprite_set, sprite_tile, -1, layer );
-      replace_tile( g, x+2, y, sprite_set, sprite_tile, -1, layer );
-      replace_tile( g, x-1, y, sprite_set, sprite_tile, -1, layer );
-      replace_tile( g, x-2, y, sprite_set, sprite_tile, -1, layer );
+      replace_tile( g, x, y, sprite_set.index, sprite_tile, -1, layer );
+      replace_tile( g, x+1, y, sprite_set.index, sprite_tile, -1, layer );
+      replace_tile( g, x+2, y, sprite_set.index, sprite_tile, -1, layer );
+      replace_tile( g, x-1, y, sprite_set.index, sprite_tile, -1, layer );
+      replace_tile( g, x-2, y, sprite_set.index, sprite_tile, -1, layer );
 
-      replace_tile( g, x+1, y+1, sprite_set, sprite_tile, -1, layer );
-      replace_tile( g, x-1, y+1, sprite_set, sprite_tile, -1, layer );
+      replace_tile( g, x+1, y+1, sprite_set.index, sprite_tile, -1, layer );
+      replace_tile( g, x-1, y+1, sprite_set.index, sprite_tile, -1, layer );
 
-      replace_tile( g, x, y+1, sprite_set, sprite_tile, -1, layer );
-      replace_tile( g, x, y+2, sprite_set, sprite_tile, -1, layer );
+      replace_tile( g, x, y+1, sprite_set.index, sprite_tile, -1, layer );
+      replace_tile( g, x, y+2, sprite_set.index, sprite_tile, -1, layer );
     }
   }
 

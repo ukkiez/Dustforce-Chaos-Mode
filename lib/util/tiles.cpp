@@ -14,7 +14,7 @@ int center_coord_on_tile( int v ) {
 }
 
 // replace a tile, not setting a new one in empty space
-void replace_tile( scene@ g, int x, int y, int sprite_set, int sprite_tile = -1, int type = -1, uint layer = 19, uint palette = 1 ) {
+void replace_tile( scene@ g, int x, int y, int sprite_set, int sprite_tile = -1, int type = -1, uint layer = 19, uint palette = 0 ) {
   tileinfo@ ti = g.get_tile( x, y, layer );
 
   if ( ti.solid() && !ti.is_dustblock() ) {
@@ -31,7 +31,7 @@ void replace_tile( scene@ g, int x, int y, int sprite_set, int sprite_tile = -1,
   }
 }
 
-void set_tile( scene@ g, int x, int y, bool solid, int type = 0, int sprite_set = 1, int sprite_tile = 1, uint layer = 19, uint palette = 1 ) {
+void set_tile( scene@ g, int x, int y, bool solid, int type = 0, int sprite_set = 1, int sprite_tile = 1, uint layer = 19, uint palette = 0 ) {
   g.set_tile(
     x,
     y,
