@@ -23,6 +23,7 @@
 #include "./Unplayable/DashMacro.cpp";
 #include "./Unplayable/HalfDash.cpp";
 #include "./Unplayable/Hesitant.cpp";
+#include "./Unplayable/Hitriser.cpp";
 #include "./Unplayable/InstantAttack.cpp";
 #include "./Unplayable/JumpMacro.cpp";
 #include "./Unplayable/NoClip.cpp";
@@ -44,7 +45,7 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<CycleEvent@> = {
-      LaserMode(),
+      Hitriser(),
     };
   }
 
@@ -76,6 +77,7 @@ array<CycleEvent@> get_cycle_events( bool DEBUG_MODE ) {
     DashMacro(),
     HalfDash(),
     Hesitant(),
+    Hitriser(),
     InstantAttack(),
     JumpMacro(),
     NoClip(),
