@@ -279,11 +279,11 @@ class Cycle : Random {
         // certain number, force the next range to be low; prevents long times
         // without the less common events
         range = srand_range( 1, roll_balance_threshold );
-        puts( "Cycle roll: <WEIGHTED> " + range );
+        // puts( "Cycle roll: <WEIGHTED> " + range );
       }
       else {
         range = srand_range( 1, 1000 );
-        puts( "Cycle roll: " + range );
+        // puts( "Cycle roll: " + range );
       }
 
       roll_history.removeAt( roll_history_length-1 );

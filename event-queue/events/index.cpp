@@ -36,6 +36,8 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     // concurrent number of events)
     return array<QueueEvent@> = {
       LoopTheLoop(),
+      RevengeArmy(),
+      SpawnApples(),
     };
   }
 

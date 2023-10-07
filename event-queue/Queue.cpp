@@ -208,11 +208,11 @@ class Queue : Random {
       // certain number, force the next range to be low; prevents long times
       // without the less common events
       range = srand_range( 1, roll_balance_threshold );
-      puts( "Queue roll: <WEIGHTED> " + range );
+      // puts( "Queue roll: <WEIGHTED> " + range );
     }
     else {
       range = srand_range( 1, 1000 );
-      puts( "Queue roll: " + range );
+      // puts( "Queue roll: " + range );
     }
 
     roll_history.removeAt( roll_history_length-1 );
