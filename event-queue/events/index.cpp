@@ -7,6 +7,7 @@
 #include "./Enemizer/EnemyTimeWarp.cpp";
 
 #include "./Bullies.cpp";
+#include "./LoopTheLoop.cpp";
 #include "./CloseUp.cpp";
 #include "./DiscordPing.cpp";
 #include "./ForceSuper.cpp";
@@ -34,7 +35,7 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     // (though still not twice in a row, and retaining the existing limit of
     // concurrent number of events)
     return array<QueueEvent@> = {
-      RevengeArmy(),
+      LoopTheLoop(),
     };
   }
 
@@ -50,6 +51,7 @@ array<QueueEvent@> get_queue_events( bool DEBUG_MODE ) {
     CloseUp(),
     DiscordPing(),
     ForceSuper(),
+    LoopTheLoop(),
     Maintenance(),
     Misinput(),
     PolishDriver(),
