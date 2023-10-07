@@ -62,6 +62,10 @@ class Queue : Random {
 
   string last_picked_event_name;
 
+  uint roll_history_length = 5;
+  array<int> roll_history( roll_history_length );
+  int roll_balance_threshold = 300;
+
   // interval in seconds
   uint interval = 1;
   uint interval_min = 1;
@@ -187,11 +191,32 @@ class Queue : Random {
       return get_queue_events( DEBUG_MODE );
     }
 
+    bool rolled_low = false;
+    for ( uint i = 0; i < roll_history_length; i++ ) {
+      if ( roll_history[ i ] < roll_balance_threshold ) {
+        rolled_low = true;
+        break;
+      }
+    }
+
     // generate a range to exclude events based on their weight, e.g. a rolled
     // range of 500 means all weights below 500 should not be included in the
     // pool
-    uint range = srand_range( 1, 1000 );
-    puts( "Queue roll: " + range );
+    uint range;
+    if ( !rolled_low ) {
+      // if all weight rolls in the last <roll_history_length> were below a
+      // certain number, force the next range to be low; prevents long times
+      // without the less common events
+      range = srand_range( 1, roll_balance_threshold );
+      puts( "Queue roll: <WEIGHTED> " + range );
+    }
+    else {
+      range = srand_range( 1, 1000 );
+      puts( "Queue roll: " + range );
+    }
+
+    roll_history.removeAt( roll_history_length-1 );
+    roll_history.insertAt( 0, range );
 
     // get new class instances of the events
     @events = get_queue_events( DEBUG_MODE );

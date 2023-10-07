@@ -60,7 +60,7 @@ class Cycle : Random {
   array<uint> active_event_indexes;
 
   uint roll_history_length = 3;
-  array<int> roll_history( 3 );
+  array<int> roll_history( roll_history_length );
   int roll_balance_threshold = 300;
 
   // interval in seconds
@@ -270,6 +270,10 @@ class Cycle : Random {
           break;
         }
       }
+
+      // generate a range to exclude events based on their weight, e.g. a rolled
+      // range of 500 means all weights below 500 should not be included in the
+      // pool
       if ( !rolled_low ) {
         // if all weight rolls in the last <roll_history_length> were below a
         // certain number, force the next range to be low; prevents long times
@@ -278,13 +282,9 @@ class Cycle : Random {
         puts( "Cycle roll: <WEIGHTED> " + range );
       }
       else {
-        // generate a range to exclude events based on their weight, e.g. a rolled
-        // range of 500 means all weights below 500 should not be included in the
-        // pool
         range = srand_range( 1, 1000 );
+        puts( "Cycle roll: " + range );
       }
-
-      puts( "Cycle roll: " + range );
 
       roll_history.removeAt( roll_history_length-1 );
       roll_history.insertAt( 0, range );
@@ -304,6 +304,7 @@ class Cycle : Random {
       bool broke = false;
       for ( uint j = 0; j < active_events.length; j++ ) {
         if ( id == ( active_events[ j ].name + active_events[ j ].subtext ) ) {
+          // don't pick the same events twice in a row
           broke = true;
           break;
         }
