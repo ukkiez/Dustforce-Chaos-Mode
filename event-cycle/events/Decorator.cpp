@@ -1,7 +1,7 @@
-#include "../../lib/Random.cpp";
-#include "../../lib/util/tiles.cpp";
-
 #include "../CycleEvent.cpp";
+
+#include "../../lib/util/tiles.cpp";
+#include "../../lib/data/SpriteSet.cpp";
 
 // swaps tile sprites close to the player
 class Decorator : CycleEvent {
@@ -43,8 +43,11 @@ class Decorator : CycleEvent {
   }
 
   void replace_tiles( uint layer, int additional_y = 0 ) {
-    uint sprite_set = srand_range( 1, 4 );
-    uint sprite_tile = srand_range( 1, 5 );
+    // choose a random sprite set; keep in mind they are 1-indexed
+    SpriteSet@ sprite_set = SPRITE_SETS[ srand_range( 0, SPRITE_SETS.length - 2 ) ];
+
+    // and a random tile from the set (also 1-indexed)
+    int sprite_tile = srand_range( 1, sprite_set.size );
 
     int x = tile_coord( player.x() );
     int y = tile_coord( player.y() );
@@ -52,11 +55,11 @@ class Decorator : CycleEvent {
     for ( int i = -1; i <= 1; i++ ) {
       int _x = x + i;
       // below player
-      replace_tile( g, _x, y, sprite_set, sprite_tile, -1, layer );
+      replace_tile( g, _x, y, sprite_set.index, sprite_tile, -1, layer );
 
       // above player
       if ( additional_y != 0 ) {
-        replace_tile( g, _x, y + additional_y, sprite_set, sprite_tile, -1, layer );
+        replace_tile( g, _x, y + additional_y, sprite_set.index, sprite_tile, -1, layer );
       }
     }
   }
