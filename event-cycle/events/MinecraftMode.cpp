@@ -40,8 +40,6 @@ class MinecraftMode : CycleEvent {
 
   MinecraftMode() {}
 
-  void draw( float sub_frame ) {}
-
   void step( int entities ) {
     if ( just_cleaned ) {
       // see the below setting of the "just_cleaned" variable for context
@@ -70,7 +68,7 @@ class MinecraftMode : CycleEvent {
       if ( player.attack_state() == 3 ) {
         effect@ eff = e.as_effect();
 
-        if ( @eff != null && eff.sprite_set() == player.character() ) {
+        if ( @eff != null && ( eff.sprite_set() == player.character() ) ) {
           bool broke = false;
           for ( uint j = 0; j < effects.length; j++ ) {
             if ( effects[ j ].is_same( eff.as_entity() ) ) {
@@ -358,6 +356,8 @@ class MinecraftMode : CycleEvent {
     hit_box_iteration_before_dustman = false;
 
     just_cleaned = false;
+    buffered_jump = false;
+    buffered_dash = false;
 
     special_timer = 0;
     super_hitbox_side = 12.5;
